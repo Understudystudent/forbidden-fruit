@@ -23,7 +23,19 @@ export default {
 </script>
 
 
-
+<!-- Css -->
 <style >
+/* .btn {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  width:100%;
+  transition:.5s;
+  cursor: pointer;
+ 
+} */
+
 
 </style>
