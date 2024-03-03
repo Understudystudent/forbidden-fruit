@@ -3,8 +3,7 @@
     
     <NavBar/>
     <router-view/>
-    <!-- <FooterView/> -->
-    </div>
+/    </div>
 </template>
 
 
@@ -25,7 +24,7 @@ export default {
 
 <!-- Css -->
 <style >
-/* .btn {
+.btn {
   display:flex;
   align-items: center;
   justify-content: center;
@@ -35,7 +34,7 @@ export default {
   transition:.5s;
   cursor: pointer;
  
-} */
+}
 
 
 </style>
