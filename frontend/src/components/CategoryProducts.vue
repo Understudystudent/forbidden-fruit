@@ -1,54 +1,49 @@
 <template>
-  <section class="category-products">
+  <div>
     <div class="container">
-      <div class="row category-header">
-        <div class="col-md-6">
-          <h3>Candles</h3>
-        </div>
-        <div class="col-md-6 d-flex justify-content-end align-items-center">
-          <div class="btn-group" role="group">
-            <button
-              v-for="(tab, i) in tabs"
-              :key="i"
-              class="btn btn-outline-secondary"
-              @click="activeIndex = i"
-              :class="{ active: activeIndex === i }"
-            >
-              {{ tab }}
-            </button>
+      <div class="category-header">
+        <h3>Candles</h3>
+        <div class="tabs">
+          <div
+          v-for="(tab, i) in tabs"
+          :key="tab"
+          class="tab"
+          @click="activeIndex = i"
+          :class="{ active: activeIndex === i }"
+        >
+          {{ tab }}
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="row products">
-        <div v-for="n in 6" :key="n" class="col-md-4">
-          <div class="card single-product">
-            <img class="card-img-top" src="../assets/1.png" alt="">
-            <div class="card-body product-content">
-              <h6 class="card-title name">Header</h6>
-              <div class="rating">
-                <span class="price">Price</span>
-                <div class="icon">
-                  <img src="../assets/rating.png" alt="">
-                </div>
+    <div class="products">
+      <div v-for="n in 6" :key="n" class="single-product">
+        <div class="img-container">
+          <img  src="../assets/images/1.png" alt="">
+          <div class="sale">
+            -50%
+          </div>
+
+          <div class=" product-content">
+            <h6 class="name">Header</h6>
+            <div class="rating">
+              <span class="price">Price</span>
+              <div class="icon">
+                <img src="../assets/images/rating.png" alt="">
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="row">
-        <div class="col-md-12 d-flex justify-content-center">
-          <button class="btn btn-primary">
-            SEE MORE
-          </button>
-        </div>
-      </div>
     </div>
-  </section>
+
+    <button class="tab">SEE MORE</button>
+  </div>
 </template>
 
 <!-- JavaScript -->
+
 <script setup>
 import { ref } from "vue";
 
@@ -56,7 +51,7 @@ const tabs = ref([
   "NEW ARRIVALS",
   "SPECIALS",
   "BESTSELLERS",
-  "MOST VIEWED", 
+  "MOST VIEWED",
   "FEATURED PRODUCTS",
 ]);
 
@@ -64,23 +59,83 @@ const activeIndex = ref(0);
 </script>
 
 <!-- CSS -->
+
 <style scoped>
 .category-header {
-  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px
 }
 
 .category-header h3 {
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.4rem;
   line-height: 1rem;
 }
 
-.products {
-  margin-bottom: 20px;
+
+.tabs {
+  display: flex;
+  align-items: center;
+
 }
 
-.single-product {
-  margin-bottom: 20px;
+.tabs button {
+  font-weight: 600;
+  font-size: 0.7rem;
+  line-height: 0.8rem;
+  opacity: 0.6;
+  margin-right: 2rem; 
+  transition: 0.5s;
+  cursor: pointer;
 }
+
+.tabs button.active {
+  opacity: 1;
+}
+.tabs button:hover
+ {
+  opacity: 1;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr ;
+  gap:30px
+}
+
+.single-product .img-container{
+  position: relative;
+}
+
+.single-product .img-container .sale{
+  position: absolute;
+  left: 0;
+  top:0;
+  padding: 8px;
+  background: rgb(217, 41, 71);
+  right: auto;
+  color:white
+}
+
+.single-product .product-content{
+  padding: 10px 0;
+}
+.single-product .product-content h6 {
+  font-weight: 400;
+  font-size: 0.7rem;
+  line-height: 1rem;
+  opacity: 0.6;
+  margin-top: 5px;
+}
+.single-product .product-content .rating {
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
 </style>
+
+
