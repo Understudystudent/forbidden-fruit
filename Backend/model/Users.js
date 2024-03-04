@@ -2,7 +2,6 @@ import {connection as db} from "../config/index.js"
 import {hash, compare} from 'bcrypt'
 import { createToken } from "../Middleware/AuthenticateUser.js"
 
-
 class Users{
     // mulitple Users
     fetchUsers(req, res) {
