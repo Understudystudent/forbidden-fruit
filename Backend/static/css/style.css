@@ -1,0 +1,23 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    text-align: center;
+}
+body >* {
+    margin-block: .3rem;
+}
+h1 :is(span) {
+    color: green;
+}
+table{
+    margin-inline: auto;
+}
+tbody tr:last-child td{
+    color: green;
+    font-weight: bold;
+}
