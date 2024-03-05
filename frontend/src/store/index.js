@@ -4,7 +4,7 @@ import sweet from 'sweetalert'
 import { useCookies } from 'vue3-cookies'
 const {cookies} = useCookies()
 import router from '@/router'
-import AuthenticateUser from '../Service/AuthenticateUser.js'
+import AuthenticateUser from '../service/AuthenticateUser.js'
 const forbidden = 'https://forbdden-fruit.onrender.com/'
 
 export default createStore({
@@ -34,25 +34,26 @@ export default createStore({
     // register
 
     async register(context, payload) {
-      try {
-        let { msg } = (await axios.post(`${forbidden}users/register`, payload)).data;
-        if (msg) {
-          context.dispatch('fetchUsers');
+      try{
+        let {msg} = (await axios.post(`${forbidden}users/register`, payload)).data
+        if(msg) {
+          context.dispatch('fetchUsers')
           sweet({
             title: 'Registration',
             text: msg,
             icon: "success",
             timer: 2000
-          });
-          router.push({ name: 'login' });
+          }) 
+          //  
+          router.push({name: 'login'})
         }
-      } catch (e) {
+      }catch(e) {
         sweet({
           title: 'Error',
           text: 'Please try again later',
           icon: "error",
           timer: 2000
-        });
+        }) 
       }
     },
     // fetch a Mulitple User
@@ -120,7 +121,7 @@ export default createStore({
     // Deleting user
     async deleteUser(context, payload) {
       try{
-        let {msg} = await axios.delete(`${forbidden}/users/delete/${payload.id}`)
+        let {msg} = await axios.delete(`${forbidden}users/${payload.id}`)
         if(msg) {
           context.dispatch('fetchUsers')
           sweet({
@@ -176,7 +177,6 @@ export default createStore({
       
 
     },
-    // Fetch Product
     async fetchProducts(context) {
       try{
         let {results} = 
@@ -193,7 +193,6 @@ export default createStore({
         }) 
       }
     },
-    // Fetch Products
     async fetchProduct(context, payload) {
       try{
         let {result} = (await axios.get(`${forbidden}products/${payload.id}`)).data
@@ -215,75 +214,7 @@ export default createStore({
           timer: 2000
         }) 
       }
-    },
-    // Add Product
-    async addProduct(context, payload) {
-      try {
-        let { msg } = (await axios.post(`${forbidden}products/addProduct`, payload));
-        if (msg) {
-          context.dispatch('fetchProducts');
-          sweet({
-            title: 'Product Added',
-            text: msg,
-            icon: "success",
-            timer: 2000
-          });
-        }
-      } catch (e) {
-        sweet({
-          title: 'Error',
-          text: 'Failed to add product. Please try again later.',
-          icon: "error",
-          timer: 2000
-        });
-      }
-    },
-     // Delete Product
-     async deleteProduct(context, payload) {
-      try {
-        const { msg } = await axios.delete(`${forbidden}products/delete/${payload.id}`);
-        // if (msg) {
-          context.dispatch('fetchProducts');
-          sweet({
-            title: 'Delete Product',
-            text: msg,
-            icon: 'success',
-            timer: 2000,
-          });
-        // }
-      } catch (error) {
-        console.error(error);
-        sweet({
-          title: 'Error',
-          text: 'Failed to delete product. Please try again later.',
-          icon: 'error',
-          timer: 2000,
-        });
-      }
-    },
-    // Update Product
-async updateProduct(context, payload) {
-  try {
-    let { msg } = await axios.patch(`${forbidden}/products/update/${payload.id}`, payload);
-    if (msg) {
-      context.dispatch('fetchProducts');
-      sweet({
-        title: 'Update Product',
-        text: msg,
-        icon: "success",
-        timer: 2000
-      });
     }
-  } catch (e) {
-    sweet({
-      title: 'Error',
-      text: 'An error occurred when updating a product.',
-      icon: "error",
-      timer: 2000
-    });
-  }
-},
-
   },
   modules: {
   }
