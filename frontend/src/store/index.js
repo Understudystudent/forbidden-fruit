@@ -35,7 +35,7 @@ export default createStore({
 
     async register(context, payload) {
       try {
-        let { msg } = (await axios.post(`${onlyWater}users/register`, payload)).data;
+        let { msg } = (await axios.post(`${forbidden}users/register`, payload)).data;
         if (msg) {
           context.dispatch('fetchUsers');
           sweet({
@@ -58,7 +58,7 @@ export default createStore({
     // fetch a Mulitple User
     async fetchUsers(context) {
       try{
-        let {results} = (await axios.get(`${onlyWater}users`)).data
+        let {results} = (await axios.get(`${forbidden}users`)).data
         if(results) {
           context.commit('setUsers', results)
         }
@@ -74,7 +74,7 @@ export default createStore({
     // fetchsingle Users
     async fetchUser(context, payload) {
       try{
-        let {result} = (await axios.get(`${onlyWater}users/${payload.id}`)).data
+        let {result} = (await axios.get(`${forbidden}users/${payload.id}`)).data
         if(result) {
           context.commit('setUser', result)
         }else {
@@ -98,7 +98,7 @@ export default createStore({
     // Updating user
     async updateUser(context, payload) {
       try{
-        let {msg} = await axios.patch(`${onlyWater}users/update/${payload.id}`)
+        let {msg} = await axios.patch(`${forbidden}users/update/${payload.id}`)
         if(msg) {
           context.dispatch('fetchUsers')
           sweet({
@@ -120,7 +120,7 @@ export default createStore({
     // Deleting user
     async deleteUser(context, payload) {
       try{
-        let {msg} = await axios.delete(`${onlyWater}/users/delete/${payload.id}`)
+        let {msg} = await axios.delete(`${forbidden}/users/delete/${payload.id}`)
         if(msg) {
           context.dispatch('fetchUsers')
           sweet({
@@ -142,7 +142,7 @@ export default createStore({
     // Login user
     async login(context, payload) {
       try{
-       const {msg, token, result} = (await axios.post(`${onlyWater}users/login`, payload)).data 
+       const {msg, token, result} = (await axios.post(`${forbidden}users/login`, payload)).data 
        if(result){
         context.commit('setUser', {msg, result})
         cookies.set('LegitUser', {
@@ -180,7 +180,7 @@ export default createStore({
     async fetchProducts(context) {
       try{
         let {results} = 
-        (await axios.get(`${onlyWater}products`)).data
+        (await axios.get(`${forbidden}products`)).data
         if(results) {
           context.commit('setProducts', results)
         }
@@ -196,7 +196,7 @@ export default createStore({
     // Fetch Products
     async fetchProduct(context, payload) {
       try{
-        let {result} = (await axios.get(`${onlyWater}products/${payload.id}`)).data
+        let {result} = (await axios.get(`${forbidden}products/${payload.id}`)).data
         if(result) {
           context.commit('setProduct', result)
         }else {
@@ -219,7 +219,7 @@ export default createStore({
     // Add Product
     async addProduct(context, payload) {
       try {
-        let { msg } = (await axios.post(`${onlyWater}products/addProduct`, payload));
+        let { msg } = (await axios.post(`${forbidden}products/addProduct`, payload));
         if (msg) {
           context.dispatch('fetchProducts');
           sweet({
@@ -241,7 +241,7 @@ export default createStore({
      // Delete Product
      async deleteProduct(context, payload) {
       try {
-        const { msg } = await axios.delete(`${onlyWater}products/delete/${payload.id}`);
+        const { msg } = await axios.delete(`${forbidden}products/delete/${payload.id}`);
         // if (msg) {
           context.dispatch('fetchProducts');
           sweet({
@@ -264,7 +264,7 @@ export default createStore({
     // Update Product
 async updateProduct(context, payload) {
   try {
-    let { msg } = await axios.patch(`${onlyWater}/products/update/${payload.id}`, payload);
+    let { msg } = await axios.patch(`${forbidden}/products/update/${payload.id}`, payload);
     if (msg) {
       context.dispatch('fetchProducts');
       sweet({
