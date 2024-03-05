@@ -36,19 +36,22 @@ class Users{
             })
         })
     }
-    // Create a User
+    // Create a User  
     async createUser(req, res) {
         // Payload
         let data = req.body
-        data.userPwd = await hash(data?.userPwd, 9)
+        console.log(data);
+        // console.log(data.userPwd)
+        data.userPwd = await hash(data.userPwd, 9)
+
+
         let user = {
             emailAdd: data.emailAdd,
             userPwd: data.userPwd
         }
-        const qry = `
-        INSERT INTO Users
-        SET ?;
-        `     
+        console.log(user);
+        const qry = `INSERT INTO Users SET ?;`
+             
         db.query(qry, [data], (err)=>{
             if(err) {
                 res.json({
@@ -70,7 +73,7 @@ class Users{
     async updateUser(req, res) {
         const data = req.body 
         if(data?.userPwd){
-            data.userPwd = await hash(data?.userPwd, 8)
+            data.userPwd = await hash(data?.userPwd, 9)
         }
             
         const qry = `
