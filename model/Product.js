@@ -4,8 +4,8 @@ class Products{
     // Mulitple Products
     fetchProducts(req, res){
         const qry = `
-        SELECT prodID, prodName, quantity,
-        amount, prodUrl,Category
+        SELECT prodID, prodName, prodQuantity,
+        prodAmount, prodUrl,Category,prodDescription
         FROM Products;
         `
         db.query(qry, (err, results)=>{
@@ -20,8 +20,8 @@ class Products{
     // Single Product
     fetchProduct(req, res){
         const qry = `
-        SELECT prodID, prodName, quantity,
-        amount, prodUrl,Category 
+        SELECT prodID, prodName, prodQuantity,
+        prodAmount, prodUrl,Category ,prodDescription
         FROM Products
         WHERE prodID = ${req.params.id};
         `

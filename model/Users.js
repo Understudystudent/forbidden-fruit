@@ -1,7 +1,6 @@
 import {connection as db} from "../config/index.js"
 import {hash, compare} from 'bcrypt'
-import { createToken } 
-from "../middleware/AuthenticateUser.js"
+import { createToken } from "../middleware/AuthenticateUser.js"
 
 
 class Users{
@@ -9,7 +8,7 @@ class Users{
     fetchUsers(req, res) {
         const qry = `
         SELECT userID, firstName, lastName,
-        userAge, Gender, emailAdd, userRole,userProfile
+        userAge, Gender, userRole, emailAdd,userProfile,userImg
         FROM Users;
         `
         db.query(qry, (err, results)=>{
@@ -24,7 +23,7 @@ class Users{
     fetchUser(req, res) {
         const qry = `
         SELECT userID, firstName, lastName,
-        userAge, Gender, emailAdd, userRole,userProfile
+        userAge, Gender,userRole emailAdd, ,userProfile, userImg
         FROM Users
         WHERE userID =
          ${req.params.id};
@@ -41,10 +40,10 @@ class Users{
     async createUser(req, res) {
         // Payload
         let data = req.body
-        data.userPass = await hash(data?.userPass, 8)
+        data.userPwd = await hash(data?.userPwd, 9)
         let user = {
             emailAdd: data.emailAdd,
-            userPass: data.userPass
+            userPwd: data.userPwd
         }
         const qry = `
         INSERT INTO Users
@@ -70,8 +69,8 @@ class Users{
     // Update User
     async updateUser(req, res) {
         const data = req.body 
-        if(data?.userPass){
-            data.userPass = await hash(data?.userPass, 8)
+        if(data?.userPwd){
+            data.userPwd = await hash(data?.userPwd, 8)
         }
             
         const qry = `
@@ -104,10 +103,10 @@ class Users{
     }
     // Login
     login(req, res) {
-        const {emailAdd, userPass} = req.body 
+        const {emailAdd, userPwd} = req.body 
         const qry = `
         SELECT userID, firstName, lastName,
-        userAge, Gender, emailAdd, userPass, userRole,userProfile
+        userAge, Gender,userRole, emailAdd, userPwd,userProfile,userImg
         FROM Users
         WHERE emailAdd = '${emailAdd}';
         `
@@ -120,11 +119,11 @@ class Users{
                 })
             }else {
                 // Validate password
-                const validPass = await compare(userPass, result[0].userPass)
+                const validPass = await compare(userPwd, result[0].userPwd)
                 if(validPass) {
                     const token = createToken({
                         emailAdd, 
-                        userPass
+                        userPwd
                     })
                     res.json({
                         status: res.statusCode,

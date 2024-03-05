@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Made by Carl James",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "start": "node index",
+    "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

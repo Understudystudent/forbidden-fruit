@@ -1,5 +1,5 @@
-import { userRouter, express } from "./controller/UserController.js";
-import { productRouter } from "./controller/ProductController.js";
+import { userRouter, express } from "./controller/UserContoller.js";
+import { productRouter } from "./controller/ProductContoller.js";
 import cookieParser from "cookie-parser";
 import {errorHandling} from './middleware/ErrorHandling.js'
 import path from 'path'
@@ -8,7 +8,7 @@ import cors from 'cors'
 // config()
 
 const app = express()
-const port = +process.env.PORT || 5500
+const port = +process.env.PORT || 5510
 // Middleware
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -28,7 +28,7 @@ app.use(
     cookieParser(), 
     cors()
   )
-app.get('^/$|/lifechoices', (req, res)=>{
+app.get('^/$|/capstone', (req, res)=>{
     res.status(200).sendFile(path.join(__dirname, './static/index.html'))
 })
 app.use('/users', userRouter)
