@@ -24,7 +24,7 @@ class Items{
         });
     }
 
-    fetchProduct(req, res) {
+    fetchItem(req, res) {
         const qry = `
             SELECT itemID, itemName, itemQuantity,
             itemAmount, itemUrl, Category, itemDescription
@@ -47,20 +47,20 @@ class Items{
         });
     }
 
-    // Add Prodduct
-    addProduct(req, res) {
+    // Add Item
+    addItem(req, res) {
         const qry = `INSERT INTO Items SET ?`
         db.query(qry, [req.body], (err)=>{
             if(err) throw err 
             res.json({
                 status: res.statusCode, 
-                msg: 'New product was added'
+                msg: 'New Item was added'
             })
         })
     }
 
-    // Update Product
-    async updateProduct(req, res) {
+    // Update Item
+    async updateItem(req, res) {
         let data = req.body;
 
         // Database Query
@@ -87,7 +87,7 @@ class Items{
     }
 
     // Delete Product
-    async deleteProduct(req, res) {
+    async deleteItem (req, res) {
         let data = req.body;
         const qry = `
             DELETE FROM Items

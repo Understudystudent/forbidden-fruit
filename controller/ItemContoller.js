@@ -33,7 +33,7 @@ itemRouter.get('/:id', (req, res)=>{
 // Add Item
 itemRouter.post('/addItems', bodyParser.json(), (req, res)=>{
     try{
-        items.addProduct(req, res)
+        items.addItem(req, res)
     }catch(e) {
         res.json({
             status: res.statusCode,

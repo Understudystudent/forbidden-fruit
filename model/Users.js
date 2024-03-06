@@ -19,7 +19,7 @@ class Users{
             })
         })
     }
-    // single User
+    // single User 
     fetchUser(req, res) {
         const qry = `
         SELECT userID, firstName, lastName,
@@ -40,16 +40,15 @@ class Users{
     async createUser(req, res) {
         // Payload
         let data = req.body
-        console.log(data);
+        // console.log(data);
         // console.log(data.userPwd)
         data.userPwd = await hash(data.userPwd, 9)
 
-
+        
         let user = {
             emailAdd: data.emailAdd,
             userPwd: data.userPwd
         }
-        console.log(user);
         const qry = `INSERT INTO Users SET ?;`
              
         db.query(qry, [data], (err)=>{
