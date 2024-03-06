@@ -2,9 +2,9 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container">
       <!-- Logo on the left -->
-      <a class="navbar-brand" href="#">
+      <router-link to="/" class="nav-link">
         <img src="@/assets/logo.png" alt="" />
-      </a>
+      </router-link>
 
       <!-- Navbar Toggle Button for small screens -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -36,8 +36,41 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Contact</a>
           </li>
+
+          <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown link
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+          <ul v-if="!user">
+            <li class="nav-item">
+              <router-link to="/login" class="nav-link">Login</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/register" class="nav-link">Sign Up</router-link>
+            </li>
+          </ul>
+          <ul v-if="user">
+            <li class="nav-item">
+              <router-link to="/login" class="nav-link">Logout</router-link>
+            </li>
+            <li class="nav-item">
+              <!-- does nothing -->
+              <a href="javascript:void(0)" @click="handleClick">Sign Up</a>
+            </li>
+          </ul>
         </ul>
       </div>
+      <!-- User Name -->
+      <!-- <div>
+  <p v-if="user">Hi, {{ user.firstName }} {{ user.lastName }}</p>
+  <p v-else>You are not logged in!</p>
+</div> -->
 
       <!-- Navbar Icons on the right -->
       <div class="icons">
@@ -75,7 +108,26 @@
   </nav>
 </template>
 
-<script setup></script>
+<script>
+
+import {mapGetters} from 'vuex'
+
+export default {
+  name: 'NavBar',
+ 
+  methods: {
+    handleClick(){
+      localStorage.removeItem('token');
+      this.$store.dispatch('user',null);
+      this.$router.push('/')
+    }
+  },
+  computed: {
+    ...mapGetters(['users'])
+  }
+}
+
+</script>
 
 <style scoped>
 nav {
