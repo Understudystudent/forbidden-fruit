@@ -5,7 +5,7 @@
         <div class="row">
 
         </div>
-        <div class="container">
+        <div >
           <table class="table table-striped-columns rounded-3">
             <thead>
               <tr>
@@ -51,22 +51,20 @@
   
       <div class="col">
         <h2 class="admin text-white">Product</h2>
-        <div class="row">
+        <!-- <div class="row">
           <router-link to="/add/product" class="btn btn-primary float-end">
             Add Product
           </router-link>
-  
-        </div>
-        <div class="container">
+        </div> -->
+        <div >
           <table class="table table-striped-columns rounded-5">
             <thead>
               <tr>
-                <th scoped="col">Product Img</th>
-                <th scoped="col">Product ID</th>
-                <th scoped="col">Product Name</th>
-                <th scoped="col">Product Quanity</th>
-                <th scoped="col">Product Amount</th>
-                <th scoped="col">Img link</th>
+                <th scoped="col">Item Img</th>
+                <th scoped="col">Item ID</th>
+                <th scoped="col">Item Name</th>
+                <th scoped="col">Item Quanity</th>
+                <th scoped="col">Item Amount</th>
                 <th scoped="col">Category</th>
                 <th scoped="col">Description</th>
                 <th scoped="col">Action</th>
@@ -80,7 +78,6 @@
                 <td>{{ item.itemName }}</td>
                 <td>{{ item.itemQuantity }}</td>
                 <td>{{ item.itemAmount }}</td>
-                <td>{{ item.itemUrl }}</td>
                 <td> {{ item.Category }}</td>
                 <td> {{ item.itemDescription }}</td>
                 <td>
