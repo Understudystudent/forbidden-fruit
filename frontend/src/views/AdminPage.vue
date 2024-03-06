@@ -61,30 +61,35 @@
           <table class="table table-striped-columns rounded-5">
             <thead>
               <tr>
+                <th scoped="col">Product Img</th>
                 <th scoped="col">Product ID</th>
                 <th scoped="col">Product Name</th>
-                <th scoped="col">Product Category</th>
+                <th scoped="col">Product Quanity</th>
                 <th scoped="col">Product Amount</th>
+                <th scoped="col">Img link</th>
+                <th scoped="col">Category</th>
+                <th scoped="col">Description</th>
                 <th scoped="col">Action</th>
+
               </tr>
             </thead>
-            <tbody v-if="products">
-              <tr v-for="product in products" :key="product.prodID">
-                <td><img :src="product.prodUrl" style="height: 100px;" /></td>
-                <td>{{ product.prodID }}</td>
-                <td>{{ product.prodName }}</td>
-                <td>{{ product.prodQuantity }}</td>
-                <td>{{ product.prodAmount }}</td>
-                <td>{{ product.prodUrl }}</td>
-                <td> {{ product.Category }}</td>
-                <td> {{ product.prodDescription }}</td>
+            <tbody v-if="items">
+              <tr v-for="item in items" :key="item.itemID">
+                <td><img :src="item.itemUrl" style="height: 100px;" /></td>
+                <td>{{ item.itemID }}</td>
+                <td>{{ item.itemName }}</td>
+                <td>{{ item.itemQuantity }}</td>
+                <td>{{ item.itemAmount }}</td>
+                <td>{{ item.itemUrl }}</td>
+                <td> {{ item.Category }}</td>
+                <td> {{ item.itemDescription }}</td>
                 <td>
                   <div class="row">
                     <div class="col">
                       <button class="btn btn-primary btn-block">Edit</button>
                     </div>
                     <div class="col">
-                      <button class="btn btn-danger btn-block" @click="deleteProduct(product.prodID)">Delete</button>
+                      <button class="btn btn-danger btn-block" @click="deleteProduct(item.itemID)">Delete</button>
                     </div>
                   </div>
                 </td>
@@ -102,13 +107,13 @@
       users() {
         return this.$store.state.users;
       },
-      products() {
-        return this.$store.state.products;
+      items() {
+        return this.$store.state.items;
       },
     },
     mounted() {
       this.$store.dispatch('fetchUsers');
-      this.$store.dispatch('fetchProducts');
+      this.$store.dispatch('fetchItems');
     },
     methods: {
     deleteUser(userId) {
@@ -118,11 +123,11 @@
         console.error('Error deleting user:', error);
       }
     },
-    deleteProduct(productId) {
+    deleteItem(itemID) {
       try {
-        this.$store.dispatch('deleteProduct', { id: productId });
+        this.$store.dispatch('deleteItems', { id: itemID });
       } catch (error) {
-        console.error('Error deleting product:', error);
+        console.error('Error deleting Items:', error);
       }
     }
   }

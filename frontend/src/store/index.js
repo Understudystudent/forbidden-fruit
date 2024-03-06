@@ -4,15 +4,15 @@ import sweet from 'sweetalert'
 import { useCookies } from 'vue3-cookies'
 const {cookies} = useCookies()
 import router from '@/router'
-import AuthenticateUser from '../service/AuthenticateUser.js'
+import AuthenticateUser from '../Service/AuthenticateUser.js'
 const forbidden = 'https://forbdden-fruit.onrender.com/'
 
 export default createStore({
   state: {
     users: null,
     user: null,
-    products: null,
-    product: null
+    items: null,
+    item: null
   },
   getters: {
   },
@@ -23,11 +23,11 @@ export default createStore({
     setUser(state, value) {
       state.user = value
     },
-    setProducts(state, value) {
-      state.products = value
+    setItems(state, value) {
+      state.items = value
     },
-    setProduct(state, value) {
-      state.product = value
+    setItem(state, value) {
+      state.item = value
     },
   },
   actions: {
@@ -177,31 +177,31 @@ export default createStore({
       
 
     },
-    async fetchProducts(context) {
+    async fetchItems(context) {
       try{
         let {results} = 
-        (await axios.get(`${forbidden}products`)).data
+        (await axios.get(`${forbidden}items`)).data
         if(results) {
-          context.commit('setProducts', results)
+          context.commit('setItems', results)
         }
       }catch(e) {
         sweet({
           title: 'Error',
-          text: 'An error occurred when retrieving products.',
+          text: 'An error occurred when retrieving items.',
           icon: "error",
           timer: 2000
         }) 
       }
     },
-    async fetchProduct(context, payload) {
+    async fetchItem(context, payload) {
       try{
-        let {result} = (await axios.get(`${forbidden}products/${payload.id}`)).data
+        let {result} = (await axios.get(`${forbidden}items/${payload.id}`)).data
         if(result) {
-          context.commit('setProduct', result)
+          context.commit('setItem', result)
         }else {
           sweet({
-            title: 'Retrieving a single product',
-            text: 'Product was not found',
+            title: 'Retrieving a single item',
+            text: 'Item was not found',
             icon: "info",
             timer: 2000
           }) 
@@ -209,7 +209,7 @@ export default createStore({
       }catch(e) {
         sweet({
           title: 'Error',
-          text: 'A product was not found.',
+          text: 'A item was not found.',
           icon: "error",
           timer: 2000
         }) 
