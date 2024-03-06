@@ -33,7 +33,7 @@ class Items{
         `;
         db.query(qry, [req.params.id], (err, result) => {
             if (err) {
-                console.error('Error fetching product:', err);
+                console.error('Error fetching item:', err);
                 res.status(500).json({
                     status: 500,
                     error: 'Internal Server Error'
@@ -80,7 +80,7 @@ class Items{
             } else {
                 res.status(200).json({
                     status: 200,
-                    msg: 'Product updated successfully.'
+                    msg: 'Item updated successfully.'
                 });
             }
         });
