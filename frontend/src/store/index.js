@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-import sweet from 'sweetalert'
+import sweet from 'sweetalert';
 import { useCookies } from 'vue3-cookies'
 const {cookies} = useCookies()
 import router from '@/router'
@@ -31,7 +31,7 @@ export default createStore({
     },
   },
   actions: {
-    // register
+    // Add User
 
     async register(context, payload) {
       try{

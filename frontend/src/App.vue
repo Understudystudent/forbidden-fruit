@@ -1,22 +1,31 @@
 <template>
   <div>
     
-    <NavBar/>
+    <NavBar />
     <router-view/>
-/    </div>
+   </div>
 </template>
 
 
 <script>
 import NavBar from './components/NavBar.vue'; 
+import axios from 'axios';
 
 // import FooterView from './components/FooterView.vue';
 
 export default {
+  name: 'App',
   components: {
     // FooterView, 
     NavBar
-  }
+  },
+  
+    async created(){
+    const response = await axios.get('users');
+    
+    this.$store.dispatch('users',response)
+
+}
 }
  
 </script>

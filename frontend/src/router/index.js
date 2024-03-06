@@ -12,6 +12,26 @@ const routes = [
     name: 'admin',
     component: () => import( '../views/AdminPage.vue')
   },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import( '../components/RegisterComponet.vue')
+  },
+  {
+    path: '/login',
+    name: 'loginPage',
+    component: () => import( '../components/LoginComponent.vue')
+  },
+  {
+    path: '/forgot',
+    name: 'forgotPage',
+    component: () => import( '../components/ForgotComponet.vue')
+  },
+  {
+    path: '/reset/:token',
+    name: 'ResetPassword',
+    component: () => import( '../components/ResetPassword.vue')
+  },
 ]
 
 const router = createRouter({
