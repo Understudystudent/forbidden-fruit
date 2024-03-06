@@ -1,7 +1,8 @@
 import { userRouter, express } from "./controller/UserContoller.js";
-import { productRouter } from "./controller/ProductContoller.js";
+import { itemRouter } from "./controller/ItemContoller.js";
 import cookieParser from "cookie-parser";
 import {errorHandling} from './middleware/ErrorHandling.js'
+import ItemMiddleware from './middleware/ItemsMiddleware.js';
 import path from 'path'
 import cors from 'cors'
 // import { config } from "dotenv";
@@ -32,8 +33,9 @@ app.get('^/$|/capstone', (req, res)=>{
     res.status(200).sendFile(path.join(__dirname, './static/index.html'))
 })
 app.use('/users', userRouter)
-app.use('/products', productRouter)
+app.use('/items', itemRouter);
 app.use(errorHandling)
+app.use(ItemMiddleware);
 app.listen(port, ()=>{
     console.log(`Server is running on port ${port}`);
 })

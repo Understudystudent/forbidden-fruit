@@ -1,16 +1,16 @@
 import {connection as db} from "../config/index.js"
 
-class Products{
-    // Mulitple Products
-    fetchProducts(req, res) {
+class Items{
+    // Mulitple Items
+    fetchItems(req, res) {
         const qry = `
-            SELECT prodID, prodName, prodQuantity,
-            prodAmount, prodUrl, Category, prodDescription
-            FROM Products;
+            SELECT itemID, itemName, itemQuantity,
+            itemAmount, itemUrl, Category, itemDescription
+            FROM Items;
         `;
         db.query(qry, (err, results) => {
             if (err) {
-                console.error('Error fetching products:', err);
+                console.error('Error fetching Items:', err);
                 res.status(500).json({
                     status: 500,
                     error: 'Internal Server Error'
@@ -26,10 +26,10 @@ class Products{
 
     fetchProduct(req, res) {
         const qry = `
-            SELECT prodID, prodName, prodQuantity,
-            prodAmount, prodUrl, Category, prodDescription
-            FROM Products
-            WHERE prodID = ?;
+            SELECT itemID, itemName, itemQuantity,
+            itemAmount, itemUrl, Category, itemDescription
+            FROM Items
+            WHERE itemID = ?;
         `;
         db.query(qry, [req.params.id], (err, result) => {
             if (err) {
@@ -49,7 +49,7 @@ class Products{
 
     // Add Prodduct
     addProduct(req, res) {
-        const qry = `INSERT INTO Products SET ?`
+        const qry = `INSERT INTO Items SET ?`
         db.query(qry, [req.body], (err)=>{
             if(err) throw err 
             res.json({
@@ -65,17 +65,17 @@ class Products{
 
         // Database Query
         const qry = `
-            UPDATE Products
+            UPDATE Items
             SET ?
-            WHERE prodID = ${req.params.id};
+            WHERE itemID = ${req.params.id};
         `;
         // Databse Query
         db.query(qry, [data,], (err) => {
             if (err) {
-                console.error('Error updating Products:', err);
+                console.error('Error updating Items:', err);
                 res.status(500).json({
                     status: 500,
-                    msg: 'Failed to update Product. Internal Server Error.'
+                    msg: 'Failed to update Item. Internal Server Error.'
                 });
             } else {
                 res.status(200).json({
@@ -90,21 +90,21 @@ class Products{
     async deleteProduct(req, res) {
         let data = req.body;
         const qry = `
-            DELETE FROM Products
-            WHERE prodID = ${req.params.id};  
+            DELETE FROM Items
+            WHERE itemID = ${req.params.id};  
         `;
         db.query(qry, [data], (err) => {
             if (err) {
-                console.error('Error deleting product:', err);
+                console.error('Error deleting Item:', err);
                 res.status(500).json({
                     status: 500,
-                    msg: 'Failed to delete product. Internal Server Error.'
+                    msg: 'Failed to delete Item. Internal Server Error.'
                 });
                 
             } else {
                 res.status(200).json({
                     status: 200,
-                    msg: 'Product deleted successfully.'
+                    msg: 'Item deleted successfully.'
                 });
             }
         });
@@ -113,5 +113,5 @@ class Products{
 }
 
 export {
-    Products
+    Items
 }

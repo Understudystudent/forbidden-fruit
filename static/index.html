@@ -80,7 +80,7 @@
         
     </table>
     <!-- Products -->
-<h2 class="display-2 fs-4 text-center p-2">Product Routing</h2>
+<h2 class="display-2 fs-4 text-center p-2">Item Routing</h2>
 <table class="table">
     <thead>
         <tr>
@@ -91,33 +91,76 @@
     </thead>
     <tbody>
         <tr>
-            <td class="col-4 text-center">/products/</td>
+            <td class="col-4 text-center">/items</td>
             <td class="col-4 text-center">GET</td>
-            <td class="col-4 text-center">To display all products</td>
+            <td class="col-4 text-center">To display all Items</td>
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/products/:id</td>
+            <td class="col-4 text-center">/items/:id</td>
             <td class="col-4 text-center">Fetch</td>
-            <td class="col-4 text-center">To display a single product</td>
+            <td class="col-4 text-center">To display a single Item</td>
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/products/addProduct</td>
+            <td class="col-4 text-center">/items/addItem</td>
             <td class="col-4 text-center">Add</td>
-            <td class="col-4 text-center">To create a new product</td>
+            <td class="col-4 text-center">To create a new Item</td>
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/products/update/:id</td>
+            <td class="col-4 text-center">/items/update/:id</td>
             <td class="col-4 text-center">Update</td>
-            <td class="col-4 text-center">Update a product</td>
+            <td class="col-4 text-center">Update a items</td>
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/products/delete/:id</td>
+            <td class="col-4 text-center">/items/delete/:id</td>
             <td class="col-4 text-center">Delete</td>
-            <td class="col-4 text-center">Delete an existing product</td>
+            <td class="col-4 text-center">Delete an existing items</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Cart -->
+<h2 class="display-2 fs-4 text-center p-2">Cart Routing</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="col-4 bg-dark text-white text-center">Path</th>
+            <th class="col-4 bg-dark text-white text-center">HTTP Methods</th>
+            <th class="col-4 bg-dark text-white text-center">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="col-4 text-center">/items</td>
+            <td class="col-4 text-center">GET</td>
+            <td class="col-4 text-center">To display all Items</td>
+        </tr>
+
+        <tr>
+            <td class="col-4 text-center">/items/:id</td>
+            <td class="col-4 text-center">Fetch</td>
+            <td class="col-4 text-center">To display a single Item</td>
+        </tr>
+
+        <tr>
+            <td class="col-4 text-center">/items/addItem</td>
+            <td class="col-4 text-center">Add</td>
+            <td class="col-4 text-center">To create a new Item</td>
+        </tr>
+
+        <tr>
+            <td class="col-4 text-center">/items/update/:id</td>
+            <td class="col-4 text-center">Update</td>
+            <td class="col-4 text-center">Update a items</td>
+        </tr>
+
+        <tr>
+            <td class="col-4 text-center">/items/delete/:id</td>
+            <td class="col-4 text-center">Delete</td>
+            <td class="col-4 text-center">Delete an existing items</td>
         </tr>
     </tbody>
 </table>
