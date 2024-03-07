@@ -34,11 +34,15 @@ export default createStore({
     // Add User
     async register(context, payload) {
       try {
-        let { msg, token } = (await axios.post(`${forbidden}users/register`, payload)).data;
-        if (msg && token) {
-          // Apply the token
-          applyToken(token);
-    
+        const { msg, token, result } = (await axios.post(`${forbidden}users/register`, payload)).data;
+        if (result) {
+          context.commit('setUser', { msg, result });
+          cookies.set('userAuthenticated', {
+            msg,
+            token,
+            result,
+          });
+          applyToken(token);          
           context.dispatch('fetchUsers');
           sweet({
             title: 'Registration',
@@ -46,7 +50,14 @@ export default createStore({
             icon: 'success',
             timer: 2000,
           });
-          router.push({ name: 'login' });
+          router.push('/login');
+        } else {
+          sweet({
+            title: 'info',
+            text: msg,
+            icon: 'info',
+            timer: 2000,
+          });
         }
       } catch (e) {
         sweet({
@@ -56,7 +67,9 @@ export default createStore({
           timer: 2000,
         });
       }
-    },
+    }
+    
+    ,
     
     // fetch a Mulitple User
     async fetchUsers(context) {
@@ -144,29 +157,30 @@ export default createStore({
     },
     // Login user
     async login(context, payload) {
-      try{
-       const {msg, token, result} = (await axios.post(`${forbidden}users/login`, payload)).data 
-       if(result){
-        context.commit('setUser', {msg, result})
-        cookies.set('LegitUser', {
-          msg, token, result
-        })
-        AuthenticateUser.applyToken(token)
-        sweet({
-          title: msg,
-          text: `Welcome back, 
-          ${result?.firstName} ${result?.lastName}`,
-          icon: "success",
-          timer: 2000
-        })
-          router.push({name: 'home'})
-        }else {
+      try {
+        const { msg, token, result } = (await axios.post(`${forbidden}users/login`, payload)).data;
+        if (result) {
+          context.commit('setUser', { msg, result });
+          cookies.set('userAuthenticated', {
+            msg,
+            token,
+            result,
+          });
+          AuthenticateUser.applyToken(token);
+          sweet({
+            title: msg,
+            text: `Welcome back, ${result?.firstName} ${result?.lastName}`,
+            icon: 'success',
+            timer: 2000,
+          });
+          router.push({ name: 'home' });
+        } else {
           sweet({
             title: 'info',
             text: msg,
-            icon: "info",
-            timer: 2000
-          })
+            icon: 'info',
+            timer: 2000,
+          });
         }
       } catch (e) {
         console.error('Error during login:', e);
@@ -174,13 +188,11 @@ export default createStore({
           title: 'Error',
           text: 'Failed to login.',
           icon: 'error',
-          timer: 2000
+          timer: 2000,
         });
       }
-      
-      
-
-    },
+    }
+    ,
     async fetchItems(context) {
       try{
         let {results} = 
