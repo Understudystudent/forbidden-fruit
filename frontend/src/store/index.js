@@ -4,7 +4,7 @@ import sweet from 'sweetalert';
 import { useCookies } from 'vue3-cookies'
 const {cookies} = useCookies()
 import router from '@/router'
-import AuthenticateUser from '../Service/AuthenticateUser.js'
+import {AuthenticateUser, applyToken} from '../Service/AuthenticateUser.js'
 const forbidden = 'https://forbdden-fruit.onrender.com/'
 
 export default createStore({
@@ -32,30 +32,32 @@ export default createStore({
   },
   actions: {
     // Add User
-
     async register(context, payload) {
-      try{
-        let {msg} = (await axios.post(`${forbidden}users/register`, payload)).data
-        if(msg) {
-          context.dispatch('fetchUsers')
+      try {
+        let { msg, token } = (await axios.post(`${forbidden}users/register`, payload)).data;
+        if (msg && token) {
+          // Apply the token
+          applyToken(token);
+    
+          context.dispatch('fetchUsers');
           sweet({
             title: 'Registration',
             text: msg,
-            icon: "success",
-            timer: 2000
-          }) 
-          //  
-          router.push({name: 'login'})
+            icon: 'success',
+            timer: 2000,
+          });
+          router.push({ name: 'login' });
         }
-      }catch(e) {
+      } catch (e) {
         sweet({
           title: 'Error',
           text: 'Please try again later',
-          icon: "error",
-          timer: 2000
-        }) 
+          icon: 'error',
+          timer: 2000,
+        });
       }
     },
+    
     // fetch a Mulitple User
     async fetchUsers(context) {
       try{
@@ -166,14 +168,16 @@ export default createStore({
             timer: 2000
           })
         }
-      }catch(e) {
+      } catch (e) {
+        console.error('Error during login:', e);
         sweet({
           title: 'Error',
           text: 'Failed to login.',
-          icon: "error",
+          icon: 'error',
           timer: 2000
-        })
+        });
       }
+      
       
 
     },

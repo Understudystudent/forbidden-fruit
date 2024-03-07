@@ -1,7 +1,7 @@
 <template>
   <form @sumbit.prevent="handleSumbit">
-    <div class="conatiner">
-      <div class="row">
+    <div class="conatiner mt-5">
+      <div class="row mt-5">
         <div class="col-12 justify-content-center d-flex flex-row pt-5">
           <div id="signin" class="flext-item border">
             <div v-if="error" class="alert alert-danger" role="alert">
@@ -31,7 +31,8 @@
 
 
 <script>
-import axios from 'axios';
+import  applyToken from '../Service/AuthenticateUser.js'
+import { mapActions } from 'vuex';
 
 export default {
   name: 'loginPage',
@@ -40,30 +41,34 @@ export default {
       email: '',
       password: '',
       error: '',
-    }
+    };
   },
   methods: {
+    ...mapActions(['login']),
 
-    // Second way
     async handleSumbit() {
       try {
-        const response = await axios.post('login',
-          {
-            email: this.email,
-            password: this.password,
-          });
-        // Store our token
+        const response = await this.login({
+          email: this.email,
+          password: this.password,
+        });
+
+        // Apply the token using the imported applyToken function
+        applyToken(response.data.token);
+
+        // Store your user data as needed
         localStorage.setItem('token', response.data.token);
-        this.$router.push('./')
+
+        // Redirect to home or any other page
+        this.$router.push('/');
       } catch (e) {
-        this.error = 'Invalid Username/Password'
+        // Handle login failure
+        this.error = 'Invalid Username/Password';
+        console.error(e); // Log the error for debugging
       }
-
-    }
-  }
-}
-
-
+    },
+  },
+};
 </script>
 
 <style scoped></style>

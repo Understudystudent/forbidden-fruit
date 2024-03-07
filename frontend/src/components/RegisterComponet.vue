@@ -89,7 +89,7 @@
             <p class="forgot-password text-right">
               <router-link to="forgot">Forgot password?</router-link>
             </p>
-            
+
           </form>
         </div>
       </div>
@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 
 export default {
   name: 'RegisterPage',
@@ -112,35 +112,15 @@ export default {
       userProfile: '',
       userImg: '',
       userPwd: '',
+      password_confirm: '',
       address: '',
       number: '',
       userImgPreview: '',
-      // password_confirm: '',
     };
   },
   methods: {
-    // async handleSubmit() {
-    //   const data = {
-    //     firstName: this.firstName,
-    //     lastName: this.lastName,
-    //     userAge: this.userAge,
-    //     Gender: this.Gender,
-    //     emailAdd: this.emailAdd,
-    //     userProfile: this.userProfile,
-    //     userImg: this.userImg,
-    //     password: this.password,
-    //     password_confirm: this.password_confirm,
-    //   };
-
-    // Error pushing data???
-    // this.$store.dispatch('register', data);
-    // console.log(data);
-
-
-    // Second way
-    handleSubmit() {
-      // const parsedNumber = parseInt(this.number, 10)
-      axios.post('register', {
+    async handleSubmit() {
+      const data = {
         firstName: this.firstName,
         lastName: this.lastName,
         userAge: this.userAge,
@@ -149,20 +129,45 @@ export default {
         userProfile: this.userProfile,
         userImg: this.userImg,
         userPwd: this.userPwd,
-        address: this.address,
-        number: this.number
+        password_confirm: this.password_confirm,
+      };
+
+      // Error pushing data???
+      try {
+        await this.$store.dispatch('register', data);
+        this.$router.push('/login');
+      } catch (error) {
+        console.error('Registration failed:', error);
+        console.log(data);
+
+
+        // Second way
+        // handleSubmit() {
+        // const parsedNumber = parseInt(this.number, 10)
+        // axios.post('register', {
+        //   firstName: this.firstName,
+        //   lastName: this.lastName,
+        //   userAge: this.userAge,
+        //   Gender: this.Gender,
+        //   emailAdd: this.emailAdd,
+        //   userProfile: this.userProfile,
+        //   userImg: this.userImg,
+        //   userPwd: this.userPwd,
+        //   address: this.address,
+        //   number: this.number
 
         // password_confirm: this.password_confirm,
-      });
+        // });
 
-      this.$router.push('/login');
+        // this.$router.push('/login');
+        // }
+
+
+      }
     }
-
-
-  },
+  }
 }
+
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

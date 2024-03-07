@@ -1,11 +1,26 @@
+// import axios from "axios";
+// function applyToken(token) {
+//     if(token) {
+//         axios.defaults.headers = {
+//             Authorization: `${token}`
+//         }
+//     }
+// }
+
+// second option
 import axios from "axios";
+
 function applyToken(token) {
-    if(token) {
-        axios.defaults.headers = {
-            Authorization: `${token}`
-        }
+    if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
 }
-export default {
-    applyToken
+
+function clearToken() {
+    axios.defaults.headers.common['Authorization'] = undefined;
 }
+
+export default {
+    applyToken,
+    clearToken
+};
