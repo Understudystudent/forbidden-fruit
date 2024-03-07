@@ -4,7 +4,7 @@ import sweet from 'sweetalert';
 import { useCookies } from 'vue3-cookies'
 const {cookies} = useCookies()
 import router from '@/router'
-import {AuthenticateUser, applyToken} from '../Service/AuthenticateUser.js'
+import applyToken from '../Service/AuthenticateUser.js'
 const forbidden = 'https://forbdden-fruit.onrender.com/'
 
 export default createStore({
@@ -151,7 +151,7 @@ export default createStore({
         cookies.set('LegitUser', {
           msg, token, result
         })
-        AuthenticateUser.applyToken(token)
+        applyToken(token)
         sweet({
           title: msg,
           text: `Welcome back, 
