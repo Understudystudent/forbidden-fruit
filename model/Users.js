@@ -8,7 +8,7 @@ class Users{
     fetchUsers(req, res) {
         const qry = `
         SELECT userID, firstName, lastName,
-        userAge, Gender, userRole, emailAdd,userProfile,userImg,address
+        userAge, Gender, userRole, emailAdd,userProfile,userImg,address,number
         FROM Users;
         `
         db.query(qry, (err, results)=>{
@@ -23,7 +23,7 @@ class Users{
     fetchUser(req, res) {
         const qry = `
         SELECT userID, firstName, lastName,
-        userAge, Gender,userRole emailAdd, ,userProfile, userImg ,address
+        userAge, Gender,userRole emailAdd, ,userProfile, userImg ,address,number
         FROM Users
         WHERE userID =
          ${req.params.id};
