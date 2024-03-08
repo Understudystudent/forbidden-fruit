@@ -32,7 +32,6 @@
 
 <script>
 import  applyToken from '../Service/AuthenticateUser.js'
-import { mapActions } from 'vuex';
 
 export default {
   name: 'loginPage',
@@ -44,8 +43,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['login']),
-
     async handleSumbit() {
       try {
         const response = await this.login({
@@ -53,18 +50,18 @@ export default {
           password: this.password,
         });
 
-        // Apply the token using the imported applyToken function
+        // Apply  token 
         applyToken(response.data.token);
 
         // Store your user data as needed
-        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('authToken', response.data.token);
 
-        // Redirect to home or any other page
+        // home  page
         this.$router.push('/');
       } catch (e) {
-        // Handle login failure
+        // Handle error
         this.error = 'Invalid Username/Password';
-        console.error(e); // Log the error for debugging
+        console.error(e);
       }
     },
   },

@@ -32,7 +32,6 @@
               </div>
             </div>
 
-            <!-- Additional Fields -->
 
             <!-- Additional Fields -->
             <div class="form-row">
@@ -98,7 +97,6 @@
 </template>
 
 <script>
-// import axios from 'axios';
 
 export default {
   name: 'RegisterPage',
@@ -132,11 +130,13 @@ export default {
         password_confirm: this.password_confirm,
       };
 
-      // Error pushing data???
+      // Error pushing data and slow response???
       try {
         await this.$store.dispatch('register', data);
-        this.$router.push('/login');
-      } catch (error) {
+        console.log(data);
+        // this.$router.push('/login');
+      } 
+      catch (error) {
         console.error('Registration failed:', error);
         console.log(data);
 
