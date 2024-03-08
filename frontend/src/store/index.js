@@ -67,9 +67,7 @@ export default createStore({
           timer: 2000,
         });
       }
-    }
-    
-    ,
+    } ,
     
     // fetch a Mulitple User
     async fetchUsers(context) {
@@ -164,7 +162,7 @@ export default createStore({
         cookies.set('userAuthenticated', {
           msg, token, result
         })
-        AuthenticateUser.applyToken(token)
+        applyToken(token)
         sweet({
           title: msg,
           text: `Welcome back, 

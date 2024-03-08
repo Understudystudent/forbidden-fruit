@@ -56,11 +56,14 @@
               <label for="userProfile">User Profile</label>
               <textarea v-model="userProfile" class="form-control" required></textarea>
             </div>
+
+            <!-- change this to make the user add a Url -->
             <div class="form-group">
-              <label for="userImg">Upload Image</label>
-              <input type="file" @change="handleImageUpload" accept="image/*" class="form-control-file" />
+              <label for="userImg">Image URL</label>
+              <input type="text" v-model="userImgUrl" @input="handleImageUrlChange" class="form-control" />
               <img v-if="userImgPreview" :src="userImgPreview" alt="User Image Preview" class="mt-2"
                 style="max-width: 100%; max-height: 200px;" />
+
             </div>
             <div class="form-group">
               <label for="number">Number</label>
@@ -108,11 +111,11 @@ export default {
       Gender: '',
       emailAdd: '',
       userProfile: '',
-      userImg: '',
       userPwd: '',
       password_confirm: '',
       address: '',
       number: '',
+      userImgUrl: '',
       userImgPreview: '',
     };
   },
@@ -125,48 +128,26 @@ export default {
         Gender: this.Gender,
         emailAdd: this.emailAdd,
         userProfile: this.userProfile,
-        userImg: this.userImg,
         userPwd: this.userPwd,
         password_confirm: this.password_confirm,
+        userImgUrl: this.userImgUrl,
       };
 
-      // Error pushing data and slow response???
       try {
         await this.$store.dispatch('register', data);
-        console.log(data);
+        console.log('Registration successful:', data);
         // this.$router.push('/login');
-      } 
-      catch (error) {
+      } catch (error) {
         console.error('Registration failed:', error);
         console.log(data);
-
-
-        // Second way
-        // handleSubmit() {
-        // const parsedNumber = parseInt(this.number, 10)
-        // axios.post('register', {
-        //   firstName: this.firstName,
-        //   lastName: this.lastName,
-        //   userAge: this.userAge,
-        //   Gender: this.Gender,
-        //   emailAdd: this.emailAdd,
-        //   userProfile: this.userProfile,
-        //   userImg: this.userImg,
-        //   userPwd: this.userPwd,
-        //   address: this.address,
-        //   number: this.number
-
-        // password_confirm: this.password_confirm,
-        // });
-
-        // this.$router.push('/login');
-        // }
-
-
       }
-    }
+    },
+    handleImageUrlChange() {
+      this.userImgPreview = this.userImgUrl;
+    },
   }
-}
+};
+
 
 </script>
 
