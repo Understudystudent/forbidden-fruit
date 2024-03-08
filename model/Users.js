@@ -55,7 +55,7 @@ class Users{
             if(err) {
                 res.json({
                     status: res.statusCode,
-                    msg: 'This email address already exist'
+                    msg: err
                 })
             }else {
                 // Create a token
