@@ -15,19 +15,19 @@
           <form @submit.prevent="handleSubmit" class="pt-4 pl-4 pr-4">
             <div class="form-group">
               <label for="Email">Email</label>
-              <input type="email" v-model="emailAdd" class="form-control" required />
+              <input type="email" v-model="userData.emailAdd" class="form-control" required />
             </div>
             <div class="form-row">
               <div class="col">
                 <div class="form-group">
                   <label> First Name</label>
-                  <input type="text" v-model="firstName" class="form-control" required />
+                  <input type="text" v-model="userData.firstName" class="form-control" required />
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label> Last Name</label>
-                  <input type="text" v-model="lastName" class="form-control" required />
+                  <input type="text" v-model="userData.lastName" class="form-control" required />
                 </div>
               </div>
             </div>
@@ -38,13 +38,13 @@
               <div class="col">
                 <div class="form-group">
                   <label for="userAge">User Age</label>
-                  <input type="number" v-model="userAge" class="form-control" required />
+                  <input type="number" v-model="userData.userAge" class="form-control" required />
                 </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label for="Gender">Gender</label>
-                  <select v-model="Gender" class="form-control" required>
+                  <select v-model="userData.Gender" class="form-control" required>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
@@ -54,30 +54,30 @@
             </div>
             <div class="form-group">
               <label for="userProfile">User Profile</label>
-              <textarea v-model="userProfile" class="form-control" required></textarea>
+              <textarea v-model="userData.userProfile" class="form-control" required></textarea>
             </div>
 
             <!-- change this to make the user add a Url -->
             <div class="form-group">
               <label for="userImg">Image URL</label>
-              <input type="text" v-model="userImgUrl" @input="handleImageUrlChange" class="form-control" />
+              <input type="text" v-model="userData.userImgUrl" @input="handleImageUrlChange" class="form-control" />
               <img v-if="userImgPreview" :src="userImgPreview" alt="User Image Preview" class="mt-2"
                 style="max-width: 100%; max-height: 200px;" />
 
             </div>
             <div class="form-group">
               <label for="number">Number</label>
-              <input type="number" v-model="number" class="form-control" required />
+              <input type="number" v-model="userData.number" class="form-control" required />
             </div>
             <div class="form-group">
               <label for="address">Address</label>
-              <input type="text" v-model="address" class="form-control" required />
+              <input type="text" v-model="userData.address" class="form-control" required />
             </div>
 
             <!-- Password Fields -->
             <div class="form-group">
               <label for="Password"> Password</label>
-              <input type="password" v-model="userPwd" class="form-control" required />
+              <input type="password" v-model="userData.userPwd" class="form-control" required />
             </div>
 
 
@@ -105,41 +105,43 @@ export default {
   name: 'RegisterPage',
   data() {
     return {
-      firstName: '',
-      lastName: '',
-      userAge: 18,
-      Gender: '',
-      emailAdd: '',
-      userProfile: '',
-      userPwd: '',
-      password_confirm: '',
-      address: '',
-      number: '',
-      userImgUrl: '',
-      userImgPreview: '',
+      userData: {
+        firstName: '',
+        lastName: '',
+        userAge: 18,
+        Gender: '',
+        emailAdd: '',
+        userProfile: '',
+        userPwd: '',
+        password_confirm: '',
+        address: '',
+        number: null,
+        userImgUrl: '',
+        userImgPreview: '',
+      }
     };
   },
   methods: {
     async handleSubmit() {
-      const data = {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        userAge: this.userAge,
-        Gender: this.Gender,
-        emailAdd: this.emailAdd,
-        userProfile: this.userProfile,
-        userPwd: this.userPwd,
-        password_confirm: this.password_confirm,
-        userImgUrl: this.userImgUrl,
-      };
+      // const data = {
+      //   firstName: this.firstName,
+      //   lastName: this.lastName,
+      //   userAge: this.userAge,
+      //   Gender: this.Gender,
+      //   emailAdd: this.emailAdd,
+      //   userProfile: this.userProfile,
+      //   userPwd: this.userPwd,
+      //   password_confirm: this.password_confirm,
+      //   userImgUrl: this.userImgUrl,
+      // };
 
       try {
-        await this.$store.dispatch('register', data);
-        console.log('Registration successful:', data);
+        await this.$store.dispatch('register', this.userData);
+        console.log('Registration successful:', this.userData);
         // this.$router.push('/login');
       } catch (error) {
         console.error('Registration failed:', error);
-        console.log(data);
+        console.log(this.userData);
       }
     },
     handleImageUrlChange() {

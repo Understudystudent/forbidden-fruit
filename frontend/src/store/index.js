@@ -34,7 +34,7 @@ export default createStore({
     // Add User
     async register(context, payload) {
       try {
-        const { msg, token, result } = (await axios.post(`${forbidden}users/register`, payload)).data;
+        const { msg, token, result } = await (await axios.post(`${forbidden}users/register`, payload)).data;
         if (result) {
           context.commit('setUser', { msg, result });
           cookies.set('userAuthenticated', {
