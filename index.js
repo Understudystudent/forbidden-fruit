@@ -38,5 +38,5 @@ app.use('/items', itemRouter);
 app.use(errorHandling)
 app.use(ItemMiddleware);
 app.listen(port, ()=>{
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port http://localhost:${port}`);
 })
