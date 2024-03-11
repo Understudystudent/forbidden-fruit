@@ -49,7 +49,7 @@ export default createStore({
                     console.log(msg)
                     context.commit('setUser', {
                         msg,
-                        result
+                        result  
                     });
                     cookies.set('userAuthenticated', {
                         msg,

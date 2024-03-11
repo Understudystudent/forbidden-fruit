@@ -61,8 +61,6 @@
             <div class="form-group">
               <label for="userImg">Image URL</label>
               <input type="text" v-model="userData.userImgUrl" @input="handleImageUrlChange" class="form-control" />
-              <img v-if="userImgPreview" :src="userImgPreview" alt="User Image Preview" class="mt-2"
-                style="max-width: 100%; max-height: 200px;" />
 
             </div>
             <div class="form-group">
@@ -113,11 +111,9 @@ export default {
         emailAdd: '',
         userProfile: '',
         userPwd: '',
-        password_confirm: '',
         address: '',
         number: null,
         userImgUrl: '',
-        userImgPreview: '',
       }
     };
   },
@@ -143,10 +139,7 @@ export default {
         console.error('Registration failed:', error);
         console.log(this.userData);
       }
-    },
-    handleImageUrlChange() {
-      this.userImgPreview = this.userImgUrl;
-    },
+    }
   }
 };
 
