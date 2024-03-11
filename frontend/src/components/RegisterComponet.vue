@@ -60,7 +60,7 @@
             <!-- change this to make the user add a Url -->
             <div class="form-group">
               <label for="userImg">Image URL</label>
-              <input type="text" v-model="userData.userImgUrl" @input="handleImageUrlChange" class="form-control" />
+              <input type="text" v-model="userData.userImg" @input="handleImageUrlChange" class="form-control" />
 
             </div>
             <div class="form-group">
@@ -113,7 +113,7 @@ export default {
         userPwd: '',
         address: '',
         number: null,
-        userImgUrl: '',
+        userImg: '',
       }
     };
   },
@@ -133,7 +133,7 @@ export default {
 
       try {
         await this.$store.dispatch('register', this.userData);
-        console.log('Registration successful:', this.userData);
+        console.log(' successful: this message is coming from Register Componet:', this.userData);
         // this.$router.push('/login');
       } catch (error) {
         console.error('Registration failed:', error);

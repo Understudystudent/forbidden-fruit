@@ -1,14 +1,8 @@
-import {
-    createStore
-} from 'vuex'
+import {createStore} from 'vuex'
 import axios from 'axios'
 import sweet from 'sweetalert';
-import {
-    useCookies
-} from 'vue3-cookies'
-const {
-    cookies
-} = useCookies()
+import {useCookies} from 'vue3-cookies'
+const { cookies} = useCookies()
 import router from '@/router'
 import applyToken from '../Service/AuthenticateUser.js'
 const forbidden = 'https://forbdden-fruit.onrender.com/'
@@ -39,14 +33,10 @@ export default createStore({
         // Add User
         async register(context, payload) {
             try {
-                const {
-                    msg,
-                    token,
-                    result
-                } = await (await axios.post(`${forbidden}users/register`, payload)).data;
-                console.log(msg)
+                const { msg, token,result} = await (await axios.post(`${forbidden}users/register`, payload)).data;
+                console.log(`await, this is coming from index.js register  `+ msg, result)
                 if (result) {
-                    console.log(msg)
+                    console.log(`message after result index.js`+ msg)
                     context.commit('setUser', {
                         msg,
                         result  
@@ -60,7 +50,7 @@ export default createStore({
                     context.dispatch('fetchUsers');
                     sweet({
                         title: 'Registration',
-                        text: "some message",
+                        text: "Backed store registration",
                         icon: 'success',
                         timer: 2000,
                     });
@@ -68,7 +58,7 @@ export default createStore({
                 } else {
                     sweet({
                         title: 'info',
-                        text: "some message",
+                        text: "Backend store information message",
                         icon: 'info',
                         timer: 2000,
                     });
