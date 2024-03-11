@@ -86,7 +86,7 @@
                       <button class="btn btn-primary btn-block">Edit</button>
                     </div>
                     <div class="col">
-                      <button class="btn btn-danger btn-block" @click="deleteProduct(item.itemID)">Delete</button>
+                        <button class="btn btn-success deleteButton" @click="event => deleteItem(item.itemID)">Delete</button>
                     </div>
                   </div>
                 </td>
@@ -122,7 +122,7 @@
     },
     deleteItem(itemID) {
       try {
-        this.$store.dispatch('deleteItems', { id: itemID });
+        this.$store.dispatch('deleteItem', { id: itemID });
       } catch (error) {
         console.error('Error deleting Items:', error);
       }

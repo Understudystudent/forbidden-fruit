@@ -115,7 +115,6 @@ export default createStore({
                 })
             }
         },
-
         // Updating user
         async updateUser(context, payload) {
             try {
@@ -145,16 +144,16 @@ export default createStore({
             try {
                 let {
                     msg
-                } = await axios.delete(`${forbidden}users/${payload.id}`)
-                if (msg) {
+                } = await axios.delete(`${forbidden}users/delete/${payload.id}`)
+                // if (msg) {
                     context.dispatch('fetchUsers')
                     sweet({
-                        title: 'Delete user',
+                        title: 'User Deleted',
                         text: msg,
                         icon: "success",
                         timer: 2000
                     })
-                }
+                // }
             } catch (e) {
                 sweet({
                     title: 'Error',
@@ -212,6 +211,7 @@ export default createStore({
                 });
             }
         },
+        // Fetch all Items
         async fetchItems(context) {
             try {
                 let {
@@ -230,6 +230,7 @@ export default createStore({
                 })
             }
         },
+        // Fetch Single Items
         async fetchItem(context, payload) {
             try {
                 let {
@@ -253,7 +254,74 @@ export default createStore({
                     timer: 2000
                 })
             }
+        },
+            // Add Item
+        async addProduct(context, payload) {
+        try {
+          let { msg } = (await axios.post(`${forbidden}items/addItem`, payload));
+          if (msg) {
+            context.dispatch('fetchItems');
+            sweet({
+              title: 'Item Added',
+              text: msg,
+              icon: "success",
+              timer: 2000
+            });
+          }
+        } catch (e) {
+          sweet({
+            title: 'Error',
+            text: 'Failed to add Item. Please try again later.',
+            icon: "error",
+            timer: 2000
+          });
         }
+      },
+       // Delete Item
+       async deleteItem(context, payload) {
+        try {
+          const { msg } = await axios.delete(`${forbidden}items/delete/${payload.id}`);
+          // if (msg) {
+            context.dispatch('fetchItems');
+            sweet({
+              title: 'Delete Item',
+              text: msg,
+              icon: 'success',
+              timer: 2000,
+            });
+          // }
+        } catch (error) {
+          console.error(error);
+          sweet({
+            title: 'Error',
+            text: 'Failed to delete Item. Please try again later.',
+            icon: 'error',
+            timer: 2000,
+          });
+        }
+      },
+      // Update Item
+  async updateItems(context, payload) {
+    try {
+      let { msg } = await axios.patch(`${forbidden}/items/update/${payload.id}`, payload);
+      if (msg) {
+        context.dispatch('fetchItems');
+        sweet({
+          title: 'Update item',
+          text: msg,
+          icon: "success",
+          timer: 2000
+        });
+      }
+    } catch (e) {
+      sweet({
+        title: 'Error',
+        text: 'An error occurred when updating a Item.',
+        icon: "error",
+        timer: 2000
+      });
+    }
+  },
     },
     modules: {}
 })
