@@ -33,24 +33,23 @@ export default createStore({
         // Add User
         async register(context, payload) {
             try {
-                const { msg, token,result} = await (await axios.post(`${forbidden}users/register`, payload)).data;
-                console.log(`await, this is coming from index.js register  `+ msg, result)
-                if (result) {
-                    console.log(`message after result index.js`+ msg)
-                    context.commit('setUser', {
-                        msg,
-                        result  
-                    });
-                    cookies.set('userAuthenticated', {
-                        msg,
-                        token,
-                        result,
-                    });
-                    applyToken(token);
+                const { msg, token} = await (await axios.post(`${forbidden}users/register`, payload)).data;
+                // console.log(`await, this is coming from index.js register  `+ msg)
+                if (token) {
+                    // console.log(`message after result index.js`+ msg)
+                    // context.commit('setUser', {
+                    //     msg,
+                          
+                    // });
+                    // cookies.set('userAuthenticated', {
+                    //     msg,
+                    //     token
+                    // });
+                    // applyToken(token);
                     context.dispatch('fetchUsers');
                     sweet({
                         title: 'Registration',
-                        text: "Backed store registration",
+                        text: msg,
                         icon: 'success',
                         timer: 2000,
                     });
@@ -72,7 +71,6 @@ export default createStore({
                 });
             }
         },
-
         // fetch a Mulitple User
         async fetchUsers(context) {
             try {
@@ -116,7 +114,6 @@ export default createStore({
                 })
             }
         },
-
         // Updating user
         async updateUser(context, payload) {
             try {
@@ -171,23 +168,24 @@ export default createStore({
                 const {
                     msg,
                     token,
-                    result
+                    results
                 } = (await axios.post(`${forbidden}users/login`, payload)).data
-                if (result) {
+                if (token) {
                     context.commit('setUser', {
                         msg,
-                        result
+                        results
                     })
                     cookies.set('userAuthenticated', {
                         msg,
                         token,
-                        result
+                        results
                     })
+                    // check the name
                     applyToken(token)
                     sweet({
                         title: msg,
                         text: `Welcome back, 
-          ${result?.firstName} ${result?.lastName}`,
+                         ${results?.firstName} ${results?.lastName}`,
                         icon: "success",
                         timer: 2000
                     })
@@ -212,6 +210,7 @@ export default createStore({
                 });
             }
         },
+        // fetch all items
         async fetchItems(context) {
             try {
                 let {
@@ -230,6 +229,7 @@ export default createStore({
                 })
             }
         },
+        // fetch single item
         async fetchItem(context, payload) {
             try {
                 let {
