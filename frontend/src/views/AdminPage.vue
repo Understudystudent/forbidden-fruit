@@ -122,7 +122,7 @@
     },
     deleteItem(itemID) {
       try {
-        this.$store.dispatch('deleteItems', { id: itemID });
+        this.$store.dispatch('deleteItem', { id: itemID });
       } catch (error) {
         console.error('Error deleting Items:', error);
       }
