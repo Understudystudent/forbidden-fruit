@@ -44,8 +44,8 @@
       async handleSumbit() {
         try {
           const { msg, token, } = await this.$store.dispatch('login', {
-            email: this.email,
-            password: this.password,
+            emailAdd: this.email,
+            userPwd: this.password,
           });
   
           if (token) {

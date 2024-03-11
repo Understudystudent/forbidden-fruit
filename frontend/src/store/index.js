@@ -4,7 +4,7 @@ import sweet from 'sweetalert';
 import {useCookies} from 'vue3-cookies'
 const { cookies} = useCookies()
 import router from '@/router'
-import applyToken from '../Service/AuthenticateUser.js'
+import {applyToken} from '../Service/AuthenticateUser.js'
 const forbidden = 'https://forbdden-fruit.onrender.com/'
 
 export default createStore({
@@ -172,9 +172,13 @@ export default createStore({
                     token,
                     result
                 } = (await axios.post(`${forbidden}users/login`, payload)).data
+                console.log(msg, result);
+
                 if (result) {
                     context.commit('setUser', {   msg, result })
                     cookies.set('userAuthenticated', { msg, token, result })
+                    console.log(result);
+
                     
                     // check the name
                     // AuthenticateUser.
