@@ -133,11 +133,11 @@ export default {
 
       try {
         await this.$store.dispatch('register', this.userData);
-        console.log(' successful: this message is coming from Register Componet:', this.userData);
+        // console.log(' successful: this message is coming from Register Componet:', this.userData);
         // this.$router.push('/login');
       } catch (error) {
         console.error('Registration failed:', error);
-        console.log(this.userData);
+        // console.log(this.userData);
       }
     }
   }

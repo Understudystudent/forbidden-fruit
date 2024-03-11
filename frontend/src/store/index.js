@@ -34,7 +34,7 @@ export default createStore({
         async register(context, payload) {
             try {
                 const { msg, token} = await (await axios.post(`${forbidden}users/register`, payload)).data;
-                // console.log(`await, this is coming from index.js register  `+ msg)
+                console.log(`await, this is coming from index.js register  `+ msg)
                 if (token) {
                     // console.log(`message after result index.js`+ msg)
                     // context.commit('setUser', {
@@ -71,6 +71,7 @@ export default createStore({
                 });
             }
         },
+
         // fetch a Mulitple User
         async fetchUsers(context) {
             try {
@@ -114,6 +115,7 @@ export default createStore({
                 })
             }
         },
+
         // Updating user
         async updateUser(context, payload) {
             try {
@@ -168,24 +170,20 @@ export default createStore({
                 const {
                     msg,
                     token,
-                    results
+                    result
                 } = (await axios.post(`${forbidden}users/login`, payload)).data
-                if (token) {
-                    context.commit('setUser', {
-                        msg,
-                        results
-                    })
-                    cookies.set('userAuthenticated', {
-                        msg,
-                        token,
-                        results
-                    })
+                if (result) {
+                    context.commit('setUser', {   msg, result })
+                    cookies.set('userAuthenticated', { msg, token, result })
+                    
                     // check the name
+                    // AuthenticateUser.
                     applyToken(token)
+                    console.log(token);
                     sweet({
                         title: msg,
                         text: `Welcome back, 
-                         ${results?.firstName} ${results?.lastName}`,
+                         ${result?.firstName} ${result?.lastName}`,
                         icon: "success",
                         timer: 2000
                     })
@@ -210,7 +208,6 @@ export default createStore({
                 });
             }
         },
-        // fetch all items
         async fetchItems(context) {
             try {
                 let {
@@ -229,7 +226,6 @@ export default createStore({
                 })
             }
         },
-        // fetch single item
         async fetchItem(context, payload) {
             try {
                 let {
