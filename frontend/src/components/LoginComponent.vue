@@ -42,7 +42,7 @@
           });
   
           if (token) {
-            localStorage.setItem('authToken', token);
+            localStorage.setItem('userAuthenticated', token);
             this.$router.push('/');
           } else {
             this.error = msg;
