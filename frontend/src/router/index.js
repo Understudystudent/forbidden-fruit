@@ -13,6 +13,11 @@ const routes = [
     component: () => import( '../views/AdminPage.vue')
   },
   {
+    path: '/adminDashboard',
+    name: 'AdminDashboard',
+    component: () => import( '../views/AdminDashboard.vue')
+  },
+  {
     path: '/register',
     name: 'register',
     component: () => import( '../components/RegisterComponet.vue')
@@ -31,6 +36,11 @@ const routes = [
     path: '/reset/:token',
     name: 'ResetPassword',
     component: () => import( '../components/ResetPassword.vue')
+  },
+  {
+    path: '/product',
+    name: 'SingleProduct',
+    component: () => import( '../views/SingleProductPage.vue')
   },
 ]
 
