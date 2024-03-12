@@ -1,149 +1,241 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-12 text-center pt-3">
-        <p>Add logo</p>
-      </div>
-    </div>
-
-    <!-- Header -->
-
-    <div class="row ">
-      <div class="col-12 justify-content-center d-flex pt-3">
-        <div id="signup" class="flex-item border ">
-          <h2 class="pt-4 pl-4">Create Account</h2>
-          <form @submit.prevent="handleSubmit" class="pt-4 pl-4 pr-4">
-            <div class="form-group">
-              <label for="Email">Email</label>
-              <input type="email" v-model="userData.emailAdd" class="form-control" required />
-            </div>
-            <div class="form-row">
-              <div class="col">
-                <div class="form-group">
-                  <label> First Name</label>
-                  <input type="text" v-model="userData.firstName" class="form-control" required />
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-group">
-                  <label> Last Name</label>
-                  <input type="text" v-model="userData.lastName" class="form-control" required />
-                </div>
-              </div>
-            </div>
-
-
-            <!-- Additional Fields -->
-            <div class="form-row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="userAge">User Age</label>
-                  <input type="number" v-model="userData.userAge" class="form-control" required />
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-group">
-                  <label for="Gender">Gender</label>
-                  <select v-model="userData.Gender" class="form-control" required>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="userProfile">User Profile</label>
-              <textarea v-model="userData.userProfile" class="form-control" required></textarea>
-            </div>
-
-            <!-- change this to make the user add a Url -->
-            <div class="form-group">
-              <label for="userImg">Image URL</label>
-              <input type="text" v-model="userData.userImg" @input="handleImageUrlChange" class="form-control" />
-
-            </div>
-            <div class="form-group">
-              <label for="number">Number</label>
-              <input type="number" v-model="userData.number" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label for="address">Address</label>
-              <input type="text" v-model="userData.address" class="form-control" required />
-            </div>
-
-            <!-- Password Fields -->
-            <div class="form-group">
-              <label for="Password"> Password</label>
-              <input type="password" v-model="userData.userPwd" class="form-control" required />
-            </div>
-
-
-            <!-- <div class="form-group">
-              <label for="Password"> Confirm password</label>
-              <input type="password" v-model="password_confirm" class="form-control" required />
-            </div> -->
-
-            <button class="btn btn-primary mt-2">Create Account</button>
-
-            <p class="forgot-password text-right">
-              <router-link to="forgot">Forgot password?</router-link>
-            </p>
-
-          </form>
+    <div class="box">
+      <form class="signup signup-container" @submit.prevent="handleSubmit" autocomplete="on" >
+        <h1>Create account</h1>
+        <h2>Already have an account? <span @click="redirectToLoginPage">Login</span></h2>
+  
+        <div class="signup__field">
+          <input v-model="userData.firstName" class="signup__input" type="text" name="firstName" id="firstName" required />
+          <label class="signup__label" for="firstName">First Name</label>
         </div>
-      </div>
+  
+        <div class="signup__field">
+          <input v-model="userData.lastName" class="signup__input" type="text" name="lastName" id="lastName" required />
+          <label class="signup__label" for="lastName">Last Name</label>
+        </div>
+  
+        <div class="signup__field">
+          <input v-model="userData.emailAdd" class="signup__input" type="text" name="emailAdd" id="emailAdd" required />
+          <label class="signup__label" for="emailAdd">Email</label>
+        </div>
+  
+        <div class="signup__field">
+          <input v-model="userData.userPwd" class="signup__input" type="password" name="userPwd" id="userPwd" required />
+          <label class="signup__label" for="userPwd">Password</label>
+        </div>
+  
+        
+        <button type="submit">Sign up</button>
+        <div class="signup__field">
+          <div class="signup__confirm mt-5">
+            <input v-model="userData.userAge" type="checkbox" id="userAge" class="signup__checkbox" required />
+            <picture for="userAge" class="signup__checkbox-label">Confirm information</picture>
+          </div>
+        </div>
+    </form>
     </div>
-  </div>
-</template>
-
-<script>
-
-export default {
-  name: 'RegisterPage',
-  data() {
-    return {
-      userData: {
-        firstName: '',
-        lastName: '',
-        userAge: 18,
-        Gender: '',
-        emailAdd: '',
-        userProfile: '',
-        userPwd: '',
-        address: '',
-        number: null,
-        userImg: '',
-      }
-    };
-  },
-  methods: {
-    async handleSubmit() {
-      // const data = {
-      //   firstName: this.firstName,
-      //   lastName: this.lastName,
-      //   userAge: this.userAge,
-      //   Gender: this.Gender,
-      //   emailAdd: this.emailAdd,
-      //   userProfile: this.userProfile,
-      //   userPwd: this.userPwd,
-      //   password_confirm: this.password_confirm,
-      //   userImgUrl: this.userImgUrl,
-      // };
-
-      try {
-        await this.$store.dispatch('register', this.userData);
-        // console.log(' successful: this message is coming from Register Componet:', this.userData);
-        // this.$router.push('/login');
-      } catch (error) {
-        console.error('Registration failed:', error);
-        // console.log(this.userData);
+  </template>
+  
+  
+  
+  <script>
+  export default {
+    name: 'RegisterPage',
+    data() {
+      return {
+        userData: {
+          firstName: '',
+          lastName: '',
+          emailAdd: '',
+          userPwd: '',
+          userAge: false,
+        },
+      };
+    },
+    methods: {
+      async handleSubmit() {
+        try {
+          if (!this.userData.userAge) {
+            console.error('You must be 18 years or older.');
+            return;
+          }
+  
+          await this.$store.dispatch('register', this.userData);
+          // Continue with the rest of your registration logic
+        } catch (error) {
+          console.error('Registration failed:', error);
+        }
+      },
+      redirectToLoginPage() {
+        this.$router.push({ name: 'loginPage' });
       }
     }
+  };
+  </script>
+  
+  <style scoped>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
   }
-};
+  
+  button,
+  input {
+    border: none;
+    outline: none;
+  }
+  
+  /****************
+        FORM
+  *****************/
 
+ 
+  .signup-container {
+    height: 95vh;
+    margin-top: 10px;
+  }
+  .signup {
+    background-color: white;
+    width: 100%;
+    max-width: 500px;
+    padding: 50px 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  h1 {
+    text-align: center;
+    color:#e62020 ;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: lighter;
+    margin-bottom: 40px;
+  }
+  
+  h2 span {
+    text-decoration: underline;
+    cursor: pointer;
+    color:#e62020 ;
+  }
+  
+  /*  Field */
+  .signup__field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    margin-bottom: 50px;
+  }
+  
+  .signup__field:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 0px;
+    height: 2px;
+    background:#e62020 ;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.4s ease;
+  }
+  
+  .signup__field:hover:before {
+    width: 100%;
+  }
+  
+  /*  Input */
+  .signup__input {
+    width: 100%;
+    height: 100%;
+    font-size: 1.2rem;
+    padding: 10px 2px 0;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  
+  /*  Label */
+  .signup__label {
+    color: #bdbdbd;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 2px;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .signup__input:focus + .signup__label,
+  .signup__input:valid + .signup__label {
+    top: 0;
+    font-size: 1rem;
+    background-color: white;
+  }
+  
+  /*  Checkbox */
+  .signup__checkbox-label {
+    color: #bdbdbd;
+    font-size: 1.2rem;
+    margin-left: 20px;
+  }
+  
+  .signup__checkbox {
+    margin-top: 10px;
+  }
+  
+  /*  Button */
+  button {
+    background:#e62020 ;
+    color: white;
+    padding: 12px 0;
+    font-size: 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background: #4b111b;
+  }
+  
+  body {
+    background-color: #4b111b;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+  
+  .box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #4b111b;
+  }
 
-</script>
+  .signup__confirm {
+  display: flex;
+  align-items: center;
+}
 
-<style scoped></style>
+.signup__checkbox {
+  margin-right: 10px;
+}
+
+.signup__checkbox-label {
+  color: #bdbdbd;
+  font-size: 1.2rem;
+}
+  </style>
+  

@@ -6,37 +6,32 @@
 
         </div>
         <div >
-          <table class="table table-striped-columns rounded-3">
+          <table class="table table-striped-columns rounded-3 text-center">
             <thead>
               <tr>
-                <th scoped="col">User ID</th>
+                <th scoped="col">ID</th>
                 <th scoped="col">First name</th>
-                <th scoped="col">Last name</th>
-                <th scoped="col">User Age</th>
+                <th scoped="col">Surname </th>
                 <th scoped="col">Gender</th>
-                <th scoped="col">User Role</th>
+                <th scoped="col">Role</th>
                 <th scoped="col">Email address</th>
-                <th scoped="col">User Profile</th>
-                <th scoped="col">User Image</th>
+                <th scoped="col"> Profile</th>
                 <th scoped="col">Action</th>
               </tr>
             </thead>
             <tbody v-if="users">
               <tr v-for="user in users" :key="user.userID">
                 <td>{{ user.userID }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.userAge }}</td>
+                <td>{{ user.firstName }} </td>
+                <td>{{ user.lastName }} </td>
                 <td>{{ user.Gender }}</td>
                 <td>{{ user.userRole }}</td>
                 <td>{{ user.emailAdd }}</td>
                 <td>{{ user.userProfile }}</td>
-                <td>{{ user.userImg }}</td>
-
                 <td>
                   <div class="row">
                     <div class="col">
-                      <button class="btn btn-primary btn-block">Edit</button>
+                      <button class="btn btn-primary btn-block" @click="editUserAdmin">Edit</button>
                     </div>
                     <div class="col">
                       <button class="btn btn-danger btn-block" @click="deleteUser(user.userID)">Delete</button>
@@ -57,7 +52,7 @@
           </router-link>
         </div> -->
         <div >
-          <table class="table table-striped-columns rounded-5">
+          <table class="table table-striped-columns rounded-5 text-center">
             <thead>
               <tr>
                 <th scoped="col">Item Img</th>
@@ -99,6 +94,9 @@
   </template>
   
   <script>
+
+
+
   export default {
     computed: {
       users() {

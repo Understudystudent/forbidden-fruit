@@ -34,7 +34,7 @@ export default createStore({
         async register(context, payload) {
             try {
                 const { msg, token} = await (await axios.post(`${forbidden}users/register`, payload)).data;
-                console.log(`await, this is coming from index.js register  `+ msg)
+                // console.log(`await, this is coming from index.js register  `+ msg)
                 if (token) {
                     // console.log(`message after result index.js`+ msg)
                     // context.commit('setUser', {
@@ -176,13 +176,11 @@ export default createStore({
                 if (result) {
                     context.commit('setUser', {   msg, result })
                     cookies.set('userAuthenticated', { msg, token, result })
-                    console.log(result);
-
-                    
+                    // console.log(result);
                     // check the name
                     // AuthenticateUser.
                     applyToken(token)
-                    console.log(token);
+                    // console.log(token);
                     sweet({
                         title: msg,
                         text: `Welcome back, 
