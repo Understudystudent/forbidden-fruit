@@ -3,25 +3,38 @@
     <div class="row">
       <!-- Left Column -->
       <div class="col-lg-3">
-        <!-- Left Column content remains unchanged -->
+        <div class="browse-by">
+          <div class="section-title">Browse By</div>
+          <hr class="section-divider">
+          <div class="browse-options">
+            <p>All Products</p>
+            <!-- Add more browse options here -->
+          </div>
+          <div class="filter-by">
+            <div class="section-title">Filter By</div>
+            <hr class="section-divider">
+            <p>Price</p>
+            <!-- Add more filter options here -->
+          </div>
+        </div>
       </div>
 
       <!-- Middle and Right Column -->
       <div class="col-lg-9">
         <div class="banner">
-          <h1>All Products</h1>
+          <h1 class="text-center">All Products</h1>
+        </div>
+        <div class="top-bar">
+          <div class="top-left">
+            <p>{{ numberOfItems }} Items</p>
+          </div>
+          <div class="top-right">
+            <p>Sort By: <a href="#">Recommended Products</a></p>
+          </div>
         </div>
         <div class="products">
           <div class="row">
             <ProductItem v-for="item in items" :key="item.id" :item="item" />
-          </div>
-        </div>
-        <div class="bottom-bar">
-          <div class="bottom-left">
-            <p>{{ numberOfItems }} Items</p>
-          </div>
-          <div class="bottom-right">
-            <p>Sort By: <a href="#">Recommended Products</a></p>
           </div>
         </div>
       </div>
@@ -59,8 +72,6 @@ export default {
   }
 }
 </script>
-
-
 
 <style scoped>
 .browse-by {
@@ -100,17 +111,17 @@ export default {
   font-weight: bold;
 }
 
-.bottom-bar {
+.top-bar, .bottom-bar {
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
 }
 
-.bottom-left {
+.top-left, .bottom-left {
   font-weight: bold;
 }
 
-.bottom-right {
+.top-right, .bottom-right {
   text-align: right;
 }
 
@@ -122,4 +133,3 @@ export default {
   opacity: 0;
 }
 </style>
-
