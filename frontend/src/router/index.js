@@ -50,7 +50,7 @@ const routes = [
   {
     path: '/editprofile',
     name: 'userEditPage',
-    component: () => import( '../views/UserEditPage.vue')
+    component: () => import( '../components/UserEditPage.vue')
   },
 ]
 
