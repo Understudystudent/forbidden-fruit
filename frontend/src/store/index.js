@@ -74,6 +74,7 @@ export default createStore({
 
         // fetch a Mulitple User
         async fetchUsers(context) {
+            
             try {
                 let {
                     results
@@ -171,27 +172,25 @@ export default createStore({
                     token,
                     result
                 } = (await axios.post(`${forbidden}users/login`, payload)).data
-                console.log(msg, result);
-
                 if (result) {
-                    context.commit('setUser', {   msg, result })
+                    context.commit('setUser', { msg, result })
                     cookies.set('userAuthenticated', { msg, token, result })
-                    // console.log(result);
-                    // check the name
-                    // AuthenticateUser.
                     applyToken(token)
-                    // console.log(token);
+                   
                     sweet({
                         title: msg,
-                        text: `Welcome back, 
-                         ${result?.firstName} ${result?.lastName}`,
+                        text: `Welcome, ${result?.firstName} ${result?.lastName}`,
                         icon: "success",
-                        timer: 2000
+                        timer: 3000,    
                     })
+                    setTimeout(() => {
+                        window.location.reload();
+                    })   
                     router.push({
                         name: 'home'
-                    })
-                } else {
+                    }); 
+                }
+                 else {
                     sweet({
                         title: 'info',
                         text: msg,
@@ -218,6 +217,7 @@ export default createStore({
                 (await axios.get(`${forbidden}items`)).data
                 if (results) {
                     context.commit('setItems', results)
+                    
                 }
             } catch (e) {
                 sweet({
@@ -299,7 +299,7 @@ export default createStore({
         }
       },
       // Update Item
-  async updateItems(context, payload) {
+         async updateItems(context, payload) {
     try {
       let { msg } = await axios.patch(`${forbidden}/items/update/${payload.id}`, payload);
       if (msg) {

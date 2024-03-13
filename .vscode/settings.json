@@ -1,0 +1,21 @@
+{
+  "detectedConfig": {
+    "typescript": false,
+    "naming": "Kebab Case",
+    "unit": "px",
+    "framework": "vue",
+    "styling": "CSS Modules"
+  },
+  "locofyConfig": {
+    "project": "Capstone Product Page",
+    "id": "65effb0e57d1ac1ac724d21e",
+    "framework": "vue",
+    "typescript": false,
+    "styling": "CSS Modules",
+    "unit": "rem",
+    "naming": "Pascal Case",
+    "path": "public/",
+    "componentsPath": "c:\\Users\\Student\\Documents\\vjue_workshop\\capstone\\KiessYLuxury\\frontend\\src\\components",
+    "screensPath": "c:\\Users\\Student\\Documents\\vjue_workshop\\capstone\\KiessYLuxury\\frontend\\src\\views"
+  }
+}

@@ -1,5 +1,5 @@
 <template>
-    <nav v-if="user && user.result" class="navbar navbar-expand-lg navbar-light bg-light fixed-op">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-op">
         <div class="container">
             <!-- Logo on the left -->
             <router-link to="/" class="nav-link">
@@ -19,7 +19,7 @@
                         <a class="nav-link" href="/admin">Admin</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Women</a>
+                        <a class="nav-link" href="#">products</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Men</a>
@@ -50,11 +50,11 @@
                     </li>
                     <!-- Display User Name -->
                     <div>
-                        <p v-if="user">Hi, {{ user.firstName }} {{ user.lastName }}</p>
+                        <p v-if="users">Hey, {{ user.firstName }} {{ user.lastName }}</p>
                         <p v-else>You are not logged in!</p>
                     </div>
                     <!-- If not logged in -->
-                    <ul v-if="!user.result" class="navbar-nav ml-auto">
+                    <!-- <ul v-if="!user.result" class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
@@ -66,7 +66,7 @@
                         <li class="nav-item">
                             <router-link to="/" class="nav-link" @click="handleLogout">Logout</router-link>
                         </li>
-                    </ul>
+                    </ul> -->
                 </ul>
             </div>
             <!-- Navbar Icons on the right -->
@@ -112,15 +112,19 @@ export default {
     name: 'NavBar',
 
     methods: {
-        handleLogout() {
-            localStorage.removeItem('userAuthenticated');
-            this.$store.commit('setUser', null);
-            this.$router.push({ name: 'loginPage' });
-        }
+        methods: {
+    handleLogout() {
+        localStorage.removeItem('userAuthenticated');
+        this.$store.commit('setUser', null);
+        window.location.reload(); 
+        this.$router.push({ name: 'loginPage' }); 
+    }
+},
+
     },
 
     computed: {
-        ...mapGetters(['user'])
+        ...mapGetters(['users'])
     }
 }
 </script>

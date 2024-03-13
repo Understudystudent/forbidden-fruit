@@ -34,24 +34,25 @@
     },
   
     methods: {
-      async handleSubmit() {
-        try {
-          const { msg, token } = await this.$store.dispatch('login', {
-            emailAdd: this.userData.emailAdd,
-            userPwd: this.userData.userPwd,
-          });
-  
-          if (token) {
-            localStorage.setItem('userAuthenticated', token);
-            this.$router.push('/');
-          } else {
-            this.error = msg;
-          }
-        } catch (e) {
-          this.error = 'Failed to login.';
-          console.error('Error during login:', e);
-        }
-      },
+        async handleSubmit() {
+  try {
+    const { msg, token } = await this.$store.dispatch('login', {
+      emailAdd: this.userData.emailAdd,
+      userPwd: this.userData.userPwd,
+    });
+
+    if (token) {
+      this.$router.push('/'); 
+    //   window.location.reload(); 
+    } else {
+      this.error = msg;
+    }
+  } catch (e) {
+    this.error = 'Failed to login.';
+    console.error('Error during login:', e);
+  }
+},
+
   
       redirectToRegisterPage() {
         this.$router.push({ name: 'register' });

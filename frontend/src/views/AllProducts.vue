@@ -1,247 +1,105 @@
 <template>
-    <div>
-        <h1>Products</h1>
-
-        <ProductList :products ="products"/>
-        <!-- <div class="grid-wrap">
-            <div class="product-item" v-for="product in products" :key="product.id">
-                <img :src="product.imageName" />
-                <h3 class ="product-name">{{ product.name }}</h3>
-                <p class="product-price">{{ product.price }}</p>
-
-                <router-link :to="'/products/' + product.id">
-                    <button>View Details</button>
-                </router-link>
-
+    <div class="products bg-black">
+      <div class="row bg-black">
+        <div class="col my-3" id="search">
+          <input type="text" v-model="searchQuery" @input="filterProducts" placeholder="Search product by name" class="form-control mx-1">
+        </div>
+        <div class="col">
+          <button class="btn btn-info my-3" @click="sortByPrice">Sorting by price</button>
+        </div>
+      </div>
+      <div class="row m-5 justify-content-center" v-if="filteredProducts.length > 0">
+        <Card v-for="product in filteredProducts" :key="product.prodID" class="bg-black">
+          <template #cardHeader>
+            <img :src="product.prodUrl" alt="product-image" class="card-image bg-black" />
+          </template>
+          <template #cardBody>
+            <div class="bg-white rounded">
+              <h3 class="product-info text-black">{{ product.prodName }}</h3>
+              <p class="product-info text-black">Category: {{ product.Category }}</p>
+              <p class="product-info text-black">Amount: R {{ product.amount }}</p>
+              <router-link class="btn bg-black text-white my-1" :to="{ name: 'product', params: { id: product.prodID } }">View More</router-link>
             </div>
-        </div> -->
+          </template>
+        </Card>
+      </div>
+      <div class="row" v-else>
+        <p class="lead">No products found.</p>
+      </div>
     </div>
-</template>
-
-<script>
-import ProductList from '@/components/ProductList.vue';
-
-    export default {
-        name: "ProductsPage",
-        components: {
-            ProductList
-        },
-        data(){
-            return {
-                products,
-            }
+  </template>
+  
+  <script>
+  import Card from '@/components/Card.vue';
+  export default {
+    name: 'ProductsView',
+    components: {
+      Card
+    },
+    data() {
+      return {
+        searchQuery: '',
+        sortByPriceAsc: true
+      };
+    },
+    computed: {
+      products() {
+        return this.$store.state.products;
+      },
+      filteredProducts() {
+        if (!this.searchQuery) {
+          return this.products;
         }
-        
+        const query = this.searchQuery.toLowerCase();
+        return this.products.filter(product => product.prodName.toLowerCase().includes(query));
+      }
+    },
+    methods: {
+      sortByPrice() {
+        this.sortByPriceAsc = !this.sortByPriceAsc;
+        this.filteredProducts.sort((a, b) => {
+          if (this.sortByPriceAsc) {
+            return a.amount - b.amount;
+          } else {
+            return b.amount - a.amount;
+          }
+        });
+      },
+      filterProducts() {
+        // Reset sorting order when filtering
+        this.sortByPriceAsc = true;
+      }
+    },
+    mounted() {
+      this.$store.dispatch('fetchProducts');
     }
-</script>
-
-<style scoped>
-
-* {
-    box-sizing: border-box;
-    font-family: Arial;
+  }
+  </script>
+  
+  <style scoped>
+  h1 {
+    font-family: 'Jacques Francois Shadow', cursive;
+    font-size: 5rem;
   }
   
-  .page-wrap {
-    margin: auto;
-    max-width: 800px;
-    min-height: 100vh;
+  .card-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
   }
   
   button {
-    background-color: black;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    outline: 0;
-    padding: 16px;
-  }
-  
-  h1 {
-    border-bottom: 1px solid black;
-    margin: 0;
-    margin-top: 16px;
-    padding: 16px;
-  }
-  
-  .total-price {
-    padding: 16px;
-    text-align: right;
-  }
-  
-  .checkout-button {
-    width: 100%;
-  }
-  
-  .product-container {
-    align-content: 'center';
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    padding: 16px;
-    width: 100%;
-  }
-  
-  .product-image {
-    flex: 1;
-    height: 100px;
-    max-width: 100px;
-  }
-  
-  .details-wrap {
-    padding: 0 16px;
-    flex: 3;
-  }
-  
-  .remove-button {
-    flex: 1;
-    margin: auto;
-  }
-  
-  .img-wrap {
-    margin-top: 32px;
-    text-align: center;
-  }
-  
-  .img-wrap img {
-    width: 400px;
-  }
-  
-  .product-details {
-    padding: 16px;
-    position: relative;
-  }
-  
-  .add-to-cart {
-    width: 100%;
-    margin-top: 16px;
-  }
-  
-  .sign-in {
-    width: 100%;
-    margin-top: 16px;
-  }
-  
-  .price {
-    position: absolute;
-    top: 24px;
-    right: 16px;
-  }
-  
-  .green-button {
-    background-color: green;
-  }
-  
-  .grey-button {
-    background-color: #888;
-    width: 100%;
-  }
-  
-  .nav-bar {
-    border-bottom: 1px solid #ddd;
-    height: 75px;
-    width: 100%;
-  }
-  
-  .logo-wrap {
-    width: 120px;
-    height: 120px;
-  }
-  
-  .products-link {
-    text-align: center;
-    display: block;
-    color: black;
-    font-size: 22px;
-    left: 32px;
-    position: absolute;
-    top: 16px;
-    text-decoration: none;
-  }
-  
-  .products-link h1 {
-    margin: 0;
-  }
-  
-  .nav-buttons-wrap {
-    position: absolute;
-    right: 16px;
-    top: 16px;
-  }
-  
-  .nav-buttons-wrap {
-    position: absolute;
-    right: 16px;
-    top: 16px;
-  }
-  
-  .cart-link {
-    position: absolute;
-    right: 16px;
-    top: 16px;
-  }
-  
-  .grid-wrap {
-    display: flex;
-    justify-content: flex-start;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-top: 16px;
-  }
-  
-  .product-item {
-    align-items: center;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px #888;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 2%;
-    padding: 20px;
-    position: relative;
-    width: 32%;
-  }
-  
-  .product-name {
-    margin-bottom: 0;
-  }
-  
-  .product-item img {
-    height: 200px;
     width: 200px;
+    height: 50px;
+    border-radius: 20px;
   }
   
-  .product-item a {
-    width: 100%;
+  .product-info {
+    font-family: Righteous;
   }
   
-  .product-item button {
-    width: 100%;
+  .product {
+    overflow-x: hidden;
   }
+  </style>
   
-  .product-container {
-    align-content: 'center';
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    padding: 16px;
-    width: 100%;
-  }
-  
-  .product-image {
-    flex: 1;
-    height: 100px;
-    max-width: 100px;
-  }
-  
-  .details-wrap {
-    padding: 0 16px;
-    flex: 3;
-  }
-  
-  .remove-button {
-    flex: 1;
-    margin: auto;
-  }
-
-</style>
