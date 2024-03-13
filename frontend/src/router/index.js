@@ -42,6 +42,16 @@ const routes = [
     name: 'SingleProduct',
     component: () => import( '../views/SingleProductPage.vue')
   },
+  {
+    path: '/products',
+    name: 'MultipleProducts',
+    component: () => import( '../views/MultipleProducts.vue')
+  },
+  {
+    path: '/editprofile',
+    name: 'userEditPage',
+    component: () => import( '../views/UserEditPage.vue')
+  },
 ]
 
 const router = createRouter({

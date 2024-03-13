@@ -1,65 +1,76 @@
 <template>
-    <div class="box">
-      <form class="signin" @submit.prevent="handleSubmit" autocomplete="on">
-        <h1>Welcome Home</h1>
-        <h2>Ready to join <span @click="redirectToRegisterPage">Sign Up</span></h2>
-  
-        <div class="signin__field">
-          <input v-model="userData.emailAdd" class="signin__input" type="text" name="emailAdd" id="emailAdd" required />
-          <label class="signin__label" for="emailAdd">Email</label>
-        </div>
-  
-        <div class="signin__field">
-          <input v-model="userData.userPwd" class="signin__input" type="password" name="userPwd" id="userPwd" required />
-          <label class="signin__label" for="userPwd">Password</label>
-        </div>
-  
-        <button type="submit">Enter </button>
-      </form>
-    </div>
-  </template>
-  
-  <script>
-  
-  export default {
-    name: 'loginPage',
-    data() {
-      return {
-        userData: {
-          emailAdd: '',
-          userPwd: '',
-        },
-        error: '',
-      };
-    },
-  
-    methods: {
-        async handleSubmit() {
-  try {
-    const { msg, token } = await this.$store.dispatch('login', {
-      emailAdd: this.userData.emailAdd,
-      userPwd: this.userData.userPwd,
-    });
+  <div class="box">
+    <form class="signin" @submit.prevent="handleSubmit" autocomplete="on">
+      <h1>Welcome Home</h1>
+      <h2>Ready to join <span @click="redirectToRegisterPage">Sign Up</span></h2>
 
-    if (token) {
-      this.$router.push('/'); 
-    //   window.location.reload(); 
-    } else {
-      this.error = msg;
-    }
-  } catch (e) {
-    this.error = 'Failed to login.';
-    console.error('Error during login:', e);
-  }
-},
+      <div class="signin__field">
+        <input v-model="userData.emailAdd" class="signin__input" type="text" name="emailAdd" id="emailAdd" required />
+        <label class="signin__label" for="emailAdd">Email</label>
+      </div>
 
-  
-      redirectToRegisterPage() {
-        this.$router.push({ name: 'register' });
+      <div class="signin__field">
+        <input v-model="userData.userPwd" class="signin__input" type="password" name="userPwd" id="userPwd" required />
+        <label class="signin__label" for="userPwd">Password</label>
+      </div>
+
+      <button type="submit">Enter </button>
+    </form>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'loginPage',
+  data() {
+    return {
+      userData: {
+        emailAdd: '',
+        userPwd: '',
       },
+      error: '',
+    };
+  },
+
+  created() {
+    this.reloadPageOnce();
+  },
+
+  methods: {
+    async handleSubmit() {
+      try {
+        const { msg, token } = await this.$store.dispatch('login', {
+          emailAdd: this.userData.emailAdd,
+          userPwd: this.userData.userPwd,
+        });
+
+        if (token) {
+          this.$router.push('/');
+        } else {
+          this.error = msg;
+        }
+      } catch (e) {
+        this.error = 'Failed to login.';
+        console.error('Error during login:', e);
+      }
     },
-  };
-  </script>
+
+
+    redirectToRegisterPage() {
+      this.$router.push({ name: 'register' });
+    },
+
+    reloadPageOnce() {
+      if (!sessionStorage.getItem('pageReloaded')) {
+        sessionStorage.setItem('pageReloaded', 'true');
+        location.reload();
+      } else {
+        sessionStorage.removeItem('pageReloaded');
+      }
+    },
+  },
+};
+</script>
 
 
 <style scoped>
@@ -99,7 +110,7 @@ input {
 
 h1 {
   text-align: center;
-  color:#e62020 ;
+  color: #e62020;
 }
 
 h2 {
@@ -112,7 +123,7 @@ h2 {
 h2 span {
   text-decoration: underline;
   cursor: pointer;
-  color:#e62020 ;
+  color: #e62020;
 }
 
 /*  Field */
@@ -130,7 +141,7 @@ h2 span {
   position: absolute;
   width: 0px;
   height: 2px;
-  background:#e62020 ;
+  background: #e62020;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
@@ -161,8 +172,8 @@ h2 span {
   transition: all 0.3s ease;
 }
 
-.signin__input:focus + .signin__label,
-.signin__input:valid + .signin__label {
+.signin__input:focus+.signin__label,
+.signin__input:valid+.signin__label {
   top: 0;
   font-size: 1rem;
   background-color: white;
@@ -170,7 +181,7 @@ h2 span {
 
 /*  Button */
 button {
-  background:#e62020 ;
+  background: #e62020;
   color: white;
   padding: 12px 0;
   font-size: 1.2rem;
@@ -183,23 +194,20 @@ button:hover {
 }
 
 body {
-background-color: #4b111b;
-min-height: 100vh;
-display: flex;
-align-items: center;
-justify-content: center;
-margin: 0;
+  background-color: #4b111b;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
 }
 
 .box {
-display: flex;
-align-items: center;
-justify-content: center;
-height: 100vh;
-background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: black;
 
 }
 </style>
-
-
-  

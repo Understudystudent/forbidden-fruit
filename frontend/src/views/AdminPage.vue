@@ -31,7 +31,7 @@
                 <td>
                   <div class="row">
                     <div class="col">
-                      <button class="btn btn-primary btn-block" @click="editUserAdmin">Edit</button>
+                      <button class="btn btn-primary">Edit</button>
                     </div>
                     <div class="col">
                       <button class="btn btn-danger btn-block" @click="deleteUser(user.userID)">Delete</button>

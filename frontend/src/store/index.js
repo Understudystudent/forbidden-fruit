@@ -57,7 +57,7 @@ export default createStore({
                 } else {
                     sweet({
                         title: 'info',
-                        text: "Backend store information message",
+                        text: "Please try again later",
                         icon: 'info',
                         timer: 2000,
                     });
@@ -174,7 +174,7 @@ export default createStore({
                 } = (await axios.post(`${forbidden}users/login`, payload)).data
                 if (result) {
                     context.commit('setUser', { msg, result })
-                    cookies.set('userAuthenticated', { msg, token, result })
+                        cookies.set('userAuthenticated', { msg, token, result })
                     applyToken(token)
                    
                     sweet({
