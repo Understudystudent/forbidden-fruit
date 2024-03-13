@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+// import store from '../store'; // Import your Vuex store
 
 const routes = [
   {
@@ -10,53 +11,61 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    component: () => import( '../views/AdminPage.vue')
+    component: () => import('../views/AdminPage.vue'),
+    // beforeEnter: (to, from, next) => {
+    //   Check if the user is authenticated and is an admin
+    //   if (!store.state.userAuthenticated || store.state.userRole.toLowerCase() !== 'admin') {
+    //     next('/');
+    //   } else {
+    //     next();
+    //   }
+    // }
   },
   {
     path: '/adminDashboard',
     name: 'AdminDashboard',
-    component: () => import( '../views/AdminDashboard.vue')
+    component: () => import('../views/AdminDashboard.vue')
   },
   {
     path: '/register',
     name: 'register',
-    component: () => import( '../components/RegisterComponet.vue')
+    component: () => import('../components/RegisterComponet.vue')
   },
   {
     path: '/login',
     name: 'loginPage',
-    component: () => import( '../components/LoginComponent.vue')
+    component: () => import('../components/LoginComponent.vue')
   },
   {
     path: '/forgot',
     name: 'forgotPage',
-    component: () => import( '../components/ForgotComponet.vue')
+    component: () => import('../components/ForgotComponet.vue')
   },
   {
     path: '/reset/:token',
     name: 'ResetPassword',
-    component: () => import( '../components/ResetPassword.vue')
+    component: () => import('../components/ResetPassword.vue')
   },
   {
     path: '/product',
     name: 'SingleProduct',
-    component: () => import( '../views/SingleProductPage.vue')
+    component: () => import('../views/SingleProductPage.vue')
   },
   {
     path: '/products',
     name: 'MultipleProducts',
-    component: () => import( '../views/MultipleProducts.vue')
+    component: () => import('../views/MultipleProducts.vue')
   },
   {
     path: '/editprofile',
     name: 'userEditPage',
-    component: () => import( '../components/UserEditPage.vue')
+    component: () => import('../components/UserEditPage.vue')
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
+});
 
-export default router
+export default router;
