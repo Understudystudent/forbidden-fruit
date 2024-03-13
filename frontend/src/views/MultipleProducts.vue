@@ -8,13 +8,12 @@
           <hr class="section-divider">
           <div class="browse-options">
             <p>All Products</p>
-            <!-- Add more browse options here -->
           </div>
           <div class="filter-by">
             <div class="section-title">Filter By</div>
             <hr class="section-divider">
-            <p>Price</p>
-            <!-- Add more filter options here -->
+            <p>Price: R{{ minPrice }} - R{{ maxPrice }}</p>
+            <input type="range" class="form-range" id="priceRange" min="0" :max="maxPrice" v-model="selectedPrice">
           </div>
         </div>
       </div>
@@ -29,7 +28,17 @@
             <p>{{ numberOfItems }} Items</p>
           </div>
           <div class="top-right">
-            <p>Sort By: <a href="#">Recommended Products</a></p>
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="sort-label">Sort By:</span>
+                <span class="selected-sort">{{ selectedSort }}</span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="sortDropdown" @click="updateSelectedSort">
+                <li><a class="dropdown-item" href="#" data-name="Recommended">Recommended</a></li>
+                <li><a class="dropdown-item" href="#" data-name="Expensive">Expensive</a></li>
+                <li><a class="dropdown-item" href="#" data-name="Latest">Latest</a></li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="products">
@@ -49,7 +58,9 @@ export default {
   data() {
     return {
       numberOfItems: 0,
-      items: []
+      items: [],
+      selectedSort: 'Recommended',
+      maxPrice: 0 
     }
   },
   components: {
@@ -61,10 +72,15 @@ export default {
         await this.$store.dispatch('fetchItems');
         this.items = this.$store.state.items;
         this.numberOfItems = this.items.length;
+        
+        // Calculate max price
+        this.maxPrice = Math.max(...this.items.map(item => item.itemAmount));
       } catch (error) {
         console.error('Error fetching items:', error);
-        // Handle error
       }
+    },
+    updateSelectedSort(event) {
+      this.selectedSort = event.target.dataset.name;
     }
   },
   mounted() {
@@ -111,18 +127,30 @@ export default {
   font-weight: bold;
 }
 
-.top-bar, .bottom-bar {
+.top-bar {
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
 }
 
-.top-left, .bottom-left {
+.top-left {
   font-weight: bold;
 }
 
-.top-right, .bottom-right {
+.top-right {
   text-align: right;
+}
+
+.btn-secondary {
+  width: 300px; 
+}
+
+.sort-label {
+  margin-right: 5px;
+}
+
+.selected-sort {
+  font-weight: bold;
 }
 
 .fade-enter-active, .fade-leave-active {
