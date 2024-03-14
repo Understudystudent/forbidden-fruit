@@ -4,11 +4,12 @@
         <form @submit.prevent="updateUser" class="row">
             <!-- User Image -->
             <div class="col-md-4 mb-3">
-                <label for="userImage">Profile Image: Image size cannot exceeds 50kb.
+                <label for="userImage" class="text-center">Profile Image: 
                 </label>
                 <input type="file" class="form-control-file" id="userImage" name="userImage" accept="image/*"
                     @change="handleImageUpload">
                 <img :src="imageUrl" alt="User Image" class="img-fluid mt-2">
+                <p>Image size cannot exceeds 50kb.</p>
 
             </div>
             <div class="col-md-8">
@@ -96,46 +97,55 @@ export default {
             }
         };
 
-        const handleImageUpload = async (e) => {
-            const i = e.target;
-            if (i.files && i.files[0]) {
-                const r = new FileReader();
-                r.onload = async () => {
-                    const img = new Image();
-                    img.src = r.result;
-                    img.onload = async () => {
-                        const c = document.createElement('canvas');
-                        const m = 1024;
-                        let [w, h] = [img.width, img.height];
-                        if (w > m || h > m) {
-                            const r = w > h ? m / w : m / h;
-                            [w, h] = [w * r, h * r];
-                        }
-                        c.width = w;
-                        c.height = h;
-                        const ctx = c.getContext('2d');
+        const handleImageUpload = async (event) => {
+            const input = event.target;
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    const image = new Image();
+                    image.src = reader.result;
+                    image.onload = async () => {
+                        const canvas = document.createElement('canvas');
+                        const maxSize = 1024; // Define the maximum size in pixels
+                        let width = image.width;
+                        let height = image.height;
 
-                        // Crop image from the bottom
-                        const cropAmount = 100; // Adjust this value to change the amount to be cropped
-                        ctx.drawImage(img, 0, 0, w, h - cropAmount, 0, 0, w, h - cropAmount);
-
-                        const d = c.toDataURL('image/jpeg', 0.8); // Adjust quality (0.5 for example) to reduce size
-                        if (d.length <= 62000) { // Ensure the image string is less than 60kb
-                            imageUrl.value = formData.value.userProfile = d;
-                            store.dispatch('updateUserImage', d);
-                            console.log('Image uploaded successfully.', d);
-                        } else {
-                            console.log('Image size exceeds 62kb.');
+                        // Resize the image if it exceeds the maximum dimensions
+                        if (width > maxSize || height > maxSize) {
+                            if (width > height) {
+                                height *= maxSize / width;
+                                width = maxSize;
+                            } else {
+                                width *= maxSize / height;
+                                height = maxSize;
+                            }
                         }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(image, 0, 0, width, height);
+
+                        // Convert the canvas content to data URL
+                        const resizedDataURL = canvas.toDataURL('image/jpeg'); // Adjust the format as needed
+
+                        // Set the resized image URL to imageUrl
+                        imageUrl.value = resizedDataURL;
+
+                        // Set the resized image data URL to formData.userProfile
+                        formData.value.userProfile = resizedDataURL;
+
+                        // Dispatch action to update user image URL in the store
+                        store.dispatch('updateUserImage', resizedDataURL); // Or pass the resizedDataURL to the updateUserImage action
+
+                        console.log('Image uploaded successfully.');
+                        console.log(resizedDataURL);
                     };
                 };
-                r.readAsDataURL(i.files[0]);
+
+                reader.readAsDataURL(input.files[0]);
             }
         };
-
-
-
-
 
         return {
             formData,

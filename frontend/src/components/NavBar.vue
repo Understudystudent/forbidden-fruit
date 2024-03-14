@@ -37,43 +37,20 @@
                         <a class="nav-link" href="/admin">Admin</a>
                     </li>
                     <!-- Display User Name -->
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" v-if="users">Hey, {{ user.firstName }}</a>
+                    <div v-if="user" class="nav-item">
+                        <a class="nav-link" v-if="user.userProfile ">
+                            <img :src="user.userProfile " :alt="user.firstName" class="user-avatar" />
+                        </a>
+                        <a class="nav-link" v-else-if="user.firstName">
+                            Hey, {{ user.firstName}}
+                        </a>
+                    </div>
 
-                        <a  class="nav-link" v-else>You are not logged in!</a>
-                        
-                    </li> -->
                     <!-- If not logged in -->
-                    <!-- <ul v-if="!user.result" class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <router-link to="/login" class="nav-link">Login</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link to="/register" class="nav-link">Sign Up</router-link>
-                        </li>
-                    </ul>
-                    <ul v-if="user.result" class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <router-link to="/" class="nav-link" @click="handleLogout">Logout</router-link>
-                        </li>
-                    </ul> -->
+                    <div v-else class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </div>
                 </ul>
-            </div>
-
-             <!-- Display User Name -->
-             <div v-if="user" class="nav-item">
-                <a class="nav-link" v-if="user.userProfile ">
-                    <img :src="user.userProfile " :alt="user.firstName" class="user-avatar" />
-                </a>
-                <a class="nav-link" v-else-if="user.firstName">
-                    Hey, {{ user.firstName}}
-                </a>
-
-            </div>
-
-            <!-- If not logged in -->
-            <div v-else class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
             </div>
 
             <!-- Navbar Icons on the right -->
@@ -101,46 +78,59 @@
                         <a class="dropdown-item" @click="handleLogout">Logout</a>
                     </div>
                 </div>
-
             </div>
         </div>
     </nav>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { useCookies } from 'vue3-cookies'; 
 
 export default {
     name: 'NavBar',
 
-    methods: {
-        handleLogout() {
-            // Remove the cookie by setting its expiration date to a past time
-            document.cookie = "userAuthenticated=; expires=Thu, 25 march 19999 00:00:00 UTC; path=/;";
+    data() {
+        return {
+            user: null
+        };
+    },
 
-            // Clear user state in Vuex store
-            this.$store.commit('setUser', null);
-
-            // Redirect to login page
-            this.$router.push({ name: 'loginPage' });
-
-
-        },
-
-        userEdit(){
-            this.$router.push({ name: 'userEditPage' });
+methods: {
+    getUserFromToken() {
+        const token = useCookies.get('userAuthenticated');
+        if (token) {
+            try {
+                const tokenPayload = token.split('.')[1];
+                const decodedTokenPayload = atob(tokenPayload);
+                const userData = JSON.parse(decodedTokenPayload);
+                this.user = userData; 
+            } catch (error) {
+                console.error("Error decoding token:", error);
+            }
         }
-
     },
 
-    computed: {
-        ...mapGetters(['user']),
+    handleLogout() {
+        // Remove the cookie by setting its expiration date to a past time
+        document.cookie = "userAuthenticated=; expires=Thu, 25 march 19999 00:00:00 UTC; path=/;";
+
+        // Clear user state in Vuex store
+        this.$store.commit('setUser', null);
+
+        // Redirect to login page
+        this.$router.push({ name: 'loginPage' });
     },
 
-    mounted() {
-        console.log(this.user);
+    userEdit() {
+        this.$router.push({ name: 'userEditPage' });
+    }
+},
+
+mounted() {
+    // Calling the method to retrieve user information from cookies
+    this.getUserFromToken();
 }
-}
+};
 </script>
 
 

@@ -71,7 +71,6 @@ export default createStore({
                 });
             }
         },
-
         // fetch a Mulitple User
         async fetchUsers(context) {
             
