@@ -254,7 +254,7 @@ export default createStore({
             }
         },
             // Add Item
-        async addProduct(context, payload) {
+        async addItem(context, payload) {
         try {
           let { msg } = (await axios.post(`${forbidden}items/addItem`, payload));
           if (msg) {
