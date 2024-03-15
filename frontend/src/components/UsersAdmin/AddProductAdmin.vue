@@ -10,7 +10,7 @@
                     </div>
                     <div class="modal-body">
                         <form @submit.prevent="addData" class="d-flex flex-column gap-3">
-                            <input type="text" v-model="addItem.itemID" placeholder="ID" required class="form-control mb-3">
+                            <!-- <input type="text" v-model="addItem.itemID" placeholder="ID" required class="form-control mb-3"> -->
                             <input type="text" v-model="addItem.itemName" placeholder="Name" required class="form-control mb-3">
                             <input type="text" v-model="addItem.itemDescription" placeholder="Description" required class="form-control mb-3">
                             <input type="text" v-model="addItem.Category" placeholder="Category" required class="form-control mb-3">
@@ -30,26 +30,37 @@
 
 <script>
 export default {
-    data() {
-        return {
-            addItem: {
-                itemID: "",
-                itemName: "",
-                itemDescription: "",
-                itemQuantity: "", 
-                itemAmount: "",
-                itemUrl: "",
-                Category: "" ,
-            }
-        };
+  data() {
+    return {
+      addItem: {
+        itemName: "",
+        itemDescription: "",
+        itemQuantity: "", 
+        itemAmount: "",
+        itemUrl: "",
+        Category: "" 
+      }
+    };
+  },
+  methods: {
+    addData() {
+      this.$store.dispatch('addItem', this.addItem);
+      this.clearForm();
     },
-    methods: {
-        addData() {
-            this.$store.dispatch('addItem', this.addItem);
-        }
+    clearForm() {
+      this.addItem = {
+        itemName: "",
+        itemDescription: "",
+        itemQuantity: "", 
+        itemAmount: "",
+        itemUrl: "",
+        Category: "" 
+      };
     }
+  }
 };
 </script>
+
 
 <style scoped>
 .modal-custom {
