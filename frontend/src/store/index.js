@@ -319,6 +319,82 @@ export default createStore({
       });
     }
   },
+        // Add item to cart
+async addToCart(context, payload) {
+    try {
+      await axios.post(`${forbidden}cart/add`, payload);
+      // context.dispatch('fetchCartItems');
+      sweet({
+        title: 'Add to Cart',
+        text: 'Item added to cart successfully',
+        icon: 'success',
+        timer: 2000
+      });
+    } catch (error) {
+      sweet({
+        title: 'Error',
+        text: 'Failed to add item to cart. Please try again later.',
+        icon: 'error',
+        timer: 2000
+      });
+    }
+  },
+  // Fetch cart items
+  async fetchCartItems(context, userID) {
+    try {
+      const response = await axios.get(`${forbidden}cart/${userID}`);
+      const cartItems = response.data;
+      // context.commit('setCartItems', cartItems);
+    } catch (error) {
+      sweet({
+        title: 'Error',
+        text: 'Failed to fetch cart items. Please try again later.',
+        icon: 'error',
+        timer: 2000
+      });
+    }
+  },
+  // Update cart item quantity
+  async updateCartItem(context, payload) {
+    try {
+      await axios.patch(`${forbidden}cart/update/${payload.userID}/${payload.itemID}`, payload);
+      // context.dispatch('fetchCartItems');
+      sweet({
+        title: 'Update Cart Item',
+        text: 'Cart item quantity updated successfully',
+        icon: 'success',
+        timer: 2000
+      });
+    } catch (error) {
+      sweet({
+        title: 'Error',
+        text: 'Failed to update cart item quantity. Please try again later.',
+        icon: 'error',
+        timer: 2000
+      });
+    }
+  },
+  // Remove item from cart
+  async removeCartItem(context, payload) {
+    try {
+      await axios.delete(`${forbidden}cart/remove/${payload.userID}/${payload.itemID}`);
+      // context.dispatch('fetchCartItems');
+      sweet({
+        title: 'Remove from Cart',
+        text: 'Item removed from cart successfully',
+        icon: 'success',
+        timer: 2000
+      });
+    } catch (error) {
+      sweet({
+        title: 'Error',
+        text: 'Failed to remove item from cart. Please try again later.',
+        icon: 'error',
+        timer: 2000
+      });
+    }
+  },
+
     },
     modules: {}
 })
