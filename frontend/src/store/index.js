@@ -395,22 +395,22 @@ export default createStore({
       }
     },
 
-    async fetchAdminUsers(context) {
-      try {
-        const { data } = await axios.get(`${forbidden}admin/users`);
-        context.commit("setAdminUsers", data);
-      } catch (error) {
-        console.error("Error fetching admin users:", error);
-      }
-    },
-    async fetchAdminItems(context) {
-      try {
-        const { data } = await axios.get(`${forbidden}admin/items`);
-        context.commit("setAdminItems", data);
-      } catch (error) {
-        console.error("Error fetching admin items:", error);
-      }
-    },
+    // async fetchAdminUsers(context) {
+    //   try {
+    //     const { data } = await axios.get(`${forbidden}admin/users`);
+    //     context.commit("setAdminUsers", data);
+    //   } catch (error) {
+    //     console.error("Error fetching admin users:", error);
+    //   }
+    // },
+    // async fetchAdminItems(context) {
+    //   try {
+    //     const { data } = await axios.get(`${forbidden}admin/items`);
+    //     context.commit("setAdminItems", data);
+    //   } catch (error) {
+    //     console.error("Error fetching admin items:", error);
+    //   }
+    // },
   },
   modules: {},
 });

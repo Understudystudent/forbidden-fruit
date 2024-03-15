@@ -23,7 +23,7 @@
                         <button type="button" class="close btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
-            </div>
+            </div>gi
         </div>
     </div>
 </template>
