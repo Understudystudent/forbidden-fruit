@@ -94,21 +94,10 @@
       <div class="col">
         <h2 class="admin text-white">Cart</h2>
         <div >
-          <table class="table table-striped-columns rounded-5 text-center">
-            <thead>
-              <tr>
-                <th scoped="col">Cart Img</th>
-                <th scoped="col">Cart ID</th>
-                <th scoped="col">Cart Name</th>
-                <th scoped="col">Cart Quanity</th>
-                <th scoped="col">Cart Amount</th>
-                <th scoped="col">Category</th>
-                <th scoped="col">Description</th>
-                <th scoped="col">Action</th>
+          <tbody v-if="adminItems">
+            <tr v-for="adminItem in adminItems" :key="adminItem.itemID"></tr>
+          </tbody>
 
-              </tr>
-            </thead>
-          </table>
         </div>
       </div>
 
