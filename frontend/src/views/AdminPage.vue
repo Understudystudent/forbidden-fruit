@@ -51,6 +51,7 @@
             Add Product
           </router-link>
         </div> -->
+        <addProductComp/> 
         <div >
           <table class="table table-striped-columns rounded-5 text-center">
             <thead>
@@ -105,10 +106,14 @@
   </template>
   
   <script>
+    import addProductComp from "../components/UsersAdmin/AddProductAdmin.vue"
 
 
 
   export default {
+    components: {
+    addProductComp
+  },
     computed: {
       users() {
         return this.$store.state.users;
