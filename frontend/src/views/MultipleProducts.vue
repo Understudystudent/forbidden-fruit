@@ -37,6 +37,7 @@
                 <li><a class="dropdown-item" href="#" data-name="Recommended">Recommended</a></li>
                 <li><a class="dropdown-item" href="#" data-name="Expensive">Expensive</a></li>
                 <li><a class="dropdown-item" href="#" data-name="Latest">Latest</a></li>
+                <li><a class="dropdown-item" href="#" data-name="A-Z">A-Z</a></li>
               </ul>
             </div>
           </div>
