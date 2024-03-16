@@ -395,6 +395,40 @@ export default createStore({
       }
     },
 
+    // async addToCart({commit}, {userID, prodID}){
+    //     try{
+    //       const response = await axios.post(`${url}users/${userID}/cart`, {
+    //         userID, prodID,
+    //       });
+    //       if(response.status === 200){
+    //         commit("addToCart", response.data);
+    //       }
+          
+    //     }
+    //     catch(err){
+    //       console.error(err);
+    //     }
+    //   },
+  
+    //   async removeFromCart({commit}, {userID, cartID}){
+    //     try{
+    //       await axios.delete(`${url}users/${userID}/cart/${cartID}`);
+    //       commit("removeFromCart", cartID);
+    //     }
+    //     catch(err){
+    //       console.error(err)
+    //     }
+    //   },
+  
+    //   async clearCart({ commit }, { userID }) {
+    //     try {
+    //       await axios.delete(`${url}users/${userID}/cart`);
+    //       commit("clearCart", userID);
+    //     } 
+    //     catch (err) {
+    //       console.error(err);
+    //     }
+
     // async fetchAdminUsers(context) {
     //   try {
     //     const { data } = await axios.get(`${forbidden}admin/users`);

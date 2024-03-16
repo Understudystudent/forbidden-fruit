@@ -60,8 +60,11 @@ export default {
     return {
       numberOfItems: 0,
       items: [],
+      filteredItems: [], 
       selectedSort: 'Recommended',
-      maxPrice: 0 
+      maxPrice: 0,
+      minPrice: 0, 
+      selectedPrice: 0 
     }
   },
   components: {
@@ -72,16 +75,43 @@ export default {
       try {
         await this.$store.dispatch('fetchItems');
         this.items = this.$store.state.items;
+        this.filteredItems = [...this.items]; 
         this.numberOfItems = this.items.length;
         
-        // Calculate max price
         this.maxPrice = Math.max(...this.items.map(item => item.itemAmount));
+        this.minPrice = Math.min(...this.items.map(item => item.itemAmount));
       } catch (error) {
         console.error('Error fetching items:', error);
       }
     },
     updateSelectedSort(event) {
       this.selectedSort = event.target.dataset.name;
+      this.sortItems(); 
+    },
+    sortItems() {
+      switch (this.selectedSort) {
+        case 'Expensive':
+          this.filteredItems.sort((a, b) => b.itemAmount - a.itemAmount);
+          break;
+        case 'Latest':
+          this.filteredItems.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          break;
+        case 'A-Z':
+          this.filteredItems.sort((a, b) => a.itemName.localeCompare(b.itemName));
+          break;
+        //
+        default:
+          //
+          break;
+      }
+    },
+    watch: {
+      selectedPrice() {
+        this.filterItems(); 
+      }
+    },
+    filterItems() {
+      this.filteredItems = this.items.filter(item => item.itemAmount >= this.minPrice && item.itemAmount <= this.selectedPrice);
     }
   },
   mounted() {
@@ -89,6 +119,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 .browse-by {
