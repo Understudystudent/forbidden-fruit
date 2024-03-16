@@ -72,55 +72,53 @@
   </script>
   
   <style scoped>
-  /* Styles for the contact form */
   .contact-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 80vh; /* Adjust the height as needed */
+    min-height: 80vh; 
   }
   
   .contact-form {
-    max-width: 400px;
     width: 100%;
-    padding: 20px;
-    background-color: #000000; /* Midnight Black */
+    padding: 20px; 
+    background-color: #000000; 
     border-radius: 10px;
   }
   
   .contact-form label {
-    color: #ffd700; /* Golden Lust */
+    color: #ffd700; 
     margin-bottom: 8px;
   }
   
   .contact-form input,
   .contact-form textarea {
-    width: 100%;
+    width: calc(100% - 20px); 
     padding: 10px;
     margin-bottom: 15px;
     border: none;
     border-radius: 5px;
-    background-color: #5c3317; /* Dark Chocolate */
-    color: #ffffff; /* White */
+    background-color: #5c3317; 
+    color: #ffffff;
   }
   
   .contact-form button {
-    width: 100%;
+    width: calc(100% - 20px);
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #8b0000; /* Devilish Red */
-    color: #ffffff; /* White */
+    background-color: #8b0000; 
+    color: #ffffff; 
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
   
   .contact-form button:hover {
-    background-color: #dc143c; /* Sultry Crimson */
+    background-color: #dc143c; 
   }
   
   .error-message {
-    color: #ff0000; /* Red */
+    color: #ff0000; 
     margin-top: 10px;
   }
   </style>
