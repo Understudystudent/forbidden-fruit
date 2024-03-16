@@ -52,6 +52,11 @@ const routes = [
     name: 'userEditPage',
     component: () => import( '../components/UserEditPage.vue')
   },
+  {
+    path: '/contactus',
+    name: 'contact', 
+    component: () => import( '../views/ContactPage.vue')
+  }
 ]
 
 const router = createRouter({

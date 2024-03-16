@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <!-- Spinner Component -->
+    <SpinnerLoader :loading="isLoading" />
+
     <div class="row">
       <!-- Left Column -->
       <div class="col-lg-3">
@@ -44,7 +47,7 @@
         </div>
         <div class="products">
           <div class="row">
-            <ProductItem v-for="item in items" :key="item.id" :item="item" />
+            <ProductItem v-for="item in filteredItems" :key="item.id" :item="item" />
           </div>
         </div>
       </div>
@@ -54,10 +57,12 @@
 
 <script>
 import ProductItem from '@/components/ProductList.vue';
+import SpinnerLoader from '@/components/SpinnerLoader.vue';   
 
 export default {
   data() {
     return {
+      isLoading: true, 
       numberOfItems: 0,
       items: [],
       filteredItems: [], 
@@ -68,7 +73,8 @@ export default {
     }
   },
   components: {
-    ProductItem
+    ProductItem,
+    SpinnerLoader 
   },
   methods: {
     async fetchItems() {
@@ -80,6 +86,8 @@ export default {
         
         this.maxPrice = Math.max(...this.items.map(item => item.itemAmount));
         this.minPrice = Math.min(...this.items.map(item => item.itemAmount));
+        
+        this.isLoading = false; 
       } catch (error) {
         console.error('Error fetching items:', error);
       }
@@ -119,7 +127,6 @@ export default {
   }
 }
 </script>
-
 
 <style scoped>
 .browse-by {
