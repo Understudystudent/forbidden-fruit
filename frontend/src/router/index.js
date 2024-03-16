@@ -38,9 +38,10 @@ const routes = [
     component: () => import( '../components/ResetPassword.vue')
   },
   {
-    path: '/product',
-    name: 'SingleProduct',
-    component: () => import( '../views/SingleProductPage.vue')
+    path: '/products/:itemID', 
+    name: 'ItemDetailPage',
+    component: () => import('../views/SingleProductPage.vue'),
+    props: true // This ensures that route params are automatically set as component props
   },
   {
     path: '/products',
@@ -56,7 +57,9 @@ const routes = [
     path: '/contactus',
     name: 'contact', 
     component: () => import( '../views/ContactPage.vue')
-  }
+  },
+ 
+  
 ]
 
 const router = createRouter({

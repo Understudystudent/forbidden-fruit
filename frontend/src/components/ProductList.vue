@@ -3,8 +3,8 @@
     <img class="product-image" :src="item.itemUrl" alt="Product Image">
     <div class="product-details">
       <h3 class="product-name">{{ item.itemName }}</h3>
-      <p class="product-price">{{ item.itemAmount }}</p>
-      <router-link :to="'/products/' + item.id" class="btn btn-primary">View Details</router-link>
+      <p class="product-price">R {{ item.itemAmount }}</p>
+      <button @click="viewDetails" class="btn btn-primary" id="btn">View Details</button>
     </div>
   </div>
 </template>
@@ -15,6 +15,11 @@ export default {
     item: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    viewDetails() {
+      this.$router.push({ name: 'ItemDetailPage', params: { itemID: this.item.itemID } });
     }
   }
 }
