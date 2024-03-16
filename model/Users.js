@@ -63,7 +63,7 @@ class Users {
         });
     }
 
-    // Update user information (including profile)
+    // Update user information
     async updateUser(req, res) {
         const { id } = req.params;
         const userData = req.body;
@@ -133,4 +133,6 @@ class Users {
     }
 }
 
-export { Users };
+export { 
+    Users
+ };
