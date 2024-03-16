@@ -246,8 +246,8 @@ export default createStore({
     // Add Item
     async addItem(context, payload) {
       try {
-        let { msg } = await axios.post(`${forbidden}items/addItem`, payload);
-        if (msg) {
+        let { msg } = await axios.post(`${forbidden}items/addItems`, payload);
+        // if (msg) {
           context.dispatch("fetchItems");
           sweet({
             title: "Item Added",
@@ -255,8 +255,9 @@ export default createStore({
             icon: "success",
             timer: 2000,
           });
-        }
-      } catch (e) {
+        // }
+      } catch (error) {
+        console.error('Error adding item:', error.response.data); // Log the error message
         sweet({
           title: "Error",
           text: "Failed to add Item. Please try again later.",
@@ -291,30 +292,32 @@ export default createStore({
       }
     },
     // Update Item
-    async updateItems(context, payload) {
-      try {
-        let { msg } = await axios.patch(
-          `${forbidden}/items/update/${payload.id}`,
-          payload
-        );
-        if (msg) {
-          context.dispatch("fetchItems");
-          sweet({
-            title: "Update item",
-            text: msg,
-            icon: "success",
-            timer: 2000,
-          });
-        }
-      } catch (e) {
-        sweet({
-          title: "Error",
-          text: "An error occurred when updating a Item.",
-          icon: "error",
-          timer: 2000,
-        });
-      }
-    },
+async updateItems(context, payload) {
+  try {
+    console.log("Edit button clicked for item:", payload); 
+    let { msg } = await axios.patch(
+      `${forbidden}/items/update/${payload.id}`,
+      payload
+    );
+    if (msg) {
+      context.dispatch("fetchItems");
+      sweet({
+        title: "Update item",
+        text: msg,
+        icon: "success",
+        timer: 2000,
+      });
+    }
+  } catch (e) {
+    sweet({
+      title: "Error",
+      text: "An error occurred when updating a Item.",
+      icon: "error",
+      timer: 2000,
+    });
+  }
+},
+
     // Add item to cart
     async addToCart(context, payload) {
       try {

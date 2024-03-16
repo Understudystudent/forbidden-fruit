@@ -1,66 +1,65 @@
 <template>
-    <div>
-        <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#exampleModal1" data-bs-whatever="@mdo">Product</button>
-        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content modal-custom">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5 text-danger" id="exampleModalLabel1">Add a Product</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form @submit.prevent="addData" class="d-flex flex-column gap-3">
-                            <!-- <input type="text" v-model="addItem.itemID" placeholder="ID" required class="form-control mb-3"> -->
-                            <input type="text" v-model="addItem.itemName" placeholder="Name" required class="form-control mb-3">
-                            <input type="text" v-model="addItem.itemDescription" placeholder="Description" required class="form-control mb-3">
-                            <input type="text" v-model="addItem.Category" placeholder="Category" required class="form-control mb-3">
-                            <input type="number" v-model="addItem.itemAmount" placeholder="Price (ZAR)" required class="form-control mb-3">
-                            <input type="text" v-model="addItem.itemUrl" placeholder="Image URL" class="form-control mb-3">
-                            <button type="submit" class="btn btn-danger btn-block">Add</button>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="close btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>gi
-        </div>
+  <div class="modal-custom">
+    <div class="modal-header">
+      <h3>Add Item</h3>
+      <button @click="closeModal">Close</button>
     </div>
+    <div class="modal-body">
+      <form @submit.prevent="addItem">
+        <input type="text" v-model="formData.itemName" placeholder="Item Name" required />
+        <input type="number" v-model="formData.itemQuantity" placeholder="Item Quantity" required />
+        <input type="number" v-model="formData.itemAmount" placeholder="Item Amount" required />
+        <input type="text" v-model="formData.itemUrl" placeholder="Item URL" />
+        <input type="text" v-model="formData.category" placeholder="Category" required />
+        <textarea v-model="formData.itemDescription" placeholder="Item Description" required></textarea>
+        <button type="submit">Add Item</button>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      addItem: {
-        itemName: "",
-        itemDescription: "",
-        itemQuantity: "", 
-        itemAmount: "",
-        itemUrl: "",
-        Category: "" 
+      formData: {
+        itemName: '',
+        itemQuantity: null,
+        itemAmount: null,
+        itemUrl: '',
+        category: '',
+        itemDescription: ''
       }
     };
   },
   methods: {
-    addData() {
-      this.$store.dispatch('addItem', this.addItem);
-      this.clearForm();
-    },
-    clearForm() {
-      this.addItem = {
-        itemName: "",
-        itemDescription: "",
-        itemQuantity: "", 
-        itemAmount: "",
-        itemUrl: "",
-        Category: "" 
+    addItem() {
+      const newItem = {
+        itemName: this.formData.itemName,
+        itemQuantity: this.formData.itemQuantity,
+        itemAmount: this.formData.itemAmount,
+        itemUrl: this.formData.itemUrl,
+        Category: this.formData.category,
+        itemDescription: this.formData.itemDescription
       };
+      this.$store.dispatch('addItem', newItem);
+      this.resetForm();
+      this.closeModal();
+    },
+    resetForm() {
+      this.formData.itemName = '';
+      this.formData.itemQuantity = null;
+      this.formData.itemAmount = null;
+      this.formData.itemUrl = '';
+      this.formData.category = '';
+      this.formData.itemDescription = '';
+    },
+    closeModal() {
+      this.$emit('close');
     }
   }
 };
 </script>
-
 
 <style scoped>
 .modal-custom {
@@ -68,27 +67,50 @@ export default {
     color: #FF5722;
     border-radius: 20px; 
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
+    width: 400px;
+    padding: 20px;
 }
 
 .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 2px solid #FF5722; 
 }
 
-.form-control {
+.modal-header h3 {
+    margin: 0;
+}
+
+.modal-header button {
+    background: none;
+    border: none;
+    color: #FF5722;
+    cursor: pointer;
+}
+
+.modal-body input,
+.modal-body textarea {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 5px;
+    border: 2px solid #FF5722;
+    border-radius: 5px;
     background-color: #424242;
-    border: 2px solid #FF5722; 
     color: #FF5722;
 }
 
-.btn {
-    background-color: #212121; 
-    color: #FF5722; 
-    border: 2px solid #FF5722; 
-    border-radius: 20px; 
+.modal-body button {
+    padding: 10px;
+    background-color: #FF5722;
+    border: none;
+    border-radius: 5px;
+    color: #212121;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.btn:hover {
-    background-color: #FF5722; 
-    color: #212121;
+.modal-body button:hover {
+    background-color: #FF7043;
 }
 </style>

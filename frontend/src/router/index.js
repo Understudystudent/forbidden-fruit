@@ -41,7 +41,7 @@ const routes = [
     path: '/products/:itemID', 
     name: 'ItemDetailPage',
     component: () => import('../views/SingleProductPage.vue'),
-    props: true // This ensures that route params are automatically set as component props
+    props: true 
   },
   {
     path: '/products',
@@ -58,6 +58,11 @@ const routes = [
     name: 'contact', 
     component: () => import( '../views/ContactPage.vue')
   },
+  {
+    path: '/adminadduser',
+    name: 'AddUserFormAdmin',
+    component: () => import( '../components/UsersAdmin/AddUserAdmin.vue')
+  }
  
   
 ]
