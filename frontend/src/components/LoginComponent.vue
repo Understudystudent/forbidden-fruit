@@ -14,7 +14,7 @@
         <label class="signin__label" for="userPwd">Password</label>
       </div>
 
-      <button type="submit">Enter </button>
+      <button type="submit">Enter</button>
     </form>
   </div>
 </template>
@@ -74,6 +74,7 @@ export default {
 
 
 <style scoped>
+/* Maintain color scheme */
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
 * {
@@ -81,10 +82,7 @@ export default {
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
-
 }
-
-
 
 button,
 input {
@@ -92,14 +90,13 @@ input {
   outline: none;
 }
 
-/****************
-      FORM
-*****************/
+/********FORM********/
+    
 .signin {
   background-color: white;
-  width: 100%;
-  max-width: 500px;
-  padding: 50px 70px;
+  width: calc(100% - 40px); 
+  max-width: 460px; 
+  padding: 50px 20px; 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -126,7 +123,7 @@ h2 span {
   color: #e62020;
 }
 
-/*  Field */
+/* Field */
 .signin__field {
   display: flex;
   flex-direction: column;
@@ -152,7 +149,7 @@ h2 span {
   width: 100%;
 }
 
-/*  Input */
+/* Input */
 .signin__input {
   width: 100%;
   height: 100%;
@@ -161,7 +158,7 @@ h2 span {
   border-bottom: 2px solid #e0e0e0;
 }
 
-/*  Label */
+/* Label */
 .signin__label {
   color: #bdbdbd;
   position: absolute;
@@ -179,7 +176,7 @@ h2 span {
   background-color: white;
 }
 
-/*  Button */
+/* Button */
 button {
   background: #e62020;
   color: white;
@@ -208,6 +205,5 @@ body {
   justify-content: center;
   height: 100vh;
   background-color: black;
-
 }
 </style>

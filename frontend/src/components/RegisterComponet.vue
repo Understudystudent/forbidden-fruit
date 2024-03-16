@@ -61,7 +61,6 @@ export default {
         }
 
         await this.$store.dispatch('register', this.userData);
-        // Continue with the rest of your registration logic
       } catch (error) {
         console.error('Registration failed:', error);
       }
@@ -89,8 +88,8 @@ export default {
     outline: none;
   }
 
-  /****************/
-        FORM
+/********FORM********/
+
  
   .signup-container {
     margin-top: 10px;
