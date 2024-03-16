@@ -117,7 +117,8 @@ export default createStore({
     async updateUser(context, payload) {
       try {
         let { msg } = await axios.patch(
-          `${forbidden}users/update/${payload.id}`
+          `${forbidden}users/update/${payload.id}`,
+          payload
         );
         if (msg) {
           context.dispatch("fetchUsers");

@@ -3,6 +3,7 @@
     <!-- User Section -->
     <div class="col">
       <h2 class="admin text-white">User</h2>
+      
       <div class="row"></div>
       <div>
         <table class="table table-striped-columns rounded-3 text-center">
@@ -46,14 +47,9 @@
     <div class="col">
       <h2 class="admin text-white">Product</h2>
       <div class="spinner-container" v-if="loading">
-        <Spinner :loading="loading" />
+        <SpinnerComponent :loading="loading" />
       </div>
       <div v-else>
-        <!-- <div class="row">
-          <router-link to="/add/product" class="btn btn-primary float-end">
-            Add Product
-          </router-link>
-        </div> -->
         <addProductComp />
         <div>
           <table class="table table-striped-columns rounded-5 text-center">
@@ -62,7 +58,7 @@
                 <th scoped="col">Item Img</th>
                 <th scoped="col">Item ID</th>
                 <th scoped="col">Item Name</th>
-                <th scoped="col">Item Quanity</th>
+                <th scoped="col">Item Quantity</th>
                 <th scoped="col">Item Amount</th>
                 <th scoped="col">Category</th>
                 <th scoped="col">Description</th>
@@ -107,17 +103,17 @@
 </template>
 
 <script>
-import Spinner from "../components/SpinnerComponent.vue";
 import addProductComp from "../components/UsersAdmin/AddProductAdmin.vue";
+import SpinnerComponent from "@/components/SpinnerComponent.vue";
 
 export default {
   components: {
-    Spinner,
+    SpinnerComponent, 
     addProductComp
   },
   data() {
     return {
-      loading: true // Set to true initially to show spinner
+      loading: true 
     };
   },
   computed: {
@@ -129,15 +125,15 @@ export default {
     },
   },
   mounted() {
+    // Fetch users and items data
+    this.$store.dispatch('fetchUsers');
+    this.$store.dispatch('fetchItems');
+
     // Simulate data fetching delay for demonstration
     setTimeout(() => {
       // Set loading to false after data fetching is completed
       this.loading = false;
-    }, 2000); // Adjust delay time as needed
-
-    // Fetch users and items data
-    this.$store.dispatch('fetchUsers');
-    this.$store.dispatch('fetchItems');
+    }, 8000); 
   },
   methods: {
     deleteUser(userId) {

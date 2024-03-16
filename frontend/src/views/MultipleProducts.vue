@@ -55,9 +55,10 @@
   </div>
 </template>
 
+
 <script>
 import ProductItem from '@/components/ProductList.vue';
-import SpinnerLoader from '@/components/SpinnerLoader.vue';   
+import SpinnerLoader from '../components/SpinnerComponent.vue';   
 
 export default {
   data() {
