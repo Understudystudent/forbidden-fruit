@@ -177,6 +177,9 @@ export default createStore({
             if (result) {
                 context.commit('setUser', { msg, result })
                     cookies.set('userAuthenticated', { msg, token, result })
+                    console.log(msg);
+                    console.log(token);
+                    console.log(result);
                 applyToken(token)
                
                 sweet({

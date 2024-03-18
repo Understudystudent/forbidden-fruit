@@ -38,21 +38,22 @@ export default {
 
   methods: {
     async handleSubmit() {
-      try {
-        const { msg, token } = await this.$store.dispatch('login', {
-          emailAdd: this.userData.emailAdd,
-          userPwd: this.userData.userPwd,
-        });
+    try {
+      console.log("Starting login process...");
+      const { msg, token } = await this.$store.dispatch('login', this.userData);
+      console.log("Token value:", token);
 
-        if (token) {
-          this.$router.push('/');
-        } else {
-          this.error = msg;
-        }
-      } catch (e) {
-        this.error = 'Failed to login.';
-        console.error('Error during login:', e);
+      if (token) {
+        console.log("Login successful.");
+        this.$router.push('/');
+      } else {
+        console.log("Login failed. Error:", msg);
+        this.error = msg;
       }
+    } catch (e) {
+      console.error('Error during login:', e);
+      this.error = 'Failed to login.';
+    }
     },
 
 
