@@ -62,6 +62,11 @@ const routes = [
     path: '/adminadduser',
     name: 'AddUserFormAdmin',
     component: () => import( '../components/UsersAdmin/AddUserAdmin.vue')
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: () => import('../views/CartView.vue') 
   }
  
   

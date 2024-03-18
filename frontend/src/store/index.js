@@ -13,6 +13,7 @@ export default createStore({
     user: null,
     items: null,
     item: null,
+    cartItems: [],
   },
   getters: {},
   mutations: {
@@ -27,6 +28,9 @@ export default createStore({
     },
     setItem(state, value) {
       state.item = value;
+    },
+    setCartItems(state, value) {
+      state.cartItems = value;
     },
   },
   actions: {
@@ -248,16 +252,16 @@ export default createStore({
       try {
         let { msg } = await axios.post(`${forbidden}items/addItems`, payload);
         // if (msg) {
-          context.dispatch("fetchItems");
-          sweet({
-            title: "Item Added",
-            text: msg,
-            icon: "success",
-            timer: 2000,
-          });
+        context.dispatch("fetchItems");
+        sweet({
+          title: "Item Added",
+          text: msg,
+          icon: "success",
+          timer: 2000,
+        });
         // }
       } catch (error) {
-        console.error('Error adding item:', error.response.data); // Log the error message
+        console.error("Error adding item:", error.response.data); // Log the error message
         sweet({
           title: "Error",
           text: "Failed to add Item. Please try again later.",
@@ -292,37 +296,36 @@ export default createStore({
       }
     },
     // Update Item
-async updateItems(context, payload) {
-  try {
-    console.log("Edit button clicked for item:", payload); 
-    let { msg } = await axios.patch(
-      `${forbidden}/items/update/${payload.id}`,
-      payload
-    );
-    if (msg) {
-      context.dispatch("fetchItems");
-      sweet({
-        title: "Update item",
-        text: msg,
-        icon: "success",
-        timer: 2000,
-      });
-    }
-  } catch (e) {
-    sweet({
-      title: "Error",
-      text: "An error occurred when updating a Item.",
-      icon: "error",
-      timer: 2000,
-    });
-  }
-},
+    async updateItems(context, payload) {
+      try {
+        console.log("Edit button clicked for item:", payload);
+        let { msg } = await axios.patch(
+          `${forbidden}/items/update/${payload.id}`,
+          payload
+        );
+        if (msg) {
+          context.dispatch("fetchItems");
+          sweet({
+            title: "Update item",
+            text: msg,
+            icon: "success",
+            timer: 2000,
+          });
+        }
+      } catch (e) {
+        sweet({
+          title: "Error",
+          text: "An error occurred when updating a Item.",
+          icon: "error",
+          timer: 2000,
+        });
+      }
+    },
 
     // Add item to cart
     async addToCart(context, payload) {
       try {
         await axios.post(`${forbidden}cart/add`, payload);
-        // context.dispatch('fetchCartItems');
         sweet({
           title: "Add to Cart",
           text: "Item added to cart successfully",
@@ -332,9 +335,9 @@ async updateItems(context, payload) {
       } catch (error) {
         sweet({
           title: "Error",
-          text: "Failed to add item to cart. Please try again later.",
+          text: "Failed to add item to cart. Please try again later." + console.log(error),
           icon: "error",
-          timer: 2000,
+          timer: 5000,
         });
       }
     },
@@ -343,7 +346,7 @@ async updateItems(context, payload) {
       try {
         const response = await axios.get(`${forbidden}cart/${userID}`);
         const cartItems = response.data;
-        context.commit('setCartItems', cartItems);
+        context.commit("setCartItems", cartItems);
       } catch (error) {
         sweet({
           title: "Error",
@@ -360,7 +363,6 @@ async updateItems(context, payload) {
           `${forbidden}cart/update/${payload.userID}/${payload.itemID}`,
           payload
         );
-        // context.dispatch('fetchCartItems');
         sweet({
           title: "Update Cart Item",
           text: "Cart item quantity updated successfully",
@@ -382,7 +384,6 @@ async updateItems(context, payload) {
         await axios.delete(
           `${forbidden}cart/remove/${payload.userID}/${payload.itemID}`
         );
-        // context.dispatch('fetchCartItems');
         sweet({
           title: "Remove from Cart",
           text: "Item removed from cart successfully",
@@ -398,57 +399,6 @@ async updateItems(context, payload) {
         });
       }
     },
-
-    // async addToCart({commit}, {userID, prodID}){
-    //     try{
-    //       const response = await axios.post(`${url}users/${userID}/cart`, {
-    //         userID, prodID,
-    //       });
-    //       if(response.status === 200){
-    //         commit("addToCart", response.data);
-    //       }
-          
-    //     }
-    //     catch(err){
-    //       console.error(err);
-    //     }
-    //   },
-  
-    //   async removeFromCart({commit}, {userID, cartID}){
-    //     try{
-    //       await axios.delete(`${url}users/${userID}/cart/${cartID}`);
-    //       commit("removeFromCart", cartID);
-    //     }
-    //     catch(err){
-    //       console.error(err)
-    //     }
-    //   },
-  
-    //   async clearCart({ commit }, { userID }) {
-    //     try {
-    //       await axios.delete(`${url}users/${userID}/cart`);
-    //       commit("clearCart", userID);
-    //     } 
-    //     catch (err) {
-    //       console.error(err);
-    //     }
-
-    // async fetchAdminUsers(context) {
-    //   try {
-    //     const { data } = await axios.get(`${forbidden}admin/users`);
-    //     context.commit("setAdminUsers", data);
-    //   } catch (error) {
-    //     console.error("Error fetching admin users:", error);
-    //   }
-    // },
-    // async fetchAdminItems(context) {
-    //   try {
-    //     const { data } = await axios.get(`${forbidden}admin/items`);
-    //     context.commit("setAdminItems", data);
-    //   } catch (error) {
-    //     console.error("Error fetching admin items:", error);
-    //   }
-    // },
   },
   modules: {},
 });

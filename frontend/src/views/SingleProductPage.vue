@@ -6,46 +6,60 @@
     <div class="row">
       <div class="col-md-6">
         <!-- Image on the left -->
-        <Card v-if="item">
-          <template>
-            <img :src="item.prodUrl" alt="Item Image" class="card-image bg-black" />
-          </template>
-        </Card>
+        <img v-if="item" :src="item.prodUrl" alt="Item Image" class="card-image bg-black" />
       </div>
       <div class="col-md-6">
-        <Card v-if="item">
-          <template>
-            <h2 class="item-title">{{ item.prodName }}</h2>
-            <p class="item-info">Category: {{ item.Category }}</p>
-            <p class="item-info">Amount: R {{ item.amount }}</p>
-            <p class="item-description">{{ item.description }}</p>
-          </template>
-        </Card>
+        <div v-if="item">
+          <h2 class="item-title text-white">Name: {{  item.itemName }}</h2>
+          <p class="item-info text-white">Category: {{ item.Category }}</p>
+          <p class="item-info text-white">Amount: R {{ item.itemAmount }}</p>
+          <p class="item-description text-white">Description: {{ item.itemDescription }}</p>
+          <label for="quantity" class="text-white">Quantity:</label>
+          <input type="number" id="quantity" v-model="quantity" min="1">
+          <button @click="addItemToCart" class="btn btn-primary">Add to Cart</button>
+        </div>
       </div>
     </div>
-    <button @click="goback" class="btn btn-primary">Go Back</button>
+    <button @click="goBack" class="btn btn-primary">Go Back</button>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
+import createPersistedState from "vuex-persistedstate";
 
 export default {
   name: "ItemDetailPage",
   computed: {
-    ...mapState(['items']), 
+    ...mapState(['items']),
     item() {
-      return this.items.find(item => item.id === this.$route.params.itemID);
+      if (this.items && this.items.length > 0) {
+        const itemId = parseInt(this.$route.params.itemID);
+        return this.items.find(item => item.itemID === itemId);
+      } else {
+        return null;
+      }
     }
   },
+  data() {
+    return {
+      quantity: 1
+    };
+  },
   methods: {
-    goback() {
+    ...mapActions(['addToCart']),
+    goBack() {
       this.$router.push({ name: 'MultipleProducts' });
+    },
+    addItemToCart() {
+      if (this.item) {
+        this.addToCart({ item: this.item, quantity: parseInt(this.quantity) });
+        this.$router.push({ path: '/products' });
+      }
     }
-  }
-}
-
+  },
+  plugins: [createPersistedState({ paths: ['items'] })]
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
