@@ -1,4 +1,6 @@
-import { userRouter, express } from "./controller/UserContoller.js";
+import express from "express";
+import { userRouter } from "./controller/UserContoller.js";
+import { cartRouter } from "./controller/CartController.js";
 import { itemRouter } from "./controller/ItemContoller.js";
 import {errorHandling} from './middleware/ErrorHandling.js'
 import ItemMiddleware from './middleware/ItemsMiddleware.js';
@@ -35,8 +37,13 @@ app.get('^/$|/capstone', (req, res)=>{
 })
 app.use('/users', userRouter)
 app.use('/items', itemRouter);
+app.use("/cart", cartRouter); 
+
+
 app.use(errorHandling)
 app.use(ItemMiddleware);
+
+
 app.listen(port, ()=>{
     console.log(`Server is running on port http://localhost:${port}`);
 })
