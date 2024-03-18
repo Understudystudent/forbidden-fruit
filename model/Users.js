@@ -133,8 +133,47 @@ class Users {
             }
         });
     }
+
+    // User login
+    async login(req, res) {
+        const { emailAdd, userPwd } = req.body;
+
+        // Check if email exists in the database
+        const qry = `SELECT * FROM Users WHERE emailAdd = ?;`;
+        db.query(qry, [emailAdd], async (err, results) => {
+            if (err) {
+                res.status(500).json({
+                    status: 500,
+                    msg: "An error occurred during login."
+                });
+            } else if (results.length === 0) {
+                res.status(401).json({
+                    status: 401,
+                    msg: "Invalid email or password."
+                });
+            } else {
+                // Compare passwords
+                const match = await compare(userPwd, results[0].userPwd);
+                if (match) {
+                    const user = {
+                        emailAdd: results[0].emailAdd,
+                        userPwd: results[0].userPwd
+                    };
+                    const token = createToken(user);
+                    res.json({
+                        status: res.statusCode,
+                        token,
+                        msg: "Login successful."
+                    });
+                } else {
+                    res.status(401).json({
+                        status: 401,
+                        msg: "Invalid email or password."
+                    });
+                }
+            }
+        });
+    }
 }
 
-export { 
-    Users
-};
+export { Users };
