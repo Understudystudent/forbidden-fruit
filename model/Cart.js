@@ -1,5 +1,5 @@
 import { connection as db } from "../config/index.js";
-import { verifyAToken } from "../middleware/AuthenticateUser.js";
+// import { verifyAToken } from "../middleware/AuthenticateUser.js";
 
 class Cart {
     // Fetch cart items for a user

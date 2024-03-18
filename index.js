@@ -1,8 +1,8 @@
 import express from "express";
 import { userRouter } from "./controller/UserContoller.js";
-import { cartRouter } from "./controller/CartController.js";
 import { itemRouter } from "./controller/ItemContoller.js";
-import {errorHandling} from './middleware/ErrorHandling.js'
+import {cartRouter} from "./controller/CartContoller.js";
+import {errorHandling} from './middleware/ErrorHandling.js';
 import ItemMiddleware from './middleware/ItemsMiddleware.js';
 import cookieParser from "cookie-parser";
 
