@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import store from '../store' 
 
 const routes = [
   {
@@ -10,8 +11,16 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    component: () => import( '../views/AdminPage.vue')
-  },
+    component: () => import('../views/AdminPage.vue'),
+    beforeEnter: (to, from, next) => {
+      // Check if the user is authenticated and is an admin
+      if (!store.state.userAuthenticated || store.state.userRole.toLowerCase() !== 'admin') {
+        next('/');
+      } else {
+        next();
+      }
+    }
+    },
   {
     path: '/adminDashboard',
     name: 'AdminDashboard',
@@ -38,9 +47,10 @@ const routes = [
     component: () => import( '../components/ResetPassword.vue')
   },
   {
-    path: '/product',
-    name: 'SingleProduct',
-    component: () => import( '../views/SingleProductPage.vue')
+    path: '/products/:itemID', 
+    name: 'ItemDetailPage',
+    component: () => import('../views/SingleProductPage.vue'),
+    props: true 
   },
   {
     path: '/products',
@@ -52,6 +62,23 @@ const routes = [
     name: 'userEditPage',
     component: () => import( '../components/UserEditPage.vue')
   },
+  {
+    path: '/contactus',
+    name: 'contact', 
+    component: () => import( '../views/ContactPage.vue')
+  },
+  {
+    path: '/adminadduser',
+    name: 'AddUserFormAdmin',
+    component: () => import( '../components/UsersAdmin/AddUserAdmin.vue')
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: () => import('../views/CartView.vue') 
+  }
+ 
+  
 ]
 
 const router = createRouter({
