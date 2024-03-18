@@ -167,6 +167,7 @@ export default createStore({
       }
     },
      // Login user
+    //  set the token in the hed and in the cookie so back end cann retrive it
      async login(context, payload) {
         try {
             const {
