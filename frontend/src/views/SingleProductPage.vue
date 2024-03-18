@@ -26,7 +26,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import createPersistedState from "vuex-persistedstate";
+// import createPersistedState from "vuex-persistedstate";
 
 export default {
   name: "ItemDetailPage",
@@ -58,7 +58,7 @@ export default {
       }
     }
   },
-  plugins: [createPersistedState({ paths: ['items'] })]
+//   plugins: [createPersistedState({ paths: ['items'] })]
 };
 </script>
 

@@ -323,24 +323,25 @@ export default createStore({
     },
 
     // Add item to cart
-    async addToCart(context, payload) {
-      try {
-        await axios.post(`${forbidden}cart/add`, payload);
-        sweet({
-          title: "Add to Cart",
-          text: "Item added to cart successfully",
-          icon: "success",
-          timer: 2000,
-        });
-      } catch (error) {
-        sweet({
-          title: "Error",
-          text: "Failed to add item to cart. Please try again later." + console.log(error),
-          icon: "error",
-          timer: 5000,
-        });
-      }
-    },
+async addToCart(context, payload) {
+    try {
+      await axios.post(`${forbidden}cart/add`, payload);
+      sweet({
+        title: "Add to Cart",
+        text: "Item added to cart successfully",
+        icon: "success",
+        timer: 2000,
+      });
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      sweet({
+        title: "Error",
+        text: "Failed to add item to cart. Please try again later.",
+        icon: "error",
+        timer: 5000,
+      });
+    }
+  },
     // Fetch cart items
     async fetchCartItems(context, userID) {
       try {

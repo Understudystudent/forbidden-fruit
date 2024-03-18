@@ -89,15 +89,23 @@
   
   <script>
   import { useRouter } from 'vue-router';
-  
+  import { useStore } from 'vuex'; 
+
   export default {
     name: 'NavBar',
   
     setup() {
       const router = useRouter();
+      const store = useStore();
   
-      const handleLogout = () => {
-        // Handle logout logic
+      const handleLogout = () => { 
+        // Remove the cookie by setting its expiration date to a past time
+        document.cookie = "userAuthenticated=; expires=Thu, 25 March 1999 00:00:00 UTC; path=/;";
+
+        // Clear user state in Vuex store
+        store.commit('setUser', null);
+
+        router.push({ name: 'loginPage' });
       };
   
       const userEdit = () => {
@@ -107,7 +115,8 @@
       return { handleLogout, userEdit };
     },
   };
-  </script>
+</script>
+
   
   <style scoped>
   nav {
