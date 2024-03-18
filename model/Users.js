@@ -73,12 +73,11 @@ class Users {
     }
 
     // Update user information
-    // Update user information
 async updateUser(req, res) {
     const { id } = req.params;
     const userData = req.body;
     try {
-        if (userData && userData.userPwd) { // Corrected syntax
+        if (userData && userData.userPwd) { 
             userData.userPwd = await hash(userData.userPwd, 9);
         }
 
@@ -144,49 +143,44 @@ async updateUser(req, res) {
     }
 
     // User login
-    async login(req, res) {
-        const {
-            emailAdd,
-            userPwd
-        } = req.body;
-
-        // Check database for email if exists 
-        const qry = `SELECT * FROM Users WHERE emailAdd = ?;`;
-        db.query(qry, [emailAdd], async (err, results) => {
-            if (err) {
-                res.status(500).json({
-                    status: 500,
-                    msg: "An error occurred during login."
-                });
-            } else if (results.length === 0) {
-                res.status(401).json({
-                    status: 401,
-                    msg: "Invalid email or password."
-                });
-            } else {
-                // Compare passwords
-                const match = await compare(userPwd, results[0].userPwd);
-                if (match) {
-                    const user = {
-                        emailAdd: results[0].emailAdd,
-                        userPwd: results[0].userPwd
-                    };
-                    const token = createToken(user);
+    async  login(req, res) {
+        const {emailAdd, userPwd} = req.body 
+        const qry = `
+        SELECT userID, firstName, lastName, 
+        userAge, Gender, emailAdd, userPwd, userRole
+        FROM Users
+        WHERE emailAdd = '${emailAdd}';
+        `
+        db.query(qry, async(err, result)=>{
+            if(err) throw err 
+            if(!result?.length){
+                res.json({
+                    status: res.statusCode, 
+                    msg: "You provided a wrong email address."
+                })
+            }else {
+                // Validate password
+                const validPass = await compare(userPwd, result[0].userPwd)
+                if(validPass) {
+                    const token = createToken({
+                        emailAdd, 
+                        userPwd
+                    })
                     res.json({
                         status: res.statusCode,
-                        token,
-                        msg: "Login successful."
-                    });
-                } else {
-                    res.status(401).json({
-                        status: 401,
-                        msg: "Invalid email or password."
-                    });
+                        msg: "You're logged in",
+                        token, 
+                        result: result[0]
+                    })
+                }else {
+                    res.json({
+                        status: res.statusCode,
+                        msg: "Please provide the correct password."
+                    })
                 }
             }
-        });
+        })
     }
-
 }
 
 export {
