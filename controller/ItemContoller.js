@@ -3,13 +3,10 @@
     import { items } from '../model/index.js'
     import { verifyAToken } from "../middleware/AuthenticateUser.js"
 
-
-
     const itemRouter = express.Router()
 
-
     // get Item
-    itemRouter.get('/', (req, res)=>{
+    itemRouter.get('/', verifyAToken,(req, res)=>{
         try{
             items.fetchItems(req, res)
         }catch(e) {
