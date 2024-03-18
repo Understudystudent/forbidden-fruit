@@ -12,8 +12,8 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: () => import('../views/AdminPage.vue'),
+    // Check if the user is authenticated and is an admin
     beforeEnter: (to, from, next) => {
-      // Check if the user is authenticated and is an admin
       if (!store.state.userAuthenticated || store.state.userRole.toLowerCase() !== 'admin') {
         next('/');
       } else {
