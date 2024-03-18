@@ -20,7 +20,7 @@ verifyAToken,
     }
 })
 // Fetch user Single
-userRouter.get('/:id', verifyAToken, (req, res)=>{
+userRouter.get('/:id', (req, res)=>{
     try{
         users.fetchUser(req, res)
     }catch(e) {
@@ -44,7 +44,7 @@ userRouter.post('/register', bodyParser.json(), (req, res)=>{
 })
 
 //  Update User
-userRouter.patch('/update/:id', bodyParser.json(), 
+userRouter.patch('/update/:id',verifyAToken, bodyParser.json(), 
 (req, res)=>{
     try{
         users.updateUser(req, res)

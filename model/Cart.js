@@ -1,5 +1,4 @@
 import { connection as db } from "../config/index.js";
-// import { verifyAToken } from "../middleware/AuthenticateUser.js";
 
 class Cart {
     // Fetch cart items for a user
@@ -23,30 +22,6 @@ class Cart {
 addItem(req, res) {
     const { userID, itemID, quantity } = req.body;
 
-    // Check if userID, itemID, and quantity are provided if so go to the next step
-    if (!userID || !itemID || !quantity) {
-        return res.status(400).json({
-            status: 400,
-            error: 'Missing required parameters. Please provide userID, itemID, and quantity.'
-        });
-    }
-
-    // Validating the userID and itemID are numbers if not throw error
-    if (isNaN(userID) || isNaN(itemID)) {
-        return res.status(400).json({
-            status: 400,
-            error: 'Invalid userID or itemID. Please provide the correct numbers.'
-        });
-    }
-
-    // Validating that quantity  is less than or equal to zero
-    if (!Number.isInteger(quantity) || quantity <= 0) {
-        return res.status(400).json({
-            status: 400,
-            error: 'Invalid quantity. Please provide a positive integer.'
-        });
-    }
-
     // Proceed with adding the item to the cart if user is correct
     const qry = `
         INSERT INTO Cart (userID, itemID, quantity)
@@ -66,8 +41,6 @@ addItem(req, res) {
         });
     });
 }
-
-
     // Update cart item quantity
     updateCartItem(req, res) {
         const { userID, itemID } = req.params;
@@ -85,7 +58,6 @@ addItem(req, res) {
             });
         });
     }
-
     // Remove item from cart
     removeCartItem(req, res) {
         const { userID, itemID } = req.params;
@@ -101,6 +73,8 @@ addItem(req, res) {
             });
         });
     }
+
+    // Delete All
 }
 
 export { Cart };
