@@ -351,7 +351,7 @@ export default createStore({
         sweet({
           title: "Error",
           text: "Failed to fetch cart items. Please try again later.",
-          icon: "error",
+          icon: "error",  
           timer: 2000,
         });
       }
