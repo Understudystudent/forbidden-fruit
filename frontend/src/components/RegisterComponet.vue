@@ -59,8 +59,8 @@ export default {
           console.error('You must be 18 years or older.');
           return;
         }
-
         await this.$store.dispatch('register', this.userData);
+        this.$router.push("/login");
       } catch (error) {
         console.error('Registration failed:', error);
       }

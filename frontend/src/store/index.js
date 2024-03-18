@@ -59,7 +59,7 @@ export default createStore({
             icon: "success",
             timer: 2000,
           });
-          router.push("/login");
+        //   router.push("/login");
         } else {
           sweet({
             title: "info",
@@ -166,46 +166,49 @@ export default createStore({
         });
       }
     },
-    // Login user
-    async login(context, payload) {
-      try {
-        const { msg, token, result } = (
-          await axios.post(`${forbidden}users/login`, payload)
-        ).data;
-        if (result) {
-          context.commit("setUser", { msg, result });
-          cookies.set("userAuthenticated", { msg, token, result });
-          applyToken(token);
-
-          sweet({
-            title: msg,
-            text: `Welcome, ${result?.firstName} ${result?.lastName}`,
-            icon: "success",
-            timer: 3000,
-          });
-          setTimeout(() => {
-            window.location.reload();
-          });
-          router.push({
-            name: "home",
-          });
-        } else {
-          sweet({
-            title: "info",
-            text: msg,
-            icon: "info",
-            timer: 2000,
-          });
+     // Login user
+     async login(context, payload) {
+        try {
+            const {
+                msg,
+                token,
+                result
+            } = (await axios.post(`${forbidden}users/login`, payload)).data
+            if (result) {
+                context.commit('setUser', { msg, result })
+                    cookies.set('userAuthenticated', { msg, token, result })
+                applyToken(token)
+               
+                sweet({
+                    title: msg,
+                    text: `Welcome, ${result?.firstName} ${result?.lastName}`,
+                    icon: "success",
+                    timer: 3000,    
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                })   
+                router.push({
+                    name: 'home'
+                }); 
+            }
+             else {
+                sweet({
+                    title: 'info',
+                    text: msg,
+                    icon: 'info',
+                    timer: 2000,
+                });
+            }
+        } catch (e) {
+            console.error('Error during login:', e);
+            sweet({
+                title: 'Error',
+                text: 'Failed to login.',
+                icon: 'error',
+                timer: 2000,
+            });
         }
-      } catch (e) {
-        console.error("Error during login:", e);
-        sweet({
-          title: "Error",
-          text: "Failed to login.",
-          icon: "error",
-          timer: 2000,
-        });
-      }
     },
     // Fetch all Items
     async fetchItems(context) {
@@ -320,10 +323,10 @@ export default createStore({
           timer: 2000,
         });
       }
-    },
+    },  
 
     // Add item to cart
-async addToCart(context, payload) {
+    async addToCart(context, payload) {
     try {
       await axios.post(`${forbidden}cart/add`, payload);
       sweet({
