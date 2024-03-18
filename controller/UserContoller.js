@@ -7,7 +7,9 @@ import { verifyAToken } from "../middleware/AuthenticateUser.js"
 const userRouter = express.Router();
 
 // Fetch Users Plural
-userRouter.get('/', (req, res)=>{
+userRouter.get('/', 
+verifyAToken,
+(req, res)=>{
     try{
         users.fetchUsers(req, res)
     }catch(e) {
@@ -18,7 +20,7 @@ userRouter.get('/', (req, res)=>{
     }
 })
 // Fetch user Single
-userRouter.get('/:id', (req, res)=>{
+userRouter.get('/:id', verifyAToken, (req, res)=>{
     try{
         users.fetchUser(req, res)
     }catch(e) {
