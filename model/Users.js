@@ -1,6 +1,13 @@
-import { connection as db } from "../config/index.js";
-import { hash, compare } from 'bcrypt';
-import { createToken } from "../middleware/AuthenticateUser.js";
+import {
+    connection as db
+} from "../config/index.js";
+import {
+    hash,
+    compare
+} from 'bcrypt';
+import {
+    createToken
+} from "../middleware/AuthenticateUser.js";
 
 class Users {
     // Fetch all users
@@ -47,7 +54,7 @@ class Users {
         };
 
         const qry = `INSERT INTO Users SET ?;`;
-             
+
         db.query(qry, [data], (err) => {
             if (err) {
                 res.json({
@@ -66,35 +73,37 @@ class Users {
     }
 
     // Update user information
-    async updateUser(req, res) {
-        const { id } = req.params;
-        const userData = req.body;
-        try {
-            if(userData?.userPwd){
-                userData.userPwd = await hash(userData?.userPwd, 9);
-            }
-
-            const qry = `
-                UPDATE Users
-                SET ?
-                WHERE userID = ?
-            `;
-            
-            db.query(qry, [userData, id], (err) => {
-                if (err) throw err;
-                res.json({
-                    status: res.statusCode,
-                    msg: "The user information is updated."
-                });
-            });
-        } catch (error) {
-            console.error("Error updating user:", error);
-            res.status(500).json({
-                status: 500,
-                msg: "An error occurred when updating the user information."
-            });
+    // Update user information
+async updateUser(req, res) {
+    const { id } = req.params;
+    const userData = req.body;
+    try {
+        if (userData && userData.userPwd) { // Corrected syntax
+            userData.userPwd = await hash(userData.userPwd, 9);
         }
+
+        const qry = `
+            UPDATE Users
+            SET ?
+            WHERE userID = ?
+        `;
+
+        db.query(qry, [userData, id], (err) => {
+            if (err) throw err;
+            res.json({
+                status: res.statusCode,
+                msg: "The user information is updated."
+            });
+        });
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({
+            status: 500,
+            msg: "An error occurred when updating the user information."
+        });
     }
+}
+
 
     // Delete a user
     deleteUser(req, res) {
@@ -136,9 +145,12 @@ class Users {
 
     // User login
     async login(req, res) {
-        const { emailAdd, userPwd } = req.body;
+        const {
+            emailAdd,
+            userPwd
+        } = req.body;
 
-        // Check if email exists in the database
+        // Check database for email if exists 
         const qry = `SELECT * FROM Users WHERE emailAdd = ?;`;
         db.query(qry, [emailAdd], async (err, results) => {
             if (err) {
@@ -174,6 +186,9 @@ class Users {
             }
         });
     }
+
 }
 
-export { Users };
+export {
+    Users
+};
