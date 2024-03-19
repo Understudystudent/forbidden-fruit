@@ -15,23 +15,32 @@ function createToken(user) {
 }
 
 function verifyAToken(req, res, next) {
-    const token = req.cookies.userAuthenticated;  // Retrieve the JWT token from the cookie named 'userAuthenticated'
+    const token = req.cookies.userAuthenticated;
     if (token) {
-        // If token exists, verify its authenticity
-        jwt.verify(token, process.env.SECRET_KEY, (err) => {
+        jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
             if (err) {
                 // Token verification failed
-                res.status(401).json({ error: 'Unauthorized' });
+                return res.status(401).json({ error: 'Unauthorized' });
             } else {
-                // Token is valid, continue with the request
-                next();
+                // Token is valid, extract user information from the token payload
+                const { emailAdd, userRole } = decodedToken;
+                // Assuming userRole is 'admin' or 'user', you can perform role-based access control here
+                if (userRole === 'admin') {
+                    // User is authenticated and is an admin, allow the request to proceed
+                    req.user = { emailAdd, userRole };
+                    next();
+                } else {
+                    // User is authenticated but is not an admin, send an error response
+                    return res.status(403).json({ error: 'Forbidden' });
+                }
             }
         });
     } else {
         // No token provided in the request cookie
-        res.status(401).json({ error: 'Please login.' });
+        return res.status(401).json({ error: 'Please login.' });
     }
 }
+
 
 export {
     createToken,
