@@ -28,18 +28,26 @@ class Users {
 
     // Fetch a single user
     fetchUser(req, res) {
+        const userID = req.params.id;
         const qry = `
             SELECT userID, firstName, lastName,
             userAge, Gender, userRole, emailAdd, userProfile, userImg, address, number
             FROM Users
-            WHERE userID = ${req.params.id};
-        `;
-        db.query(qry, [req.params.id], (err, result) => {
-            if (err) throw err;
-            res.json({
-                status: res.statusCode,
-                result
-            });
+            WHERE userID = ?;`; 
+        
+        db.query(qry, [userID], (err, result) => {
+            if (err) {
+                console.error('Error fetching user:', err);
+                res.status(500).json({
+                    status: 500,
+                    error: 'Internal Server Error'
+                });
+            } else {
+                res.json({
+                    status: res.statusCode,
+                    result: result[0] 
+                });
+            }
         });
     }
 
@@ -73,35 +81,37 @@ class Users {
     }
 
     // Update user information
-async updateUser(req, res) {
-    const { id } = req.params;
-    const userData = req.body;
-    try {
-        if (userData && userData.userPwd) { 
-            userData.userPwd = await hash(userData.userPwd, 9);
-        }
+    async updateUser(req, res) {
+        const {
+            id
+        } = req.params;
+        const userData = req.body;
+        try {
+            if (userData && userData.userPwd) {
+                userData.userPwd = await hash(userData.userPwd, 9);
+            }
 
-        const qry = `
+            const qry = `
             UPDATE Users
             SET ?
             WHERE userID = ?
         `;
 
-        db.query(qry, [userData, id], (err) => {
-            if (err) throw err;
-            res.json({
-                status: res.statusCode,
-                msg: "The user information is updated."
+            db.query(qry, [userData, id], (err) => {
+                if (err) throw err;
+                res.json({
+                    status: res.statusCode,
+                    msg: "The user information is updated."
+                });
             });
-        });
-    } catch (error) {
-        console.error("Error updating user:", error);
-        res.status(500).json({
-            status: 500,
-            msg: "An error occurred when updating the user information."
-        });
+        } catch (error) {
+            console.error("Error updating user:", error);
+            res.status(500).json({
+                status: 500,
+                msg: "An error occurred when updating the user information."
+            });
+        }
     }
-}
 
 
     // Delete a user
@@ -144,31 +154,43 @@ async updateUser(req, res) {
 
     // User login
     async login(req, res) {
-        const { emailAdd, userPwd } = req.body;
-    
+        const {
+            emailAdd,
+            userPwd
+        } = req.body;
+
         try {
             const qry = `
-                SELECT userID, firstName, lastName, 
-                userAge, Gender, emailAdd, userPwd, userRole
-                FROM Users
-                WHERE emailAdd = ?;
-            `;
+            SELECT userID, firstName, lastName, 
+            userAge, Gender, emailAdd, userPwd, userRole
+            FROM Users
+            WHERE emailAdd = ?;
+        `;
             db.query(qry, [emailAdd], async (err, result) => {
                 if (err) throw err;
-                
-                if (!result?.length) {
+
+                if (!result || result.length === 0) {
                     res.json({
-                        status: res.statusCode, 
+                        status: res.statusCode,
                         msg: "You provided a wrong email address."
                     });
                 } else {
                     const validPass = await compare(userPwd, result[0].userPwd);
                     if (validPass) {
-                        const token = createToken({ emailAdd, userPwd });
+                        const token = createToken({
+                            emailAdd,
+                            userPwd
+                        });
+
+                        // Set token as a cookie
+                        res.cookie('token', token, {
+                            httpOnly: true
+                        });
+
                         res.json({
                             status: res.statusCode,
                             msg: "You're logged in",
-                            token, 
+                            token,
                             result: result[0]
                         });
                     } else {
@@ -187,7 +209,8 @@ async updateUser(req, res) {
             });
         }
     }
-    
+
+
 }
 
 export {
