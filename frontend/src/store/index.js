@@ -168,35 +168,28 @@ export default createStore({
     },
      // Login user
     //  set the token in the hed and in the cookie so back end cann retrive it
-     async login(context, payload) {
+    async login(context, payload) {
         try {
-            const {
-                msg,
-                token,
-                result
-            } = (await axios.post(`${forbidden}users/login`, payload)).data
+            const { msg, token, result } = (await axios.post(`${forbidden}users/login`, payload)).data;
             if (result) {
-                context.commit('setUser', { msg, result })
-                    cookies.set('userAuthenticated', { msg, token, result })
-                    console.log(msg);
-                    console.log(token);
-                    console.log(result);
-                applyToken(token)
-               
+                context.commit('setUser', { msg, result });
+                // Set token in header
+                applyToken(token);
+    
+                // Set token in cookie
+                cookies.set('userAuthenticated', token); 
+    
                 sweet({
                     title: msg,
                     text: `Welcome, ${result?.firstName} ${result?.lastName}`,
                     icon: "success",
-                    timer: 3000,    
-                })
+                    timer: 3000,
+                });
                 setTimeout(() => {
                     window.location.reload();
-                })   
-                router.push({
-                    name: 'home'
-                }); 
-            }
-             else {
+                });
+                router.push({ name: 'home' });
+            } else {
                 sweet({
                     title: 'info',
                     text: msg,
@@ -213,7 +206,8 @@ export default createStore({
                 timer: 2000,
             });
         }
-    },
+    }
+    
     // Fetch all Items
     async fetchItems(context) {
       try {
