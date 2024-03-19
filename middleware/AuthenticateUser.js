@@ -15,24 +15,18 @@ function createToken(user){
 }
 
 function verifyAToken(req, res, next) {
-    // Retrieve a token from the browser
-    const token = req?.headers['Authorization'];
+    const token = req.cookies.userAuthenticated; // Cookie name is 'userAuthenticated'
     if (token) {
         jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
             if (err) {
-                res?.json({
-                    status: res.statusCode,
-                    msg: "Token verification failed. Please provide the correct credentials."
-                });
+                res.status(401).json({ error: 'Unauthorized' });
             } else {
+                req.user = decoded; 
                 next();
             }
         });
     } else {
-        res?.json({
-            status: res.statusCode,
-            msg: "Please provide a token."
-        });
+        res.status(401).json({ error: 'Unauthorized' });
     }
 }
 export {
