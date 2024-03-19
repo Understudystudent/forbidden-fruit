@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import store from '../store' 
+// import store from '../store' 
 
 const routes = [
   {
@@ -13,13 +13,13 @@ const routes = [
     name: 'admin',
     component: () => import('../views/AdminPage.vue'),
     // Check if the user is authenticated and is an admin
-    beforeEnter: (to, from, next) => {
-      if (!store.state.userAuthenticated || store.state.userRole.toLowerCase() !== 'admin') {
-        next('/');
-      } else {
-        next();
-      }
-    }
+    // beforeEnter: (to, from, next) => {
+    //   if (!store.state.LegitUser || store.state.userRole.toLowerCase() !== 'Admin') {
+    //     next('/');
+    //   } else {
+    //     next();
+    //   }
+    // }
     },
   {
     path: '/adminDashboard',
