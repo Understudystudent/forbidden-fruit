@@ -20,7 +20,7 @@ function applyToken(token) {
 //     axios.defaults.headers.common['Authorization'] = undefined;
 // }
 
-export {
+export default{
     applyToken
     // clearToken
 };

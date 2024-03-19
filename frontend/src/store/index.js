@@ -10,9 +10,7 @@ const {
     cookies
 } = useCookies();
 import router from "@/router";
-import {
-    applyToken
-} from "../Service/AuthenticateUser.js";
+import authUser from "../Service/AuthenticateUser.js";
 const forbidden = "https://forbdden-fruit.onrender.com/";
 
 export default createStore({
@@ -203,7 +201,7 @@ export default createStore({
                     // Set token in cookie
                     cookies.set('userAuthenticated', {token, result}),
                     // Set token in header
-                    applyToken(token);
+                    authUser.applyToken(token);
 
                     sweet({
                         title: msg,
