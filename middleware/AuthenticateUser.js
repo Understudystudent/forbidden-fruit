@@ -15,7 +15,8 @@ function createToken(user){
 }
 
 function verifyAToken(req, res, next) {
-    const token = req.cookies.userAuthenticated; // cookie name is 'userAuthenticated'
+    const token = req.cookies.userAuthenticated;  // cookie name is 'userAuthenticated'
+    console.log(token);
     if (token) {
         jwt.verify(token, process.env.SECRET_KEY, (err) => {
             if (err) {
