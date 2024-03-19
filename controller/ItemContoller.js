@@ -7,13 +7,13 @@
 
     // get Item
     itemRouter.get('/', verifyAToken, (req, res)=>{
-        console.log();
+        console.log(verifyAToken);
         try{
             items.fetchItems(req, res)
         }catch(e) {
             res.json({
                 status: res.statusCode,
-                msg: 'Failed to retrieve items'
+                msg: 'Failed to retrieve items' + e.message
             })
         }
     })
