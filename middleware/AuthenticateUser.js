@@ -22,6 +22,9 @@ function verifyAToken(req, res, next) {
                 // Token verification failed
                 return res.status(401).json({ error: 'Unauthorized' });
             } else {
+                // Log the decoded token to inspect its content
+                console.log(decodedToken);
+                
                 // Token is valid, extract user information from the token payload
                 const { emailAdd, userRole } = decodedToken;
                 // Assuming userRole is 'admin' or 'user', you can perform role-based access control here
@@ -40,6 +43,7 @@ function verifyAToken(req, res, next) {
         return res.status(401).json({ error: 'Please login.' });
     }
 }
+
 
 
 export {
