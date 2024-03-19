@@ -139,48 +139,54 @@ class Users {
     }
 
     // User login
-    login(req, res) {
-        const { emailAdd, userPwd } = req.body;
-        const qry = `
-            SELECT userID, firstName, lastName, 
-            userAge, Gender, emailAdd, userPwd, userRole,
-            userProfile, userImg, address, number
-            FROM Users
-            WHERE emailAdd = ?;
-        `;
-        db.query(qry, [emailAdd], async (err, result) => {
-            if (err) {
-                console.error('Error logging in:', err);
-                res.status(500).json({
-                    status: 500,
-                    error: 'Internal Server Error'
+login(req, res) {
+    const { emailAdd, userPwd } = req.body;
+    const qry = `
+        SELECT userID, firstName, lastName, 
+        userAge, Gender, emailAdd, userPwd, userRole,
+        userProfile, userImg, address, number
+        FROM Users
+        WHERE emailAdd = ?;
+    `;
+    db.query(qry, [emailAdd], async (err, result) => {
+        if (err) {
+            console.error('Error logging in:', err);
+            res.status(500).json({
+                status: 500,
+                error: 'Internal Server Error'
+            });
+        } else {
+            if (!result.length) {
+                res.json({
+                    status: res.statusCode,
+                    msg: 'You provided a wrong email address.'
                 });
             } else {
-                if (!result.length) {
+                const validPass = await compare(userPwd, result[0].userPwd);
+                if (validPass) {
+                    // Include userRole in the token payload
+                    const token = createToken({ 
+                        emailAdd, 
+                        userPwd, 
+                        userRole: result[0].userRole 
+                    });
                     res.json({
                         status: res.statusCode,
-                        msg: 'You provided a wrong email address.'
+                        msg: 'You\'re logged in',
+                        token,
+                        result: result[0]
                     });
                 } else {
-                    const validPass = await compare(userPwd, result[0].userPwd);
-                    if (validPass) {
-                        const token = createToken({ emailAdd, userPwd });
-                        res.json({
-                            status: res.statusCode,
-                            msg: 'You\'re logged in',
-                            token,
-                            result: result[0]
-                        });
-                    } else {
-                        res.json({
-                            status: res.statusCode,
-                            msg: 'Please provide the correct password.'
-                        });
-                    }
+                    res.json({
+                        status: res.statusCode,
+                        msg: 'Please provide the correct password.'
+                    });
                 }
             }
-        });
-    }
+        }
+    });
+}
+
 }
 
 export { Users };
