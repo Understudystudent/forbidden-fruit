@@ -16,21 +16,23 @@ function createToken(user){
 
 function verifyAToken(req, res, next) {
     // Retrieve a token from the browser
-    const token = req?.headers['Authorization']
-    if(token) {
-        if(verify(token, process.env.SECRET_KEY)){
-            next()
-        }else {
-            res?.json({
-                status: res.statusCode,
-                msg: "Please provide the correct credentials."
-            })
-        }
-    }else {
+    const token = req?.headers['Authorization'];
+    if (token) {
+        jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+            if (err) {
+                res?.json({
+                    status: res.statusCode,
+                    msg: "Token verification failed. Please provide the correct credentials."
+                });
+            } else {
+                next();
+            }
+        });
+    } else {
         res?.json({
             status: res.statusCode,
-            msg: "Please login."
-        })
+            msg: "Please provide a token."
+        });
     }
 }
 export {
