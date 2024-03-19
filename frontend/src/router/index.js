@@ -72,17 +72,16 @@ const routes = [
     name: 'AddUserFormAdmin',
     component: () => import( '../components/UsersAdmin/AddUserAdmin.vue')
   },
-  {
+    {
     path: '/cart',
     name: 'cart',
     component: () => import('../views/CartView.vue') 
   },
   {
     path: '/about',
-    name: 'aboutPage',
-    component: () => import('../views/AboutPage.vue') 
-  }
- 
+    name: 'AboutPage', 
+    component: () => import( '../views/AboutPage.vue')
+  },
   
 ]
 

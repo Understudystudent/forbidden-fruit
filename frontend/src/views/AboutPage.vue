@@ -1,5 +1,5 @@
 <template>
-    <div class="about">
+    <div class="about bg-dak vh-100">
       <h1>About Us</h1>
       <p>Welcome to our website! We are passionate about creating amazing products and providing excellent services.</p>
       <p>Our mission is to make a positive impact on the world by delivering innovative solutions and fostering meaningful relationships with our customers.</p>
@@ -9,7 +9,7 @@
   
   <script>
   export default {
-    name: 'aboutPage',
+    name: 'AboutPage',
   }
   </script>
   

@@ -1,8 +1,8 @@
 <template>
-  <div class="cart-view">
-    <h1>Your Shopping Cart</h1>
+  <div class="cart-view vh-100 bg-black">
+    <h1 class="text-white text-center">Your Shopping Cart</h1>
     <div v-if="cartItems.length === 0">
-      <p>Your cart is empty.</p>
+      <p class="text-white text-center" >Your cart is empty.</p>
     </div>
     <div v-else>
       <div v-for="(item, index) in cartItems" :key="index" class="cart-item">
@@ -23,7 +23,7 @@
 <script>
 export default {
   computed: {
-    // Map cartItems from the Vuex store state
+    // 
     cartItems() {
       return this.$store.state.cartItems;
     }
@@ -58,5 +58,4 @@ export default {
 </script>
 
 <style>
-/* Add your styling here */
 </style>
