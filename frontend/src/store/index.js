@@ -10,7 +10,7 @@ const {
     cookies
 } = useCookies();
 import router from "@/router";
-import authUser from "../Service/AuthenticateUser.js";
+import AuthenticateUser from '@/Service/AuthenticateUser.js'
 const forbidden = "https://forbdden-fruit.onrender.com/";
 
 export default createStore({
@@ -186,53 +186,41 @@ export default createStore({
         // Login user
         //  set the token in the hed and in the cookie so back end cann retrive it
         async login(context, payload) {
-            try {
-                const {
-                    msg,
-                    token,
-                    result
-                } = (await axios.post(`${forbidden}users/login`, payload)).data;
-                if (result) {
-                    context.commit('setUser', {
-                        msg,
-                        result
-                    });
-
-                    // Set token in cookie
-                    cookies.set('userAuthenticated', {token, result}),
-                    // Set token in header
-                    authUser.applyToken(token);
-
-                    sweet({
-                        title: msg,
-                        text: `Welcome, ${result?.firstName} ${result?.lastName}`,
-                        icon: "success",
-                        timer: 3000,
-                    });
-                    setTimeout(() => {
-                        window.location.reload();
-                    });
-                    router.push({
-                        name: 'home'
-                    });
-                } else {
-                    sweet({
-                        title: 'info',
-                        text: msg,
-                        icon: 'info',
-                        timer: 2000,
-                    });
-                }
-            } catch (e) {
-                console.error('Error during login:', e);
+            try{
+             const {msg, token, result} = (await axios.post(`${forbidden}users/login`, payload)).data 
+             if(result){
+              context.commit('setUser', {msg, result})
+              cookies.set('LegitUser', {
+                msg, token, result
+              })
+              AuthenticateUser.applyToken(token)
+              sweet({
+                title: msg,
+                text: `Welcome back, 
+                ${result?.firstName} ${result?.lastName}`,
+                icon: "success",
+                timer: 2000
+              })
+                router.push({name: 'home'})
+              }else {
                 sweet({
-                    title: 'Error',
-                    text: 'Failed to login.',
-                    icon: 'error',
-                    timer: 2000,
-                });
+                  title: 'info',
+                  text: msg,
+                  icon: "info",
+                  timer: 2000
+                })
+              }
+            }catch(e) {
+              sweet({
+                title: 'Error',
+                text: 'Failed to login.',
+                icon: "error",
+                timer: 2000
+              })
             }
-        },
+            
+      
+          },
 
         // Fetch all Items
         async fetchItems(context) {
