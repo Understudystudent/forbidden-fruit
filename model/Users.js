@@ -28,12 +28,11 @@ class Users {
 
     // Fetch a single user
     fetchUser(req, res) {
-        const userID = req.params.id;
         const qry = `
             SELECT userID, firstName, lastName,
             userAge, Gender, userRole, emailAdd, userProfile, userImg, address, number
             FROM Users
-            WHERE userID = ?;`; 
+            WHERE userID = ${req.params.id};`; 
         
         db.query(qry, [userID], (err, result) => {
             if (err) {
