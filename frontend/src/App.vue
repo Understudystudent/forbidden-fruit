@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NavBar/>
+        <!-- <NavBar/> -->
         <NavBar v-show="loggedUser"/>
         <router-view />
     </div>
