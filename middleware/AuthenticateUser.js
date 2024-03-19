@@ -26,9 +26,31 @@ function verifyAToken(req, res, next) {
             }
         });
     } else {
-        res.status(401).json({ error: 'Unauthorized' });
+        res.status(401).json({ error: 'Please login.' });
     }
 }
+
+// Retrieve a token from the browser
+// function verifyAToken(req, res, next) {
+//     const token = req?.headers['Authorization']
+//     if(token) {
+//         if(verify(token, process.env.SECRET_KEY)){
+//             next()
+//         }else {
+//             res?.json({
+//                 status: res.statusCode,
+//                 msg: "Please provide the correct credentials."
+//             })
+//         }
+//     }else {
+//         res?.json({
+//             status: res.statusCode,
+//             msg: "Please login."
+//         })
+//     }
+// }
+
+
 export {
     createToken,
     verifyAToken
