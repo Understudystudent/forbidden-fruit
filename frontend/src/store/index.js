@@ -177,7 +177,7 @@ export default createStore({
                 applyToken(token);
     
                 // Set token in cookie
-                cookies.set('userAuthenticated', token); 
+                cookies.set('userAuthenticated', token),
     
                 sweet({
                     title: msg,
@@ -206,7 +206,7 @@ export default createStore({
                 timer: 2000,
             });
         }
-    }
+    },
     
     // Fetch all Items
     async fetchItems(context) {
