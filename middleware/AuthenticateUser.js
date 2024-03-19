@@ -33,7 +33,7 @@ function createToken(user){
 
 // Retrieve a token from the browser
 function verifyAToken(req, res, next) {
-    const token = req?.headers['authorization']
+    const token = req?.headers["authorization"]
     console.log(token);
     if(token) {
         if(verify(token, process.env.SECRET_KEY)){
