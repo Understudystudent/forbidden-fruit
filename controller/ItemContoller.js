@@ -1,13 +1,13 @@
     import express from 'express'
     import bodyParser from 'body-parser'
     import { items } from '../model/index.js'
-    import { verifyAToken } from '../middleware/AuthenticateUser.js'
+    // import { verifyAToken } from '../middleware/AuthenticateUser.js'
 
     const itemRouter = express.Router()
 
     // get Item
-    itemRouter.get('/', verifyAToken, (req, res)=>{
-        console.log(verifyAToken);
+    itemRouter.get('/', (req, res)=>{
+        // console.log(verifyAToken);
         try{
             items.fetchItems(req, res)
         }catch(e) {
