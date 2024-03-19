@@ -3,7 +3,6 @@ import { userRouter } from "./controller/UserContoller.js";
 import { itemRouter } from "./controller/ItemContoller.js";
 import {cartRouter} from "./controller/CartContoller.js";
 import {errorHandling} from './middleware/ErrorHandling.js';
-import ItemMiddleware from './middleware/ItemsMiddleware.js';
 import cookieParser from "cookie-parser";
 
 import path from 'path'
@@ -41,7 +40,6 @@ app.use("/cart", cartRouter);
 
 
 app.use(errorHandling)
-app.use(ItemMiddleware);
 
 
 app.listen(port, ()=>{

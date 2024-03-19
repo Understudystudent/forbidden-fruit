@@ -33,24 +33,28 @@ function createToken(user){
 
 // Retrieve a token from the browser
 function verifyAToken(req, res, next) {
-    const token = req?.headers["authorization"]
-    console.log(token);
-    if(token) {
-        if(verify(token, process.env.SECRET_KEY)){
-            next()
-        }else {
-            res?.json({
-                status: res.statusCode,
-                msg: "Please provide the correct credentials."
-            })
+    const token = req?.headers["authorization"];
+    console.log("Received token:", token);
+
+    if (token) {
+        try {
+            const decodedToken = verify(token, process.env.SECRET_KEY);
+            console.log("Decoded token:", decodedToken);
+            // If token is valid, attach decoded data to the request object
+            req.decodedToken = decodedToken;
+            next();
+        } catch (error) {
+            // Token verification failed
+            console.error("Token verification failed:", error);
+            res.status(401).json({ error: 'Unauthorized' });
         }
-    }else {
-        res?.json({
-            status: res.statusCode,
-            msg: "Please login."
-        })
+    } else {
+        // No token provided in the request
+        console.log("No token provided in the request.");
+        res.status(401).json({ error: 'Please provide a token' });
     }
 }
+
 
 
 export {
