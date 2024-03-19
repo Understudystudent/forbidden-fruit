@@ -7,6 +7,7 @@ const userRouter = express.Router();
 
 // Fetch Users Plural
 userRouter.get('/', verifyAToken, (req, res) => {
+    console.log(verifyAToken);
     try {
         users.fetchUsers(req, res);
     } catch (e) {
