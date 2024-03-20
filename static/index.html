@@ -134,36 +134,37 @@
     </thead>
     <tbody>
         <tr>
-            <td class="col-4 text-center">/items</td>
+            <td class="col-4 text-center">/</td>
             <td class="col-4 text-center">GET</td>
-            <td class="col-4 text-center">To display all Items</td>
+            <td class="col-4 text-center">Welcome to the cart</td>
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/items/:id</td>
-            <td class="col-4 text-center">Fetch</td>
-            <td class="col-4 text-center">To display a single Item</td>
+            <td class="col-4 text-center">/add</td>
+            <td class="col-4 text-center">POST</td>
+            <td class="col-4 text-center">Add item to cart</td>
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/items/addItem</td>
-            <td class="col-4 text-center">Add</td>
-            <td class="col-4 text-center">To create a new Item</td>
+            <td class="col-4 text-center">/:userID</td>
+            <td class="col-4 text-center">GET</td>
+            <td class="col-4 text-center">Get cart items for a user</td>
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/items/update/:id</td>
-            <td class="col-4 text-center">Update</td>
-            <td class="col-4 text-center">Update a items</td>
+            <td class="col-4 text-center">/update/:userID/:itemID</td>
+            <td class="col-4 text-center">PATCH</td>
+            <td class="col-4 text-center">Update cart item quantity</td>
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/items/delete/:id</td>
-            <td class="col-4 text-center">Delete</td>
-            <td class="col-4 text-center">Delete an existing items</td>
+            <td class="col-4 text-center">/remove/:userID/:itemID</td>
+            <td class="col-4 text-center">DELETE</td>
+            <td class="col-4 text-center">Remove item from cart</td>
         </tr>
     </tbody>
 </table>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
