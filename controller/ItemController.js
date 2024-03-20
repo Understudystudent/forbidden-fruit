@@ -1,13 +1,15 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import { items } from '../model/index.js'
+import { verifyAToken } from "../middleware/AuthenticateUser.js";
+
 
 
 const itemRouter = express.Router()
 
 
 // get Item
-itemRouter.get('/', (req, res)=>{
+itemRouter.get('/', verifyAToken, (req, res)=>{
     try{
         items.fetchItems(req, res)
     }catch(e) {
@@ -19,7 +21,7 @@ itemRouter.get('/', (req, res)=>{
 })
 
 // get Item by ID
-itemRouter.get('/:id', (req, res)=>{
+itemRouter.get('/:id', verifyAToken, (req, res)=>{
     try{
         items.fetchItem(req, res)
     }catch(e) {
@@ -31,7 +33,7 @@ itemRouter.get('/:id', (req, res)=>{
 })
 
 // Add Item
-itemRouter.post('/addItems', bodyParser.json(), (req, res)=>{
+itemRouter.post('/addItems',verifyAToken, bodyParser.json(), (req, res)=>{
     try{
         items.addItem(req, res)
     }catch(e) {
@@ -43,7 +45,7 @@ itemRouter.post('/addItems', bodyParser.json(), (req, res)=>{
 })
 
 // Update Item
-itemRouter.patch('/update/:id', bodyParser.json(), (req, res)=>{
+itemRouter.patch('/update/:id',verifyAToken, bodyParser.json(), (req, res)=>{
     try{
         items.updateItem(req, res)
     }catch(e) {
@@ -55,7 +57,7 @@ itemRouter.patch('/update/:id', bodyParser.json(), (req, res)=>{
 })
 
 // Delete Product
-itemRouter.delete('/delete/:id', (req, res)=>{
+itemRouter.delete('/delete/:id',verifyAToken, (req, res)=>{
     try{
         items.deleteItem(req, res)
     }catch(e) {
