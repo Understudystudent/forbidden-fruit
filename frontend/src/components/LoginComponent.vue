@@ -16,17 +16,14 @@
 
       <button type="submit">Enter</button>
 
-      <div v-if="loggedInUser">
-        <p>Logged in as: {{ loggedInUser.firstName }} {{ loggedInUser.lastName }}</p>
-        <p>Email: {{ loggedInUser.email }}</p>
-      </div>
+      <p v-if="error" class="error-message text-center">{{ error }}</p>
     </form>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'loginPage',
+  name: 'LoginPage',
   data() {
     return {
       userData: {
@@ -36,63 +33,52 @@ export default {
       error: '',
     };
   },
-  computed: {
-    loggedInUser() {
-      return this.$store.state.user; 
-    }
-  },
-  created() {
-    this.reloadPageOnce();
-  },
-
   methods: {
     async handleSubmit() {
-  try {
-    console.log("Starting login process...");
-    const { msg, token } = await this.$store.dispatch('login', this.userData);
-    console.log("Token value:", token);
+      try {
+        console.log("Starting login process...");
+        const { msg, token } = await this.$store.dispatch('login', this.userData);
+        console.log("Token value:", token);
 
-    if (token) {
-      console.log("Login successful.");
+        if (token) {
+          console.log("Login successful.");
 
-      // Clone the result from the token and store it separately
-      const clonedUser = JSON.parse(JSON.stringify(this.$store.state.user));
-      console.log("Cloned user:", clonedUser);
+          // Clone the result from the token and store it separately
+          const clonedUser = JSON.parse(JSON.stringify(this.$store.state.user));
+          console.log("Cloned user:", clonedUser);
 
-      // Store the cloned user data in session storage
-      sessionStorage.setItem('loggedInUser', JSON.stringify(clonedUser));
-      console.log("User data stored in session storage:", sessionStorage.getItem('loggedInUser'));
+          // Store the cloned user data in session storage
+          sessionStorage.setItem('loggedInUser', JSON.stringify(clonedUser));
+          console.log("User data stored in session storage:", sessionStorage.getItem('loggedInUser'));
 
-      this.$router.push('/');
-    } else {
-      console.log("Login failed. Error:", msg);
-      this.error = msg;
-    }
-  } catch (e) {
-    console.error('Error during login:', e);
-    this.error = 'Failed to login.';
-  }
-},
+          this.$router.push('/');
+        } else {
+          console.log("Login failed. Error:", msg);
+          this.error = msg;
+        }
+      } catch (e) {
+        console.error('Error during login:', e);
+        this.error = 'Failed to login.';
+      }
+    },
+    handleLogout() {
+      // Clear user authentication data
+      this.userData = {};
 
+      // Store logout state in local storage
+      localStorage.setItem('logoutState', 'true');
+
+      // Redirect to login page
+      this.$router.push({ name: 'loginPage' });
+    },
     redirectToRegisterPage() {
       this.$router.push({ name: 'register' });
     },
-
-    reloadPageOnce() {
-      if (!sessionStorage.getItem('pageReloaded')) {
-        sessionStorage.setItem('pageReloaded', 'true');
-        location.reload();
-      } else {
-        sessionStorage.removeItem('pageReloaded');
-      }
-    },
-  },
+  }
 };
 </script>
 
-
 <style scoped>
-/* Maintain color scheme */
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
 * {
