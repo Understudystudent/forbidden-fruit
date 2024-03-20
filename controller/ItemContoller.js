@@ -1,71 +1,65 @@
-    import express from 'express'
-    import bodyParser from 'body-parser'
-    import { items } from '../model/index.js'
-    // import { verifyAToken } from '../middleware/AuthenticateUser.js'
+import express from 'express';
+import bodyParser from 'body-parser';
+import { items } from '../model/index.js';
+import jwt from 'jsonwebtoken';
+import { verifyAToken } from '../middleware/AuthenticateUser.js';
 
-    const itemRouter = express.Router()
+const itemRouter = express.Router();
 
-    // get Item
-    itemRouter.get('/', (req, res)=>{
-        // console.log(verifyAToken);
-        try{
-            items.fetchItems(req, res)
-        }catch(e) {
-            res.json({
-                status: res.statusCode,
-                msg: 'Failed to retrieve items' + e.message
-            })
+// Get all items
+itemRouter.get('/', verifyAToken, async (req, res) => {
+    try {
+        // Check if the user is verified
+        if (!req.user.verified) {
+            return res.status(403).json({ message: 'Unauthorized: User is not verified' });
         }
-    })
 
-    // get Item by ID
-    itemRouter.get('/:id', (req, res)=>{
-        try{
-            items.fetchItem(req, res)
-        }catch(e) {
-            res.json({
-                status: res.statusCode,
-                msg: 'Failed to retrieve a item'
-            })
-        }
-    })
-
-    // Add Item
-    itemRouter.post('/addItems', bodyParser.json(), (req, res)=>{
-        try{
-            items.addItem(req, res)
-        }catch(e) {
-            res.json({
-                status: res.statusCode,
-                msg: 'Failed to add a new Item.'
-            })
-        }
-    })
-
-    // Update Item
-    itemRouter.patch('/update/:id', bodyParser.json(), (req, res)=>{
-        try{
-            items.updateItem(req, res)
-        }catch(e) {
-            res.json({
-                status: res.statusCode,
-                msg: "Failed to update a Item."
-            })
-        }
-    })
-
-    // Delete Product
-    itemRouter.delete('/delete/:id', (req, res)=>{
-        try{
-            items.deleteItem(req, res)
-        }catch(e) {
-            res.json({
-                status: res.statusCode,
-                msg: "Failed to delete a Item."
-            })
-        }
-    })
-
-    export {
-        itemRouter
+        // Fetch all items
+        items.fetchItems(req, res);
+    } catch (error) {
+        console.error('Error fetching items:', error);
+        res.status(500).json({ message: 'Failed to fetch items' });
     }
+});
+
+// Get item by ID
+itemRouter.get('/:id', async (req, res) => {
+    try {
+        items.fetchItem(req, res);
+    } catch (error) {
+        console.error('Error fetching item:', error);
+        res.status(500).json({ message: 'Failed to fetch item' });
+    }
+});
+
+// Add item
+itemRouter.post('/addItems', bodyParser.json(), async (req, res) => {
+    try {
+        items.addItem(req, res);
+    } catch (error) {
+        console.error('Error adding item:', error);
+        res.status(500).json({ message: 'Failed to add item' });
+    }
+});
+
+// Update item
+itemRouter.patch('/update/:id', bodyParser.json(), async (req, res) => {
+    try {
+        items.updateItem(req, res);
+    } catch (error) {
+        console.error('Error updating item:', error);
+        res.status(500).json({ message: 'Failed to update item' });
+    }
+});
+
+// Delete item
+itemRouter.delete('/delete/:id', async (req, res) => {
+    try {
+        items.deleteItem(req, res);
+    } catch (error) {
+        console.error('Error deleting item:', error);
+        res.status(500).json({ message: 'Failed to delete item' });
+    }
+});
+
+export { itemRouter };
