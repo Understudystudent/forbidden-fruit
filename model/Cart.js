@@ -18,8 +18,8 @@ class Cart {
         });
     }
 
-     // Add item to cart
-      addItem(req, res) {
+   // Add item to cart
+addItem(req, res) {
     const { userID, itemID, quantity } = req.body;
 
     // Proceed with adding the item to the cart if user is correct

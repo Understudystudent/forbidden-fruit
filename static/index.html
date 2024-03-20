@@ -70,12 +70,6 @@
                 <td class="col-4 text-center">Delete</td> 
                 <td class="col-4 text-center">Delete an existing User</td> 
             </tr>
-            
-            <tr>
-                <td class="col-4 text-center">/users/deleteProfile/:id</td>
-                <td class="col-4 text-center">Delete</td> 
-                <td class="col-4 text-center">Delete user's own profile</td> 
-            </tr>
         
             <tr>
                 <td class="col-4 text-center">/users/login</td>
@@ -109,7 +103,7 @@
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/items/addItems</td>
+            <td class="col-4 text-center">/items/addItem</td>
             <td class="col-4 text-center">Add</td>
             <td class="col-4 text-center">To create a new Item</td>
         </tr>
@@ -140,15 +134,15 @@
     </thead>
     <tbody>
         <tr>
-            <td class="col-4 text-center">/add</td>
-            <td class="col-4 text-center">Add</td>
-            <td class="col-4 text-center">To Add to Cart</td>
+            <td class="col-4 text-center">/items</td>
+            <td class="col-4 text-center">GET</td>
+            <td class="col-4 text-center">To display all Items</td>
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/:userID'</td>
+            <td class="col-4 text-center">/items/:id</td>
             <td class="col-4 text-center">Fetch</td>
-            <td class="col-4 text-center">To GetItems for User</td>
+            <td class="col-4 text-center">To display a single Item</td>
         </tr>
 
         <tr>
@@ -158,15 +152,15 @@
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/update/:userID/:itemID</td>
+            <td class="col-4 text-center">/items/update/:id</td>
             <td class="col-4 text-center">Update</td>
-            <td class="col-4 text-center">Update a items in a Cart</td>
+            <td class="col-4 text-center">Update a items</td>
         </tr>
 
         <tr>
-            <td class="col-4 text-center">/remove/:userID/:itemID</td>
+            <td class="col-4 text-center">/items/delete/:id</td>
             <td class="col-4 text-center">Delete</td>
-            <td class="col-4 text-center">Delete items from Cart </td>
+            <td class="col-4 text-center">Delete an existing items</td>
         </tr>
     </tbody>
 </table>

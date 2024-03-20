@@ -1,14 +1,16 @@
 import {connection as db} from "../config/index.js"
 import {hash, compare} from 'bcrypt'
-import { createToken } 
-from "../middleware/AuthenticateUser.js"
+import { createToken } from "../middleware/AuthenticateUser.js"
+
+
 class Users{
+    // mulitple Users
     fetchUsers(req, res) {
         const qry = `
-        SELECT userID, firstName, lastName, 
-        userAge, Gender, emailAdd, userRole,
-        userProfile, userImg, address, number
-        FROM Users;`
+        SELECT userID, firstName, lastName,
+        userAge, Gender, userRole, emailAdd,userProfile,userImg
+        FROM Users;
+        `
         db.query(qry, (err, results)=>{
             if(err) throw err
             res.json({
@@ -17,12 +19,14 @@ class Users{
             })
         })
     }
+    // single User 
     fetchUser(req, res) {
         const qry = `
-        SELECT userID, firstName, lastName, 
-            userAge, Gender, emailAdd, userRole,
-            userProfile, userImg, address, number
-            FROM Users; = ${req.params.id};
+        SELECT userID, firstName, lastName,
+        userAge, Gender,userRole emailAdd, ,userProfile, userImg
+        FROM Users
+        WHERE userID =
+         ${req.params.id};
         `
         db.query(qry, (err, result)=>{
             if(err) throw err 
@@ -32,18 +36,21 @@ class Users{
             })
         })
     }
+    // Create a User  
     async createUser(req, res) {
         // Payload
         let data = req.body
-        data.userPwd = await hash(data?.userPwd, 8)
+        // console.log(data);
+        // console.log(data.userPwd)
+        data.userPwd = await hash(data.userPwd, 9)
+
+        
         let user = {
             emailAdd: data.emailAdd,
             userPwd: data.userPwd
         }
-        const qry = `
-        INSERT INTO Users
-        SET ?;
-        `     
+        const qry = `INSERT INTO Users SET ?;`
+             
         db.query(qry, [data], (err)=>{
             if(err) {
                 res.json({
@@ -61,10 +68,11 @@ class Users{
             }
         })   
     }
+    // Update User
     async updateUser(req, res) {
         const data = req.body 
         if(data?.userPwd){
-            data.userPwd = await hash(data?.userPwd, 8)
+            data.userPwd = await hash(data?.userPwd, 9)
         }
             
         const qry = `
@@ -81,6 +89,7 @@ class Users{
         })
 
     }
+    // Delete User
     deleteUser(req, res) {
         const qry = `
         DELETE FROM Users
@@ -94,13 +103,13 @@ class Users{
             })
         })
     }
+    // Login
     login(req, res) {
         const {emailAdd, userPwd} = req.body 
         const qry = `
-        SELECT userID, firstName, lastName, 
-            userAge, Gender, emailAdd, userPwd, userRole,
-            userProfile, userImg, address, number
-            FROM Users;
+        SELECT userID, firstName, lastName,
+        userAge, Gender,userRole, emailAdd, userPwd,userProfile,userImg
+        FROM Users
         WHERE emailAdd = '${emailAdd}';
         `
         db.query(qry, async(err, result)=>{
@@ -134,6 +143,7 @@ class Users{
         })
     }
 }
+
 export {
     Users
 }

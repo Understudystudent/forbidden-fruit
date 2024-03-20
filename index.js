@@ -1,5 +1,5 @@
 import { userRouter, express } from "./controller/UserContoller.js";
-import { productRouter } from "./controller/ProductController.js";
+import { itemRouter } from "./controller/ItemController.js";
 import cookieParser from "cookie-parser";
 import {errorHandling} from './middleware/ErrorHandling.js'
 import path from 'path'
@@ -8,7 +8,7 @@ import cors from 'cors'
 // config()
 
 const app = express()
-const port = +process.env.PORT || 4000
+const port = +process.env.PORT || 5510
 // Middleware
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -32,8 +32,8 @@ app.get('^/$|/capstone', (req, res)=>{
     res.status(200).sendFile(path.join(__dirname, './static/index.html'))
 })
 app.use('/users', userRouter)
-app.use('/products', productRouter)
+app.use('/items', itemRouter);
 app.use(errorHandling)
 app.listen(port, ()=>{
-    console.log(`Server is running on port ${port}`);
+  console.log(`The server is now running on port http://localhost:${port}`);
 })

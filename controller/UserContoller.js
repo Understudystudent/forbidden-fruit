@@ -1,10 +1,12 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import { users } from '../model/index.js'
-import { verifyAToken } 
-from "../middleware/AuthenticateUser.js"
-const userRouter = express.Router()
-// Fetch users
+import { verifyAToken } from "../middleware/AuthenticateUser.js"
+
+
+const userRouter = express.Router();
+
+// Fetch Users Plural
 userRouter.get('/', (req, res)=>{
     try{
         users.fetchUsers(req, res)
@@ -15,7 +17,7 @@ userRouter.get('/', (req, res)=>{
         })
     }
 })
-// Fetch user
+// Fetch user Single
 userRouter.get('/:id', (req, res)=>{
     try{
         users.fetchUser(req, res)
@@ -26,6 +28,7 @@ userRouter.get('/:id', (req, res)=>{
         })
     }
 })
+
 // Add a user
 userRouter.post('/register', bodyParser.json(), (req, res)=>{
     try{
@@ -37,6 +40,8 @@ userRouter.post('/register', bodyParser.json(), (req, res)=>{
         }) 
     }
 })
+
+//  Update User
 userRouter.patch('/update/:id', bodyParser.json(), 
 (req, res)=>{
     try{
@@ -48,6 +53,8 @@ userRouter.patch('/update/:id', bodyParser.json(),
         })
     }
 })
+
+// Delete User
 userRouter.delete('/delete/:id', (req, res)=>{
     try{
         users.deleteUser(req, res)
@@ -59,6 +66,8 @@ userRouter.delete('/delete/:id', (req, res)=>{
     }
     
 })
+
+//  Added the login
 userRouter.post('/login', bodyParser.json(), (req, res)=>{
     try{
         users.login(req, res)
@@ -69,6 +78,7 @@ userRouter.post('/login', bodyParser.json(), (req, res)=>{
         })
     }
 })
+
 export{
     userRouter, express
 }
