@@ -1,14 +1,9 @@
 import { Users } from "./Users.js";
-import { Items } from "./Item.js";
-import {Cart} from "./Cart.js";
-
+import { Products } from "./Products.js";
 // Create objects
 let users = new Users()
-let items = new Items()
-let cart = new Cart();
-
+let products = new Products()
 export{
     users, 
-    items,
-    cart
+    products
 }

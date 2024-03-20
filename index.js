@@ -1,17 +1,14 @@
-import express from "express";
-import { userRouter } from "./controller/UserContoller.js";
-import { itemRouter } from "./controller/ItemContoller.js";
-import {cartRouter} from "./controller/CartContoller.js";
-import {errorHandling} from './middleware/ErrorHandling.js';
+import { userRouter, express } from "./controller/UserContoller.js";
+import { productRouter } from "./controller/ProductController.js";
 import cookieParser from "cookie-parser";
-
+import {errorHandling} from './middleware/ErrorHandling.js'
 import path from 'path'
 import cors from 'cors'
 // import { config } from "dotenv";
 // config()
 
 const app = express()
-const port = +process.env.PORT || 5510
+const port = +process.env.PORT || 4000
 // Middleware
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -35,13 +32,8 @@ app.get('^/$|/capstone', (req, res)=>{
     res.status(200).sendFile(path.join(__dirname, './static/index.html'))
 })
 app.use('/users', userRouter)
-app.use('/items', itemRouter);
-app.use("/cart", cartRouter); 
-
-
+app.use('/products', productRouter)
 app.use(errorHandling)
-
-
 app.listen(port, ()=>{
-    console.log(`Server is running on port http://localhost:${port}`);
+    console.log(`Server is running on port ${port}`);
 })
