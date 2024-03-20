@@ -1,6 +1,8 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import { items } from '../model/index.js'
+import { verifyAToken } from "../middleware/AuthenticateUser.js";
+
 
 
 const itemRouter = express.Router()
