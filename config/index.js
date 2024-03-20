@@ -1,15 +1,21 @@
-import { createPool } from "mysql";
-import { config } from "dotenv";
+import {
+    createPool
+} from "mysql";
+import {
+    config
+} from "dotenv";
 
 config();
 
-const connectionPool = createPool({
+let connection = createPool({
     host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    user: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    multipleStatements: true,
-    connectionLimit: 30
+    database: process.env.DB_Name,
+    user: process.env.DB_UserName,
+    password: process.env.DB_UserPass,
+    multipleStatement: true,
+    connectionLimit: 30,
 });
 
-export { connectionPool };
+export {
+    connection
+};
