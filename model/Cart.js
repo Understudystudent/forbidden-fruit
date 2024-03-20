@@ -1,6 +1,6 @@
 import { connection as db } from "../config/index.js";
 
-class Cart {
+class Carts {
     // Fetch cart items for a user
     getCartItems(req, res) {
         const userID = req.params.userID;
@@ -77,4 +77,4 @@ addItem(req, res) {
     // Delete All
 }
 
-export { Cart };
+export { Carts };
