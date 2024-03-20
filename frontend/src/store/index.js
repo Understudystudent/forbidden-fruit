@@ -5,7 +5,6 @@
     import { useCookies } from "vue3-cookies";
     import router from '@/router'; 
 
-
     const { cookies } = useCookies();
     const forbidden = "https://forbdden-fruit.onrender.com/";
 
@@ -17,6 +16,8 @@
         items: null,
         item: null,
         cartItems: [],
+        userData: null, 
+
     },
     getters: {},
     mutations: {
@@ -35,6 +36,9 @@
         setCartItems(state, value) {
         state.cartItems = value;
         },
+        setUserData(state, userData) {
+            state.userData = userData;
+          },
     },
     actions: {
         // Add User
@@ -171,63 +175,72 @@
         },
         // Login user
         async login(context, payload) {
+          try {
+        const { msg, token, result } = (await axios.post(`${forbidden}users/login`, payload)).data;
+        if (result) {
+            console.log("Login message:", msg);
+            console.log("Login token:", token);
+            console.log("Login result:", result);
+
+            context.commit('setUser', { msg, result });
+            cookies.set('userData', { msg, token, result });
+
+            applyToken(token)
+
+            // Log the userData object
+            console.log("User data stored in cookie:", { msg, token, result });
+
+            sweet({
+                title: msg,
+                text: `Welcome, ${result?.firstName} ${result?.lastName}`,
+                icon: "success",
+                timer: 3000,
+            })
+            setTimeout(() => {
+                window.location.reload();
+            })
+            router.push({
+                name: 'home'
+            });
+        } else {
+            sweet({
+                title: 'info',
+                text: msg,
+                icon: 'info',
+                timer: 2000,
+            });
+        }
+    } catch (e) {
+        console.error('Error during login:', e);
+        sweet({
+            title: 'Error',
+            text: 'Failed to login.',
+            icon: 'error',
+            timer: 2000,
+        });
+    }
+},
+        // Fetch all Items
+        async fetchItems(context) {
             try {
-                const { msg, token, result } = (await axios.post(`${forbidden}users/login`, payload)).data;
-                if (result) {
-                    console.log("Login message:", msg);
-                    console.log("Login token:", token);
-                    console.log("Login result:", result);
-        
-                    context.commit('setUser', { msg, result });
-                    cookies.set('userData', { msg, token, result });
-        
-                    applyToken(token)
-        
-                    sweet({
-                        title: msg,
-                        text: `Welcome, ${result?.firstName} ${result?.lastName}`,
-                        icon: "success",
-                        timer: 3000,
-                    })
-                    setTimeout(() => {
-                        window.location.reload();
-                    })
-                    router.push({
-                        name: 'home'
-                    });
-                } else {
-                    sweet({
-                        title: 'info',
-                        text: msg,
-                        icon: 'info',
-                        timer: 2000,
-                    });
+                const { token } = context.state.userData; 
+                const response = await axios.get(`${forbidden}items`, {
+                    headers: {
+                        Authorization: ` ${token}`
+                    }
+                });
+                let { results } = response.data;
+                if (results) {
+                    context.commit("setItems", results);
                 }
             } catch (e) {
-                console.error('Error during login:', e);
                 sweet({
-                    title: 'Error',
-                    text: 'Failed to login.',
-                    icon: 'error',
+                    title: "Error",
+                    text: "An error occurred when retrieving items.",
+                    icon: "error",
                     timer: 2000,
                 });
             }
-        },
-        // Fetch all Items
-        async fetchItems(context) {
-        try {
-            let { results } = (await axios.get(`${forbidden}items`)).data;
-            if (results) {
-            context.commit("setItems", results);
-            }
-        } catch (e) {
-            sweet({
-            title: "Error",
-            text: "An error occurred when retrieving items.",
-            icon: "error",
-            timer: 2000,
-            });
-        }
         },
         // Fetch Single Items
         async fetchItem(context, payload) {
@@ -420,9 +433,9 @@
               const token = cookies.get("userData");
               if (token) {
                 // Make an API request to fetch user data using the token
-                const response = await axios.get(`${forbidden}users/data`, {
+                const response = await axios.get(`${forbidden}users`, {
                   headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: ` ${token}`,
                   },
                 });
                 const userData = response.data;
@@ -434,6 +447,23 @@
               // Handle error appropriately
             }
           },
+          // In your Vuex store actions
+          async fetchUserDataFromCookie({ commit }) {
+            try {
+              const { cookies } = useCookies();
+              const userData = cookies.get("userData");
+              if (userData) {
+                commit("setUserData", userData); // Commit user data to the store
+                applyToken(userData.token); // Apply token to Axios headers
+              }
+            } catch (error) {
+              console.error("Failed to fetch user data from cookie:", error);
+              // Handle error appropriately
+            }
+        }
+        
+        
     },
+
     modules: {},
     });

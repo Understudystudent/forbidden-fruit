@@ -1,11 +1,12 @@
+// In your service.js file
 import axios from "axios";
+
 function applyToken(token) {
-    if(token) {
-        axios.defaults.headers = {
-            Authorization: `Bearer ${token}`
-        }
+    if (token) {
+        axios.defaults.headers.common['Authorization'] = ` ${token}`;
     }
 }
+
 
 // second option
 // import axios from "axios";

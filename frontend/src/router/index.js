@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from '@/store'; 
 import HomeView from "../views/HomeView.vue";
-import { useCookies } from "vue3-cookies";
+import AdminPage from "../views/AdminPage.vue";
 
-const { cookies } = useCookies();
 
 const routes = [
   {
@@ -13,29 +13,27 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    component: () => import('../views/AdminPage.vue'),
+    component: AdminPage,
     // Check if the user is authenticated and is an admin
-    beforeEnter: (to, from, next) => {
-        // Retrieve user data from cookies
-        const userData = cookies.get('userData');
-        // Check if the userData object exists and has the userRole property
-        if (userData && userData.result && userData.result.userRole) {
-            // Extract the user role from the userData object
-            const userRole = userData.result.userRole.toLowerCase();
-            console.log("User role:", userRole); // Log the user role to verify
-            if (userRole === 'admin') {
-                console.log("User is authenticated as an admin."); // Log if user is authenticated as an admin
-                next(); // Proceed to the '/admin' route
-            } else {
-                console.log("User is not an admin."); // Log if user is not an admin
-                next('/'); // Redirect to '/'
-            }
+    beforeEnter: async (to, from, next) => {
+      try {
+        // Fetch user data from cookie
+        await store.dispatch('fetchUserDataFromCookie');
+        // Log the fetched userData
+        console.log('Fetched userData:', store.state.userData);
+        // Proceed if user is authenticated as an admin
+        const userData = store.state.userData;
+        if (userData && userData.result && userData.result.userRole === 'admin') {
+          next(); // Proceed to the '/admin' route
         } else {
-            console.log("User data or role not found."); // Log if user data or role is not found
-            next('/'); // Redirect to '/'
+          next('/'); // Redirect to '/'
         }
+      } catch (error) {
+        console.error('Error:', error);
+        next('/'); // Redirect to '/'
+      }
     }
-},
+  },
   {
     path: "/adminDashboard",
     name: "AdminDashboard",
