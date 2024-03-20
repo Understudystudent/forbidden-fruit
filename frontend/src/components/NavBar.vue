@@ -100,7 +100,7 @@
   
       const handleLogout = () => { 
         // Remove the cookie by setting its expiration date to a past time
-        document.cookie = "userAuthenticated=; expires=Thu, 25 March 1999 00:00:00 UTC; path=/;";
+        document.cookie = "userData=; expires=Thu, 25 March 1999 00:00:00 UTC; path=/;";
 
         // Clear user state in Vuex store
         store.commit('setUser', null);

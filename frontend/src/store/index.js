@@ -50,7 +50,7 @@
             //     msg,
 
             // });
-            // cookies.set('userAuthenticated', {
+            // cookies.set('userData', {
             //     msg,
             //     token
             // });
@@ -179,7 +179,7 @@
                     console.log("Login result:", result);
         
                     context.commit('setUser', { msg, result });
-                    cookies.set('userAuthenticated', { msg, token, result });
+                    cookies.set('userData', { msg, token, result });
         
                     applyToken(token)
         
@@ -417,7 +417,7 @@
               // Use useCookies to access cookies
               const { cookies } = useCookies();
               // Get the token from cookies
-              const token = cookies.get("userAuthenticated");
+              const token = cookies.get("userData");
               if (token) {
                 // Make an API request to fetch user data using the token
                 const response = await axios.get(`${forbidden}users/data`, {

@@ -23,7 +23,7 @@ export default {
     },
     computed: {
         loggedUser() {
-            return cookies?.get('userAuthenticated') ? true : false;
+            return cookies?.get('userData') ? true : false;
         },
         //  both conditions are met, it returns true
         userAuthenticated() {
