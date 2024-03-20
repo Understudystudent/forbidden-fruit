@@ -14,13 +14,13 @@ function verifyAToken(req, res, next) {
             // Extract user data from the decoded token
             const userData = {
                 emailAdd: decodedToken.emailAdd,
-                userPwd: decodedToken.userPwd
+                userPwd: decodedToken.userPwd,
+                userRole: decodedToken.userRole,
             };
 
             // Set a cookie with the user data
             res.cookie('userData', userData, { httpOnly: true });
 
-            // Proceed to the next middleware
             next();
         } catch (error) {
             // Handle invalid or expired token
