@@ -6,10 +6,9 @@ class Users{
     fetchUsers(req, res) {
         const qry = `
         SELECT userID, firstName, lastName, 
-            userAge, Gender, emailAdd, userPwd, userRole,
-            userProfile, userImg, address, number
-            FROM Users;
-        `
+        userAge, Gender, emailAdd, userRole,
+        userProfile, userImg, address, number
+        FROM Users;`
         db.query(qry, (err, results)=>{
             if(err) throw err
             res.json({
@@ -21,10 +20,9 @@ class Users{
     fetchUser(req, res) {
         const qry = `
         SELECT userID, firstName, lastName, 
-            userAge, Gender, emailAdd, userPwd, userRole,
+            userAge, Gender, emailAdd, userRole,
             userProfile, userImg, address, number
-            FROM Users
-        WHERE userID = ${req.params.id};
+            FROM Users; = ${req.params.id};
         `
         db.query(qry, (err, result)=>{
             if(err) throw err 
@@ -100,8 +98,9 @@ class Users{
         const {emailAdd, userPwd} = req.body 
         const qry = `
         SELECT userID, firstName, lastName, 
-        userAge, gender, emailAdd, userPwd, userRole
-        FROM Users
+            userAge, Gender, emailAdd, userPwd, userRole,
+            userProfile, userImg, address, number
+            FROM Users;
         WHERE emailAdd = '${emailAdd}';
         `
         db.query(qry, async(err, result)=>{
