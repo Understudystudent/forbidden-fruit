@@ -30,7 +30,7 @@ userRouter.get('/:id', verifyAToken, (req, res) => {
 });
 
 // Add a user
-userRouter.post('/register', bodyParser.json(), (req, res) => {
+userRouter.post('/register',verifyAToken,  bodyParser.json(), (req, res) => {
     try {
         users.createUser(req, res);
     } catch (e) {

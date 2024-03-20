@@ -3,6 +3,8 @@ import bodyParser from 'body-parser'
 import { items } from '../model/index.js'
 import { verifyAToken } from "../middleware/AuthenticateUser.js";
 
+
+
 const itemRouter = express.Router()
 
 // get Item
@@ -30,7 +32,7 @@ itemRouter.get('/:id', verifyAToken, (req, res)=>{
 })
 
 // Add Item
-itemRouter.post('/addItems',verifyAToken, bodyParser.json(), (req, res)=>{
+itemRouter.post('/addItems', verifyAToken, bodyParser.json(), (req, res)=>{
     try{
         items.addItem(req, res)
     }catch(e) {
