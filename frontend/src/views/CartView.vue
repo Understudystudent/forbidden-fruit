@@ -23,17 +23,25 @@
 <script>
 export default {
   computed: {
-    // Map cartItems from the Vuex store state
+    // Map cartItems
     cartItems() {
       return this.$store.state.cartItems;
+    },
+    // Access user ID 
+    userID() {
+      return this.$store.state.user ? this.$store.state.user.id : null;
     }
   },
   methods: {
     // Method to update cart item quantity
     updateCartItem(item) {
+      if (!this.userID) {
+        console.error('User ID is undefined');
+        return;
+      }
       // action to update cart item quantity
       this.$store.dispatch('updateCartItem', {
-        userID: this.$store.state.user.id,
+        userID: this.userID,
         itemID: item.id,
         quantity: item.quantity
       }).then(() => {
@@ -44,8 +52,12 @@ export default {
     },
     //  Remove cart item
     removeCartItem(item) {
+      if (!this.userID) {
+        console.error('User ID is undefined');
+        return;
+      }
       this.$store.dispatch('removeCartItem', {
-        userID: this.$store.state.user.id,
+        userID: this.userID,
         itemID: item.id
       }).then(() => {
         console.log('Cart item removed successfully');
@@ -58,5 +70,4 @@ export default {
 </script>
 
 <style>
-/* Add your styling here */
 </style>

@@ -330,39 +330,45 @@ export default createStore({
 
     // Add item to cart
     async addToCart(context, payload) {
-    try {
-      await axios.post(`${forbidden}cart/add`, payload);
-      sweet({
-        title: "Add to Cart",
-        text: "Item added to cart successfully",
-        icon: "success",
-        timer: 2000,
-      });
-    } catch (error) {
-      console.error("Error adding item to cart:", error);
-      sweet({
-        title: "Error",
-        text: "Failed to add item to cart. Please try again later.",
-        icon: "error",
-        timer: 5000,
-      });
-    }
-  },
+        try {
+            console.log('Payload received:', payload); // Log the payload received
+            await axios.post(`${forbidden}cart/add`, payload);
+            sweet({
+                title: "Add to Cart",
+                text: "Item added to cart successfully",
+                icon: "success",
+                timer: 2000,
+            });
+            // Fetch updated cart items after adding an item
+            context.dispatch('fetchCartItems', payload.userID);
+        } catch (error) {
+            console.error("Error adding item to cart:", error);
+            sweet({
+                title: "Error",
+                text: "Failed to add item to cart. Please try again later.",
+                icon: "error",
+                timer: 5000,
+            });
+        }
+    },
     // Fetch cart items
-    async fetchCartItems(context, userID) {
-      try {
+async fetchCartItems(context, userID) {
+    try {
+        console.log('Fetching cart items for user ID:', userID); // Log the user ID 
         const response = await axios.get(`${forbidden}cart/${userID}`);
         const cartItems = response.data;
+        console.log('Fetched cart items:', cartItems); // Log the fetched cart items
         context.commit("setCartItems", cartItems);
-      } catch (error) {
+    } catch (error) {
+        console.error("Error fetching cart items:", error);
         sweet({
-          title: "Error",
-          text: "Failed to fetch cart items. Please try again later.",
-          icon: "error",  
-          timer: 2000,
+            title: "Error",
+            text: "Failed to fetch cart items. Please try again later.",
+            icon: "error",
+            timer: 2000,
         });
-      }
-    },
+    }
+},
     // Update cart item quantity
     async updateCartItem(context, payload) {
       try {
