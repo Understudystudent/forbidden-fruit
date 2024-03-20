@@ -2,8 +2,9 @@ import express from 'express';
 import { userRouter } from "./controller/UserController.js";
 import { itemRouter } from "./controller/ItemController.js";
 import { cartRouter } from "./controller/CartContoller.js"; 
-import cookieParser from "cookie-parser";
+import { verifyAToken } from './middleware/AuthenticateUser.js';
 import { errorHandling } from './middleware/ErrorHandling.js';
+import cookieParser from "cookie-parser";
 import path from 'path';
 import cors from 'cors';
 
@@ -33,9 +34,9 @@ app.get('^/$|/capstone', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, './static/index.html'));
 });
 
-// Use the correct router
+app.use('/items', verifyAToken, itemRouter);
+
 app.use('/users', userRouter);
-app.use('/items', itemRouter);
 app.use('/cart', cartRouter); 
 
 app.use(errorHandling);
