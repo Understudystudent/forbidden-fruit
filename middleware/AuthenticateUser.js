@@ -1,10 +1,45 @@
 import "dotenv/config";
 import jwt from "jsonwebtoken";
 
-const { sign, verify } = jwt;
+const { verify } = jwt;
+
+function verifyAToken(req, res, next) {
+    // Retrieve a token from the request headers
+    const token = req?.headers['authorization'];
+    if (token) {
+        try {
+            // Verify the token
+            const decodedToken = verify(token, process.env.SECRET_KEY);
+
+            // Extract user data from the decoded token
+            const userData = {
+                emailAdd: decodedToken.emailAdd,
+                userPwd: decodedToken.userPwd
+            };
+
+            // Set a cookie with the user data
+            res.cookie('userData', userData, { httpOnly: true });
+
+            // Proceed to the next middleware
+            next();
+        } catch (error) {
+            // Handle invalid or expired token
+            res.status(401).json({
+                status: res.statusCode,
+                msg: "Please provide the correct credentials."
+            });
+        }
+    } else {
+        // No token provided
+        res.status(401).json({
+            status: res.statusCode,
+            msg: "Please login."
+        });
+    }
+}
 
 function createToken(user) {
-    return sign(
+    return jwt.sign(
         {
             emailAdd: user.emailAdd,
             userPwd: user.userPwd
@@ -16,27 +51,4 @@ function createToken(user) {
     );
 }
 
-function verifyAToken(req, res, next) {
-    // Retrieve a token from the request headers
-    const token = req?.headers['authorization'];
-    if (token) {
-        if (verify(token, process.env.SECRET_KEY)) {
-            next();
-        } else {
-            res?.json({
-                status: res.statusCode,
-                msg: "Please provide the correct credentials."
-            });
-        }
-    } else {
-        res?.json({
-            status: res.statusCode,
-            msg: "Please login."
-        });
-    }
-}
-
-export {
-    createToken,
-    verifyAToken
-};
+export { verifyAToken, createToken };
