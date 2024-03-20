@@ -3,10 +3,7 @@ import bodyParser from 'body-parser'
 import { items } from '../model/index.js'
 import { verifyAToken } from "../middleware/AuthenticateUser.js";
 
-
-
 const itemRouter = express.Router()
-
 
 // get Item
 itemRouter.get('/', verifyAToken, (req, res)=>{
