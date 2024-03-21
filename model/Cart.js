@@ -6,7 +6,7 @@ class Carts {
         try {
             const userID = req.params.userID;
             const qry = `
-                SELECT Items.itemID, Items.itemName, SUM(Items.itemQuantity) AS itemQuantity, Items.itemAmount, Items.itemUrl, Items.itemDescription
+                SELECT Cart.cartID, Items.itemID, Category, Items.itemName, SUM(Items.itemQuantity) AS itemQuantity, Items.itemAmount, Items.itemUrl, Items.itemDescription
                 FROM Cart
                 INNER JOIN Items ON Cart.itemID = Items.itemID
                 WHERE Cart.userID = ?
@@ -33,6 +33,7 @@ class Carts {
             });
         }
     }
+    
 
     // Add item to cart
     async addItem(req, res) {
