@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-black">
+  <div class="bg-black vh-100">
     <div class="row">
-      <h1 class="display-2 text-white">Item Details</h1>
+      <h1 class="display-2 text-white text-center">Item Details</h1>
     </div>
     <div class="row">
       <div class="col-md-6">

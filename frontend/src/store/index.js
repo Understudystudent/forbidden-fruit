@@ -36,10 +36,20 @@ export default createStore({
         state.cartItems = cartItems;
       },
       setUserData(state, userData) {
-        console.log("Received userData:", userData);
         state.userData = userData;
+        // Store the user data in local storage upon login
+        localStorage.setItem("localData", JSON.stringify(userData));
+        console.log("User data stored in local storage:", userData);
       },
-  },
+      // Mutation to clear userData upon logout
+      clearUserData(state) {
+        state.userData = null;
+        // Clear local storage upon logout
+        localStorage.removeItem("localData");
+        console.log("User data removed from local storage");
+      }
+    },
+
   actions: {
     // Add User
     async register(context, payload) {
@@ -435,44 +445,44 @@ export default createStore({
     },
     async removeCartItemByCartID(context, cartID) {
         try {
-          // Retrieve the userData object from the store state
-          const { userData } = context.state;
-      
-          if (!userData) {
-            console.error('User data is undefined');
-            return;
-          }
-      
-          const { token, result: { userID } } = userData;
-      
-          console.log('Removing cart item by CartID:', cartID); // Added console log
-      
-          // Make the DELETE request to remove the item from the cart by cartID
-          await axios.delete(
-            `${forbidden}cart/remove/${userID}/${cartID}`,
-            {
-              headers: {
-                Authorization: ` ${token}`,
-              },
+            const { userData } = context.state;
+        
+            if (!userData) {
+                console.error('User data is undefined');
+                return;
             }
-          );
-      
-          sweet({
-            title: "Remove from Cart",
-            text: "Item removed from cart successfully",
-            icon: "success",
-            timer: 2000,
-          });
+        
+            const { token, result: { userID } } = userData;
+        
+            console.log('Removing cart item by CartID:', cartID); // Added console log
+        
+            // Make the DELETE request to remove the item from the cart by cartID
+            await axios.delete(
+                `${forbidden}cart/remove/${userID}/${cartID}`,  // Adjusted endpoint URL
+                {
+                    headers: {
+                        Authorization: ` ${token}`,
+                    },
+                }
+            );
+        
+            sweet({
+                title: "Remove from Cart",
+                text: "Item removed from cart successfully",
+                icon: "success",
+                timer: 2000,
+            });
         } catch (error) {
-          console.error("Error removing item from cart by cartID:", error);
-          sweet({
-            title: "Error",
-            text: "Failed to remove item from cart. Please try again later.",
-            icon: "error",
-            timer: 2000,
-          });
+            console.error("Error removing item from cart by cartID:", error);
+            sweet({
+                title: "Error",
+                text: "Failed to remove item from cart. Please try again later.",
+                icon: "error",
+                timer: 2000,
+            });
         }
-      },
+    },
+    
       
       async removeCartItemByItemID(context, itemID) {
         try {
@@ -561,19 +571,26 @@ export default createStore({
       }
     },
     async fetchUserDataFromCookie({ commit, dispatch }) {
-        try {
-          const { cookies } = useCookies();
-          const userData = cookies.get("userData");
-          if (userData) {
-            console.log("UserData from cookie:", userData); // Log userData from cookie
-            commit("setUserData", userData); // Commit user data to the store
-            applyToken(userData.token); // Apply token to Axios headers
-            dispatch("fetchCartItems"); // Dispatch fetchCartItems after setting userData
-          }
-        } catch (error) {
-          console.error("Failed to fetch user data from cookie:", error);
-        }
-      },
+  try {
+    const { cookies } = useCookies();
+    const userData = cookies.get("userData");
+    if (userData) {
+      console.log("UserData from cookie:", userData);
+      // Commit user data to the store
+      commit("setUserData", userData);
+      // Apply token to Axios headers
+      applyToken(userData.token);
+      // Dispatch fetchCartItems after setting userData
+      dispatch("fetchCartItems");
+      // Store user data in local storage
+      localStorage.setItem("userData", JSON.stringify(userData));
+      console.log("User data stored in local storage:", userData);
+    }
+  } catch (error) {
+    console.error("Failed to fetch user data from cookie:", error);
+  }
+},
+
       
     async getUserData({ commit }) {
       try {

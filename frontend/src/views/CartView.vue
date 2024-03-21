@@ -1,64 +1,68 @@
 <template>
   <div class="cart-view bg-dark text-white">
-    <h1>Your Shopping Cart</h1>
+    <h1 class="text-center">Your Shopping Cart</h1>
+    <!-- Display spinner when loading data -->
+    <spinner-loader :loading="loading" />
     <div v-if="!cartItems || cartItems.length === 0">
-      <p>Your cart is empty.</p>
+      <p v-if="!loading" class="vh-100 text-white text-center">Your cart is empty.</p>
     </div>
     <div v-else>
-      <div v-for="(item, index) in cartItems" :key="index" class="cart-item">
-        <h2 class="item-title text-white">Name: {{ item.itemName }}</h2>
-        <p class="item-info text-white">Category: {{ item.Category }}</p>
-        <p class="item-info text-white">Amount: R {{ item.itemAmount }}</p>
-        <p class="item-description text-white">Description: {{ item.itemDescription }}</p>
-        <!-- Add quantity input and button for each item -->
-        <label for="quantity" class="text-white">Quantity:</label>
-        <input type="number" id="quantity" v-model="item.quantity" min="1">
-        <button @click="updateCartItem(item)" class="btn btn-primary">Update Cart</button>
-        <button @click="removeCartItemByItemID(item.id)" class="btn btn-danger">Remove from Cart (by ItemID)</button>
-        <button @click="removeCartItemByCartID(item.cartID)" class="btn btn-danger">Remove Cart (by CartID)</button>
-      </div>
+      <table class="table table-dark table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Description</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in cartItems" :key="index">
+            <th scope="row">{{ index + 1 }}</th>
+            <td>{{ item.itemName }}</td>
+            <td>{{ item.Category }}</td>
+            <td>R {{ item.itemAmount }}</td>
+            <td>{{ item.itemDescription }}</td>
+            <td>
+              <input type="number" v-model="item.quantity" min="1" class="form-control">
+            </td>
+            <td>
+              <button @click="updateCartItem(item)" class="btn btn-primary">Update</button>
+              <button @click="removeCartItemByItemID(item.itemID)" class="btn btn-danger">Remove by ItemID</button>
+              <button @click="removeCartItemByCartID(item.cartID)" class="btn btn-danger">Remove by CartID</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <script>
-import { useCookies } from "vue3-cookies";
+import SpinnerLoader from "@/components/SpinnerComponent.vue"; 
 
 export default {
+  components: {
+    SpinnerLoader, 
+  },
+  data() {
+    return {
+      loading: false,
+    };
+  },
   computed: {
     // Map cartItems
     cartItems() {
-      const items = this.$store.state.cartItems.results;
-      console.log('Cart items:', items); // Add this line to log cart items
-      return items;
-    },
-    // Access user ID from Vuex state or cookies
-    userID() {
-      const userData = this.$store.state.userData;
-      if (userData && userData.result && userData.result.userID) {
-        // Get user ID from Vuex state if available
-        const userID = userData.result.userID;
-        console.log('User ID from Vuex state:', userID); // Add this line to log user ID
-        return userID;
-      } else {
-        // Get user ID from cookies if available
-        const { cookies } = useCookies();
-        const userDataFromCookie = cookies.get("userData");
-        if (userDataFromCookie && userDataFromCookie.result && userDataFromCookie.result.userID) {
-          const userIDFromCookie = userDataFromCookie.result.userID;
-          console.log('User ID from cookie:', userIDFromCookie); // Add this line to log user ID from cookie
-          return userIDFromCookie;
-        } else {
-          console.error('User data or userID is undefined');
-          return null;
-        }
-      }
+      return this.$store.state.cartItems.results;
     }
   },
   methods: {
     // Method to update cart item quantity
     updateCartItem(item) {
-      const userID = this.userID;
+      const userID = this.getUserID();
       if (!userID) {
         console.error('User ID is undefined');
         return;
@@ -67,7 +71,7 @@ export default {
       // action to update cart item quantity
       this.$store.dispatch('updateCartItem', {
         userID: userID,
-        itemID: item.id,
+        itemID: item.itemID,
         quantity: item.quantity
       }).then(() => {
         console.log('Cart item updated successfully');
@@ -77,7 +81,7 @@ export default {
     },
     // Remove cart item by ItemID
     removeCartItemByItemID(itemID) {
-      const userID = this.userID;
+      const userID = this.getUserID();
       if (!userID) {
         console.error('User ID is undefined');
         return;
@@ -95,7 +99,7 @@ export default {
     },
     // Remove cart item by CartID
     removeCartItemByCartID(cartID) {
-      const userID = this.userID;
+      const userID = this.getUserID();
       if (!userID) {
         console.error('User ID is undefined');
         return;
@@ -110,14 +114,64 @@ export default {
         .catch(error => {
           console.error('Failed to remove cart item by CartID:', error);
         });
+    },
+    // Method to get userID from Vuex state or cookies
+    getUserID() {
+      const userData = this.$store.state.userData;
+      if (userData && userData.result && userData.result.userID) {
+        // Get user ID from Vuex state if available
+        return userData.result.userID;
+      } else {
+        // Get user ID from cookies if available
+        const userDataFromCookie = JSON.parse(localStorage.getItem('userData'));
+        if (userDataFromCookie && userDataFromCookie.result && userDataFromCookie.result.userID) {
+          return userDataFromCookie.result.userID;
+        } else {
+          console.error('User data or userID is undefined');
+          return null;
+        }
+      }
     }
   },
   created() {
+    this.loading = true; // Set loading state to true when data loading starts
     // Fetch cart items when the component is created
-    this.$store.dispatch('fetchCartItems');
+    this.$store.dispatch('fetchCartItems')
+      .then(() => {
+        // Set loading state to false when data loading is complete
+        this.loading = false;
+        
+        // Retrieve cart items from local storage
+        let cartItemsFromStorage = JSON.parse(localStorage.getItem('items'));
+        console.log('Cart items from local storage:', cartItemsFromStorage);
+
+        // Check if there are items in the cart
+        if (cartItemsFromStorage && cartItemsFromStorage.length > 0) {
+          // Iterate through the cart items
+          cartItemsFromStorage.forEach((cartItem, index) => {
+            // Find the matching item in the fetched cart items
+            let matchingCartItem = this.cartItems.find(item => String(item.itemID) === String(cartItem.itemID));
+            
+            // If a matching item is found, display its details
+            if (matchingCartItem) {
+              console.log(`Item ${index + 1} Name:`, matchingCartItem.itemName);
+              console.log(`Item ${index + 1} Price:`, matchingCartItem.itemAmount);
+              // Update quantity from local storage
+              matchingCartItem.quantity = cartItem.itemQuantity;
+            }
+          });
+        } else {
+          console.log('Cart is empty or not found in local storage.');
+        }
+      })
+      .catch(() => {
+        // Set loading state to false if there's an error during data loading
+        this.loading = false;
+      });
   }
 };
 </script>
 
 <style>
+/* Add your styles here */
 </style>

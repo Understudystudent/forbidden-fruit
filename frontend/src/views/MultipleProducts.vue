@@ -95,6 +95,9 @@ export default {
         this.filteredItems = [...this.items];
         this.numberOfItems = this.items.length;
 
+        // Store items in local storage
+        localStorage.setItem('items', JSON.stringify(this.items));
+
         this.maxPrice = Math.max(...this.items.map(item => item.itemAmount));
         this.minPrice = Math.min(...this.items.map(item => item.itemAmount));
 
@@ -137,6 +140,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this);
     this.fetchItems();
   }
 }
