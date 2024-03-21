@@ -1,7 +1,4 @@
-// cart.js
-import {
-    connection as db
-} from "../config/index.js";
+import { connection as db } from "../config/index.js";
 
 class Carts {
     // Fetch cart items for a user
@@ -150,38 +147,42 @@ class Carts {
             });
         }
     }
-    // Remove all items from cart
-    async removeAllItemsFromCart(req, res) {
+
+    // Remove item from cart by cartID
+    async removeCartItemByCartID(req, res) {
         try {
-            const userID = req.params.userID;
+            const {
+                userID,
+                cartID
+            } = req.params;
             const qry = `
-            DELETE FROM Cart
-            WHERE userID = ?
-        `;
-            db.query(qry, userID, (err) => {
+                DELETE FROM Cart
+                WHERE userID = ? AND cartID = ?
+            `;
+            db.query(qry, [userID, cartID], (err) => {
                 if (err) {
-                    console.error('Error removing all items from cart:', err);
+                    console.error('Error removing item from cart:', err);
                     return res.status(500).json({
                         status: 500,
-                        error: 'Failed to remove all items from cart.'
+                        error: 'Failed to remove item from cart.'
                     });
                 }
                 res.json({
                     status: res.statusCode,
-                    msg: 'All items removed from cart successfully.'
+                    msg: 'Item removed from cart successfully.'
                 });
             });
         } catch (error) {
-            console.error('Error removing all items from cart:', error);
+            console.error('Error removing item from cart:', error);
             res.status(500).json({
                 status: 500,
-                error: 'Failed to remove all items from cart.'
+                error: 'Failed to remove item from cart.'
             });
         }
     }
 
-    // Remove specific item from cart
-    async removeItemFromCart(req, res) {
+    // Remove item from cart by itemID
+    async removeCartItemByItemID(req, res) {
         try {
             const {
                 userID,
@@ -214,6 +215,4 @@ class Carts {
     }
 }
 
-export {
-    Carts
-};
+export { Carts };
