@@ -52,6 +52,7 @@ export default {
     },
     addItemToCart() {
       if (this.item) {
+        console.log('Adding item to cart:', this.item); // Add this line to log item being added to cart
         this.addToCart({ itemId: this.item.itemID, quantity: parseInt(this.quantity) });
         this.$router.push({ path: '/products' });
       }
@@ -59,5 +60,6 @@ export default {
   }
 };
 </script>
+
 
 <style scoped></style>

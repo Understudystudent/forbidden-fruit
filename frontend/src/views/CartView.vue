@@ -1,7 +1,7 @@
 <template>
-  <div class="cart-view">
+  <div class="cart-view bg-dark text-white">
     <h1>Your Shopping Cart</h1>
-    <div v-if="cartItems.length === 0">
+    <div v-if="!cartItems || cartItems.length === 0">
       <p>Your cart is empty.</p>
     </div>
     <div v-else>
@@ -14,26 +14,45 @@
         <label for="quantity" class="text-white">Quantity:</label>
         <input type="number" id="quantity" v-model="item.quantity" min="1">
         <button @click="updateCartItem(item)" class="btn btn-primary">Update Cart</button>
-        <button @click="removeCartItem(item)" class="btn btn-danger">Remove from Cart</button>
+        <button @click="removeCartItemByItemID(item.id)" class="btn btn-danger">Remove from Cart (by ItemID)</button>
+        <button @click="removeCartItemByCartID(item.cartID)" class="btn btn-danger">Remove Cart (by CartID)</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { useCookies } from "vue3-cookies";
+
 export default {
   computed: {
     // Map cartItems
     cartItems() {
       const items = this.$store.state.cartItems.results;
-      console.log('Cart items:', items);
+      console.log('Cart items:', items); // Add this line to log cart items
       return items;
     },
-    // Access user ID 
+    // Access user ID from Vuex state or cookies
     userID() {
-      const userID = this.$store.state.user ? this.$store.state.user.id : null;
-      console.log('User ID:', userID);
-      return userID;
+      const userData = this.$store.state.userData;
+      if (userData && userData.result && userData.result.userID) {
+        // Get user ID from Vuex state if available
+        const userID = userData.result.userID;
+        console.log('User ID from Vuex state:', userID); // Add this line to log user ID
+        return userID;
+      } else {
+        // Get user ID from cookies if available
+        const { cookies } = useCookies();
+        const userDataFromCookie = cookies.get("userData");
+        if (userDataFromCookie && userDataFromCookie.result && userDataFromCookie.result.userID) {
+          const userIDFromCookie = userDataFromCookie.result.userID;
+          console.log('User ID from cookie:', userIDFromCookie); // Add this line to log user ID from cookie
+          return userIDFromCookie;
+        } else {
+          console.error('User data or userID is undefined');
+          return null;
+        }
+      }
     }
   },
   methods: {
@@ -44,7 +63,7 @@ export default {
         console.error('User ID is undefined');
         return;
       }
-      console.log('Updating cart item:', item);
+      console.log('Updating cart item:', item); // Add this line to log updated cart item
       // action to update cart item quantity
       this.$store.dispatch('updateCartItem', {
         userID: userID,
@@ -56,24 +75,41 @@ export default {
         console.error('Failed to update cart item:', error);
       });
     },
-    //  Remove cart item
-    removeCartItem(item) {
+    // Remove cart item by ItemID
+    removeCartItemByItemID(itemID) {
       const userID = this.userID;
       if (!userID) {
         console.error('User ID is undefined');
         return;
       }
-      console.log('Removing cart item:', item);
-      this.$store.dispatch('removeCartItem', {
-        userID: userID,
-        itemID: item.id
-      }).then(() => {
-        console.log('Cart item removed successfully');
-        // Optionally, you can fetch updated cart items after removing an item
-        this.$store.dispatch('fetchCartItems');
-      }).catch(error => {
-        console.error('Failed to remove cart item:', error);
-      });
+      console.log('Removing cart item by ItemID:', itemID); // Add this line to log itemID
+      this.$store.dispatch('removeCartItemByItemID', itemID)
+        .then(() => {
+          console.log('Cart item removed successfully by ItemID');
+          // Optionally, you can fetch updated cart items after removing an item
+          this.$store.dispatch('fetchCartItems');
+        })
+        .catch(error => {
+          console.error('Failed to remove cart item by ItemID:', error);
+        });
+    },
+    // Remove cart item by CartID
+    removeCartItemByCartID(cartID) {
+      const userID = this.userID;
+      if (!userID) {
+        console.error('User ID is undefined');
+        return;
+      }
+      console.log('Removing cart item by CartID:', cartID); // Add this line to log cartID
+      this.$store.dispatch('removeCartItemByCartID', cartID)
+        .then(() => {
+          console.log('Cart item removed successfully by CartID');
+          // Optionally, you can fetch updated cart items after removing an item
+          this.$store.dispatch('fetchCartItems');
+        })
+        .catch(error => {
+          console.error('Failed to remove cart item by CartID:', error);
+        });
     }
   },
   created() {

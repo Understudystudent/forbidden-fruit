@@ -20,24 +20,25 @@ export default createStore({
   getters: {},
   mutations: {
     setUsers(state, value) {
-      state.users = value;
-    },
-    setUser(state, payload) {
-      state.user = payload;
-    },
-    setItems(state, value) {
-      state.items = value;
-    },
-    setItem(state, value) {
-      state.item = value;
-    },
-    setCartItems(state, value) {
-      state.cartItems = value;
-    },
-    setUserData(state, userData) {
-      console.log("Received userData:", userData);
-      state.userData = userData;
-    },
+        state.users = value;
+      },
+      setUser(state, payload) {
+        state.user = payload;
+      },
+      setItems(state, value) {
+        state.items = value;
+      },
+      setItem(state, value) {
+        state.item = value;
+      },
+      setCartItems(state, cartItems) {
+        console.log('Updating cartItems state:', cartItems);
+        state.cartItems = cartItems;
+      },
+      setUserData(state, userData) {
+        console.log("Received userData:", userData);
+        state.userData = userData;
+      },
   },
   actions: {
     // Add User
@@ -432,8 +433,7 @@ export default createStore({
         });
       }
     },
-
-    async removeCartItem(context, payload) {
+    async removeCartItemByCartID(context, cartID) {
         try {
           // Retrieve the userData object from the store state
           const { userData } = context.state;
@@ -445,9 +445,11 @@ export default createStore({
       
           const { token, result: { userID } } = userData;
       
-          // Make the DELETE request to remove the item from the cart
+          console.log('Removing cart item by CartID:', cartID); // Added console log
+      
+          // Make the DELETE request to remove the item from the cart by cartID
           await axios.delete(
-            `${forbidden}cart/remove/${userID}/${payload.itemID}`,
+            `${forbidden}cart/remove/${userID}/${cartID}`,
             {
               headers: {
                 Authorization: ` ${token}`,
@@ -462,7 +464,7 @@ export default createStore({
             timer: 2000,
           });
         } catch (error) {
-          console.error("Error removing item from cart:", error);
+          console.error("Error removing item from cart by cartID:", error);
           sweet({
             title: "Error",
             text: "Failed to remove item from cart. Please try again later.",
@@ -471,6 +473,48 @@ export default createStore({
           });
         }
       },
+      
+      async removeCartItemByItemID(context, itemID) {
+        try {
+          // Retrieve the userData object from the store state
+          const { userData } = context.state;
+      
+          if (!userData) {
+            console.error('User data is undefined');
+            return;
+          }
+      
+          const { token } = userData;
+      
+          console.log('Removing cart item by ItemID:', itemID); // Added console log
+      
+          // Make the DELETE request to remove the item from the cart by itemID
+          await axios.delete(
+            `${forbidden}cart/removeItem/${itemID}`,
+            {
+              headers: {
+                Authorization: ` ${token}`,
+              },
+            }
+          );
+      
+          sweet({
+            title: "Remove from Cart",
+            text: "Item removed from cart successfully",
+            icon: "success",
+            timer: 2000,
+          });
+        } catch (error) {
+          console.error("Error removing item from cart by itemID:", error);
+          sweet({
+            title: "Error",
+            text: "Failed to remove item from cart. Please try again later.",
+            icon: "error",
+            timer: 2000,
+          });
+        }
+      },
+            
 
     async fetchCartItems(context) {
       try {
@@ -516,22 +560,21 @@ export default createStore({
         });
       }
     },
-    async fetchUserDataFromCookie({ commit }) {
-      try {
-        const { cookies } = useCookies();
-        const userData = cookies.get("userData");
-        if (userData) {
-          console.log("UserData from cookie:", userData); // Log userData from cookie
-          commit("setUserData", userData); // Commit user data to the store
-          applyToken(userData.token); // Apply token to Axios headers
-          // Fetch cart items when the component is created
-          // eslint-disable-next-line no-undef
-          this.$store.dispatch("fetchCartItems");
+    async fetchUserDataFromCookie({ commit, dispatch }) {
+        try {
+          const { cookies } = useCookies();
+          const userData = cookies.get("userData");
+          if (userData) {
+            console.log("UserData from cookie:", userData); // Log userData from cookie
+            commit("setUserData", userData); // Commit user data to the store
+            applyToken(userData.token); // Apply token to Axios headers
+            dispatch("fetchCartItems"); // Dispatch fetchCartItems after setting userData
+          }
+        } catch (error) {
+          console.error("Failed to fetch user data from cookie:", error);
         }
-      } catch (error) {
-        console.error("Failed to fetch user data from cookie:", error);
-      }
-    },
+      },
+      
     async getUserData({ commit }) {
       try {
         // Use useCookies to access cookies
