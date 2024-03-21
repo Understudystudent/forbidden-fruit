@@ -4,15 +4,15 @@ class Carts {
     // Fetch cart items for a user
     async getCartItems(req, res) {
         try {
-            const userID = req.params.userID;
+            const { userID, itemID } = req.params;
             const qry = `
                 SELECT Cart.cartID, Items.itemID, Category, Items.itemName, SUM(Items.itemQuantity) AS itemQuantity, Items.itemAmount, Items.itemUrl, Items.itemDescription
                 FROM Cart
                 INNER JOIN Items ON Cart.itemID = Items.itemID
-                WHERE Cart.userID = ?
+                WHERE Cart.userID = ? AND Items.itemID = ?
                 GROUP BY Items.itemID
             `;
-            db.query(qry, userID, (err, results) => {
+            db.query(qry, [userID, itemID], (err, results) => {
                 if (err) {
                     console.error('Error fetching cart items:', err);
                     return res.status(500).json({
