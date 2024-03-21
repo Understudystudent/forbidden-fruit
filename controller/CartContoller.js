@@ -47,15 +47,25 @@ cartRouter.patch('/update/:userID/:itemID',
     }
 });
 
-// Remove item from cart
-cartRouter.delete('/remove/:userID/:itemID', verifyAToken,
- async (req, res) => {
+// Remove item from cart by cartID
+cartRouter.delete('/remove/:userID/:cartID', verifyAToken, async (req, res) => {
     try {
-        await cart.removeCartItem(req, res);
+        await cart.removeCartItemByCartID(req, res);
     } catch (error) {
         console.error('Error removing item from cart:', error);
         res.status(500).json({ status: res.statusCode, error: 'Failed to remove item from cart.' });
     }
 });
+
+// Remove item from cart by itemID
+cartRouter.delete('/removeItem/:userID/:itemID', verifyAToken, async (req, res) => {
+    try {
+        await cart.removeCartItemByItemID(req, res);
+    } catch (error) {
+        console.error('Error removing item from cart:', error);
+        res.status(500).json({ status: res.statusCode, error: 'Failed to remove item from cart.' });
+    }
+});
+
 
 export { cartRouter };
