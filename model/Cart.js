@@ -6,9 +6,10 @@ class Carts {
         try {
             const userID = req.params.userID;
             const qry = `
-                SELECT *
+                SELECT Items.itemName, Items.itemQuantity, Items.itemAmount, Items.itemUrl, Items.itemDescription
                 FROM Cart
-                WHERE userID = ?
+                INNER JOIN Items ON Cart.itemID = Items.itemID
+                WHERE Cart.userID = ?
             `;
             db.query(qry, userID, (err, results) => {
                 if (err) {
@@ -22,6 +23,7 @@ class Carts {
             res.status(500).json({ status: 500, error: 'Failed to fetch cart items.' });
         }
     }
+    
 
     // Add item to cart
     async addItem(req, res) {
