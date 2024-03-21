@@ -354,124 +354,115 @@ export default createStore({
     },
 
     async addToCart(context, { itemId, quantity }) {
-      try {
-        // Retrieve  data from context
-        const {
-          token,
-          result: { userID },
-        } = context.state.userData;
-
-        // Construct the payload with userID, itemID, and quantity
-        const payload = {
-          userID: userID,
-          itemID: itemId,
-          quantity: quantity,
-        };
-
-        console.log("Adding item to cart. Payload:", payload);
-
-        // Make the POST request to add the item to the cart
-        const response = await axios.post(`${forbidden}cart/add`, payload, {
-          headers: {
-            Authorization: ` ${token}`,
-          },
-        });
-
-        console.log("Response received:", response);
-
-        // Check response status before further processing
-        if (response.status === 200) {
-          console.log("Item added to cart successfully");
-          sweet({
-            title: "Success",
-            text: "Item added to cart successfully!",
-            icon: "success",
-            timer: 2000,
-          });
-          // Item added to cart successfully
-        } else {
-          // Handle unexpected response status
-          console.error(
-            "Failed to add item to cart. Unexpected status:",
-            response.status
-          );
-          // Show error message using SweetAlert
-          sweet({
-            title: "Error",
-            text: "Failed to add item to cart. Please try again later.",
-            icon: "error",
-            timer: 2000,
-          });
-        }
-      } catch (error) {
-        console.error("Error adding item to cart:", error);
-        sweet({
-          title: "Error",
-          text: "Failed to add item to cart. Please try again later.",
-          icon: "error",
-          timer: 2000,
-        });
-      }
-    },
-
-    async updateCartItem(context, payload) {
-      try {
-        const { token } = context.state.userData;
-
-        await axios.patch(
-          `${forbidden}cart/update/${payload.userID}/${payload.itemID}`,
-          payload,
-          {
-            headers: {
-              Authorization: ` ${token}`,
-            },
-          }
-        );
-
-        sweet({
-          title: "Update Cart Item",
-          text: "Cart item quantity updated successfully",
-          icon: "success",
-          timer: 2000,
-        });
-      } catch (error) {
-        sweet({
-          title: "Error",
-          text: "Failed to update cart item quantity. Please try again later.",
-          icon: "error",
-          timer: 2000,
-        });
-      }
-    },
-    async removeCartItemByCartID(context, cartID) {
         try {
+            // Retrieve userData from context.state
             const { userData } = context.state;
-        
+    
             if (!userData) {
                 console.error('User data is undefined');
                 return;
             }
-        
+    
             const { token, result: { userID } } = userData;
-        
-            console.log('Removing cart item by CartID:', cartID); // Added console log
-        
-            // Make the DELETE request to remove the item from the cart by cartID
-            await axios.delete(
-                `${forbidden}cart/remove/${userID}/${cartID}`,  // Adjusted endpoint URL
+    
+            // Construct payload
+            const payload = {
+                userID: userID,
+                itemID: itemId,
+                quantity: quantity,
+            };
+    
+            // Make POST request to add item to cart
+            await axios.post(`${forbidden}cart/add`, payload, {
+                headers: {
+                    Authorization: ` ${token}`,
+                },
+            });
+    
+            // Show success message
+            sweet({
+                title: "Success",
+                text: "Item added to cart successfully!",
+                icon: "success",
+                timer: 2000,
+            });
+    
+            // Fetch updated cart items
+            context.dispatch("fetchCartItems");
+        } catch (error) {
+            console.error("Error adding item to cart:", error);
+            sweet({
+                title: "Error",
+                text: "Failed to add item to cart. Please try again later.",
+                icon: "error",
+                timer: 2000,
+            });
+        }
+    },
+    
+    async updateCartItem(context, payload) {
+        try {
+            const { token } = context.state.userData;
+    
+            await axios.patch(
+                `${forbidden}cart/update/${payload.userID}/${payload.itemID}`,
+                payload,
                 {
                     headers: {
                         Authorization: ` ${token}`,
                     },
                 }
             );
-        
+    
+            sweet({
+                title: "Update Cart Item",
+                text: "Cart item quantity updated successfully",
+                icon: "success",
+                timer: 2000,
+            });
+    
+            // Fetch updated cart items
+            context.dispatch("fetchCartItems");
+        } catch (error) {
+            sweet({
+                title: "Error",
+                text: "Failed to update cart item quantity. Please try again later.",
+                icon: "error",
+                timer: 2000,
+            });
+        }
+    },
+    
+    async removeCartItemByCartID(context, cartID) {
+        try {
+            const { userData } = context.state;
+    
+            if (!userData) {
+                console.error('User data is undefined');
+                return;
+            }
+    
+            const { token, result: { userID } } = userData;
+    
+            // Make DELETE request to remove item from cart by cartID
+            await axios.delete(
+                `${forbidden}cart/remove/${userID}/${cartID}`,
+                {
+                    headers: {
+                        Authorization: ` ${token}`,
+                    },
+                }
+            );
+    
             sweet({
                 title: "Remove from Cart",
                 text: "Item removed from cart successfully",
                 icon: "success",
                 timer: 2000,
             });
+    
+            // Fetch updated cart items
+            context.dispatch("fetchCartItems");
         } catch (error) {
             console.error("Error removing item from cart by cartID:", error);
             sweet({
@@ -483,48 +474,47 @@ export default createStore({
         }
     },
     
-      
-      async removeCartItemByItemID(context, itemID) {
+    async removeCartItemByItemID(context, itemID) {
         try {
-          // Retrieve the userData object from the store state
-          const { userData } = context.state;
-      
-          if (!userData) {
-            console.error('User data is undefined');
-            return;
-          }
-      
-          const { token } = userData;
-      
-          console.log('Removing cart item by ItemID:', itemID); // Added console log
-      
-          // Make the DELETE request to remove the item from the cart by itemID
-          await axios.delete(
-            `${forbidden}cart/removeItem/${itemID}`,
-            {
-              headers: {
-                Authorization: ` ${token}`,
-              },
+            const { userData } = context.state;
+    
+            if (!userData) {
+                console.error('User data is undefined');
+                return;
             }
-          );
-      
-          sweet({
-            title: "Remove from Cart",
-            text: "Item removed from cart successfully",
-            icon: "success",
-            timer: 2000,
-          });
+    
+            const { token } = userData;
+    
+            // Make DELETE request to remove item from cart by itemID
+            await axios.delete(
+                `${forbidden}cart/removeItem/${itemID}`,
+                {
+                    headers: {
+                        Authorization: ` ${token}`,
+                    },
+                }
+            );
+    
+            sweet({
+                title: "Remove from Cart",
+                text: "Item removed from cart successfully",
+                icon: "success",
+                timer: 2000,
+            });
+    
+            // Fetch updated cart items
+            context.dispatch("fetchCartItems");
         } catch (error) {
-          console.error("Error removing item from cart by itemID:", error);
-          sweet({
-            title: "Error",
-            text: "Failed to remove item from cart. Please try again later.",
-            icon: "error",
-            timer: 2000,
-          });
+            console.error("Error removing item from cart by itemID:", error);
+            sweet({
+                title: "Error",
+                text: "Failed to remove item from cart. Please try again later.",
+                icon: "error",
+                timer: 2000,
+            });
         }
-      },
-            
+    },
+    
 
     async fetchCartItems(context) {
       try {
