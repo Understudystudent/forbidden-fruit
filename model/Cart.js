@@ -76,29 +76,56 @@ class Carts {
         }
     }
 
-    // Remove item from cart
-    async removeCartItem(req, res) {
-        try {
-            const { userID, itemID } = req.params;
-            const qry = `
-                DELETE FROM Cart
-                WHERE userID = ? AND itemID = ?
-            `;
-            db.query(qry, [userID, itemID], (err) => {
-                if (err) {
-                    console.error('Error removing item from cart:', err);
-                    return res.status(500).json({ status: 500, error: 'Failed to remove item from cart.' });
-                }
-                res.json({
-                    status: res.statusCode,
-                    msg: 'Item removed from cart successfully.'
-                });
+
+
+    // Remove item from cart by cartID
+async removeCartItemByCartID(req, res) {
+    try {
+        const { userID, cartID } = req.params;
+        const qry = `
+            DELETE FROM Cart
+            WHERE userID = ? AND cartID = ?
+        `;
+        db.query(qry, [userID, cartID], (err) => {
+            if (err) {
+                console.error('Error removing item from cart:', err);
+                return res.status(500).json({ status: 500, error: 'Failed to remove item from cart.' });
+            }
+            res.json({
+                status: res.statusCode,
+                msg: 'Item removed from cart successfully.'
             });
-        } catch (error) {
-            console.error('Error removing item from cart:', error);
-            res.status(500).json({ status: 500, error: 'Failed to remove item from cart.' });
-        }
+        });
+    } catch (error) {
+        console.error('Error removing item from cart:', error);
+        res.status(500).json({ status: 500, error: 'Failed to remove item from cart.' });
     }
+}
+
+// Remove item from cart by itemID
+async removeCartItemByItemID(req, res) {
+    try {
+        const { userID, itemID } = req.params;
+        const qry = `
+            DELETE FROM Cart
+            WHERE userID = ? AND itemID = ?
+        `;
+        db.query(qry, [userID, itemID], (err) => {
+            if (err) {
+                console.error('Error removing item from cart:', err);
+                return res.status(500).json({ status: 500, error: 'Failed to remove item from cart.' });
+            }
+            res.json({
+                status: res.statusCode,
+                msg: 'Item removed from cart successfully.'
+            });
+        });
+    } catch (error) {
+        console.error('Error removing item from cart:', error);
+        res.status(500).json({ status: 500, error: 'Failed to remove item from cart.' });
+    }
+}
+
 }
 
 export { Carts };

@@ -48,6 +48,7 @@ cartRouter.patch('/update/:userID/:itemID',
 });
 
 // Remove item from cart by cartID
+
 cartRouter.delete('/remove/:userID/:cartID', verifyAToken, async (req, res) => {
     try {
         await cart.removeCartItemByCartID(req, res);
