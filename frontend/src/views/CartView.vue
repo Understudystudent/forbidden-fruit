@@ -1,5 +1,5 @@
 <template>
-  <div class="cart-view bg-dark text-white">
+  <div class="cart-view bg-dark text-white vh-100">
     <h1 class="text-center">Your Shopping Cart</h1>
     <!-- Display spinner when loading data -->
     <spinner-loader :loading="loading" />
@@ -12,7 +12,6 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Category</th>
             <th scope="col">Amount</th>
             <th scope="col">Description</th>
             <th scope="col">Quantity</th>
@@ -23,7 +22,6 @@
           <tr v-for="(item, index) in cartItems" :key="index">
             <th scope="row">{{ index + 1 }}</th>
             <td>{{ item.itemName }}</td>
-            <td>{{ item.Category }}</td>
             <td>R {{ item.itemAmount }}</td>
             <td>{{ item.itemDescription }}</td>
             <td>
