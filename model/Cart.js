@@ -170,7 +170,7 @@ class Carts {
                 }
                 res.json({
                     status: res.statusCode,
-                    msg: 'Item removed from cart successfully.'
+                    msg: 'Cart removed.'
                 });
             });
         } catch (error) {

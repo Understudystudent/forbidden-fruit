@@ -49,4 +49,13 @@ cartRouter.delete('/remove/:userID/:cartID', async (req, res) => {
     }
 });
 
+cartRouter.delete('/remove/:userID/:itemID', async (req, res) => {
+    try {
+        await carts.removeCartItemByItemID(req, res); 
+    } catch (error) {
+        console.error('Error removing item from cart:', error);
+        res.status(500).json({ status: 500, error: 'Failed to remove item from cart.' });
+    }
+});
+
 export { cartRouter };
