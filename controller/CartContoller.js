@@ -40,7 +40,8 @@ cartRouter.patch('/update/:userID/:itemID', bodyParser.json(), async (req, res) 
     }
 });
 
-cartRouter.delete('/remove/:userID/:cartID', async (req, res) => {
+// Remove item from cart by cartID
+cartRouter.delete('/remove/:userID/cart/:cartID', async (req, res) => {
     try {
         await carts.removeCartItemByCartID(req, res); 
     } catch (error) {
@@ -49,7 +50,8 @@ cartRouter.delete('/remove/:userID/:cartID', async (req, res) => {
     }
 });
 
-cartRouter.delete('/remove/:userID/:itemID', async (req, res) => {
+// Remove item from cart by itemID
+cartRouter.delete('/remove/:userID/item/:itemID', async (req, res) => {
     try {
         await carts.removeCartItemByItemID(req, res); 
     } catch (error) {
