@@ -35,6 +35,7 @@ export default createStore({
       state.cartItems = value;
     },
     setUserData(state, userData) {
+      console.log("Received userData:", userData);
       state.userData = userData;
     },
   },
@@ -341,79 +342,118 @@ export default createStore({
       }
     },
 
-    async addToCart(context, payload) {
-        try {
-          console.log("Payload received:", payload); // Log the payload received
-          const { token } = context.state.userData; // Get the user's authentication token
-      
-          const response = await axios.post(`${forbidden}cart/add`, payload, {
-            headers: {
-              Authorization: `Bearer ${token}` // Include authorization token in headers
-            }
+    async addToCart(context, { itemId, quantity }) {
+      try {
+        // Retrieve  data from context
+        const {
+          token,
+          result: { userID },
+        } = context.state.userData;
+
+        // Construct the payload with userID, itemID, and quantity
+        const payload = {
+          userID: userID,
+          itemID: itemId,
+          quantity: quantity,
+        };
+
+        console.log("Adding item to cart. Payload:", payload);
+
+        // Make the POST request to add the item to the cart
+        const response = await axios.post(`${forbidden}cart/add`, payload, {
+          headers: {
+            Authorization: ` ${token}`,
+          },
+        });
+
+        console.log("Response received:", response);
+
+        // Check response status before further processing
+        if (response.status === 200) {
+          console.log("Item added to cart successfully");
+          sweet({
+            title: "Success",
+            text: "Item added to cart successfully!",
+            icon: "success",
+            timer: 2000,
           });
-      
-          // Check response status before further processing
-          if (response.status === 200) {
-            sweet({
-              title: "Add to Cart",
-              text: "Item added to cart successfully",
-              icon: "success",
-              timer: 2000,
-            });
-            
-            // Fetch updated cart items after adding an item
-            context.dispatch("fetchCartItems", payload.userID);
-          } else {
-            console.error("Failed to add item to cart. Unexpected status:", response.status);
-            // Handle the error accordingly
-          }
-        } catch (error) {
-          console.error("Error adding item to cart:", error);
+          // Item added to cart successfully
+        } else {
+          // Handle unexpected response status
+          console.error(
+            "Failed to add item to cart. Unexpected status:",
+            response.status
+          );
+          // Show error message using SweetAlert
           sweet({
             title: "Error",
             text: "Failed to add item to cart. Please try again later.",
             icon: "error",
-            timer: 5000,
-          });
-        }
-      },
-      
-      
-      async updateCartItem(context, payload) {
-        try {
-          const { token } = context.state.userData; 
-      
-          await axios.patch(`${forbidden}cart/update/${payload.userID}/${payload.itemID}`, payload, {
-            headers: {
-              Authorization: ` ${token}` 
-            }
-          });
-      
-          sweet({
-            title: "Update Cart Item",
-            text: "Cart item quantity updated successfully",
-            icon: "success",
-            timer: 2000,
-          });
-        } catch (error) {
-          sweet({
-            title: "Error",
-            text: "Failed to update cart item quantity. Please try again later.",
-            icon: "error",
             timer: 2000,
           });
         }
-      },
-      
-      async removeCartItem(context, payload) {
-        try {
-          const { token } = context.state.userData; 
-      
-          await axios.delete(`${forbidden}cart/remove/${payload.userID}/${payload.itemID}`, {
+      } catch (error) {
+        console.error("Error adding item to cart:", error);
+        sweet({
+          title: "Error",
+          text: "Failed to add item to cart. Please try again later.",
+          icon: "error",
+          timer: 2000,
+        });
+      }
+    },
+
+    async updateCartItem(context, payload) {
+      try {
+        const { token } = context.state.userData;
+
+        await axios.patch(
+          `${forbidden}cart/update/${payload.userID}/${payload.itemID}`,
+          payload,
+          {
             headers: {
-              Authorization: ` ${token}` 
+              Authorization: ` ${token}`,
+            },
+          }
+        );
+
+        sweet({
+          title: "Update Cart Item",
+          text: "Cart item quantity updated successfully",
+          icon: "success",
+          timer: 2000,
+        });
+      } catch (error) {
+        sweet({
+          title: "Error",
+          text: "Failed to update cart item quantity. Please try again later.",
+          icon: "error",
+          timer: 2000,
+        });
+      }
+    },
+
+    async removeCartItem(context, payload) {
+        try {
+          // Retrieve the userData object from the store state
+          const { userData } = context.state;
+      
+          if (!userData) {
+            console.error('User data is undefined');
+            return;
+          }
+      
+          const { token, result: { userID } } = userData;
+      
+          // Make the DELETE request to remove the item from the cart
+          await axios.delete(
+            `${forbidden}cart/remove/${userID}/${payload.itemID}`,
+            {
+              headers: {
+                Authorization: ` ${token}`,
+              },
             }
-          });
+          );
       
           sweet({
             title: "Remove from Cart",
@@ -422,6 +462,7 @@ export default createStore({
             timer: 2000,
           });
         } catch (error) {
+          console.error("Error removing item from cart:", error);
           sweet({
             title: "Error",
             text: "Failed to remove item from cart. Please try again later.",
@@ -430,42 +471,65 @@ export default createStore({
           });
         }
       },
-      
-    async fetchCartItems(context, userID) {
-        try {
-          const { token } = context.state.userData; 
-      
-          const response = await axios.get(`${forbidden}cart/${userID}`, {
-            headers: {
-              Authorization: ` ${token}` 
-            }
-          });
-      
+
+    async fetchCartItems(context) {
+      try {
+        // Retrieve necessary data from context
+        const {
+          token,
+          result: { userID },
+        } = context.state.userData;
+
+        // Make the GET request to fetch cart items
+        const response = await axios.get(`${forbidden}cart/${userID}`, {
+          headers: {
+            Authorization: ` ${token}`,
+          },
+        });
+
+        console.log("Response received:", response);
+
+        // Check response status before further processing
+        if (response.status === 200) {
+          // Parse cart items from response data
           const cartItems = response.data;
-          console.log("Fetched cart items:", cartItems); // Log the fetched cart items
+          console.log("Fetched cart items:", cartItems);
+
+          // Commit fetched cart items to the store
           context.commit("setCartItems", cartItems);
-        } catch (error) {
-          console.error("Error fetching cart items:", error);
-          sweet({
-            title: "Error",
-            text: "Failed to fetch cart items. Please try again later.",
-            icon: "error",
-            timer: 2000,
-          });
+        } else {
+          // Handle unexpected response status
+          console.error(
+            "Failed to fetch cart items. Unexpected status:",
+            response.status
+          );
         }
-      },
-      
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+        // Handle error
+        // Show error message using SweetAlert
+        sweet({
+          title: "Error",
+          text: "Failed to fetch cart items. Please try again later.",
+          icon: "error",
+          timer: 2000,
+        });
+      }
+    },
     async fetchUserDataFromCookie({ commit }) {
       try {
         const { cookies } = useCookies();
         const userData = cookies.get("userData");
         if (userData) {
+          console.log("UserData from cookie:", userData); // Log userData from cookie
           commit("setUserData", userData); // Commit user data to the store
           applyToken(userData.token); // Apply token to Axios headers
+          // Fetch cart items when the component is created
+          // eslint-disable-next-line no-undef
+          this.$store.dispatch("fetchCartItems");
         }
       } catch (error) {
         console.error("Failed to fetch user data from cookie:", error);
-        // Handle error appropriately
       }
     },
     async getUserData({ commit }) {

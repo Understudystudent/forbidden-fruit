@@ -25,23 +25,29 @@ export default {
   computed: {
     // Map cartItems
     cartItems() {
-      return this.$store.state.cartItems;
+      const items = this.$store.state.cartItems.results;
+      console.log('Cart items:', items);
+      return items;
     },
     // Access user ID 
     userID() {
-      return this.$store.state.user ? this.$store.state.user.id : null;
+      const userID = this.$store.state.user ? this.$store.state.user.id : null;
+      console.log('User ID:', userID);
+      return userID;
     }
   },
   methods: {
     // Method to update cart item quantity
     updateCartItem(item) {
-      if (!this.userID) {
+      const userID = this.userID;
+      if (!userID) {
         console.error('User ID is undefined');
         return;
       }
+      console.log('Updating cart item:', item);
       // action to update cart item quantity
       this.$store.dispatch('updateCartItem', {
-        userID: this.userID,
+        userID: userID,
         itemID: item.id,
         quantity: item.quantity
       }).then(() => {
@@ -52,19 +58,27 @@ export default {
     },
     //  Remove cart item
     removeCartItem(item) {
-      if (!this.userID) {
+      const userID = this.userID;
+      if (!userID) {
         console.error('User ID is undefined');
         return;
       }
+      console.log('Removing cart item:', item);
       this.$store.dispatch('removeCartItem', {
-        userID: this.userID,
+        userID: userID,
         itemID: item.id
       }).then(() => {
         console.log('Cart item removed successfully');
+        // Optionally, you can fetch updated cart items after removing an item
+        this.$store.dispatch('fetchCartItems');
       }).catch(error => {
         console.error('Failed to remove cart item:', error);
       });
     }
+  },
+  created() {
+    // Fetch cart items when the component is created
+    this.$store.dispatch('fetchCartItems');
   }
 };
 </script>

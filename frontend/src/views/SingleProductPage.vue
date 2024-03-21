@@ -26,10 +26,9 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-// import createPersistedState from "vuex-persistedstate";
 
 export default {
-  name: "ItemDetailPage",
+  name: "SinglePage",
   computed: {
     ...mapState(['items']),
     item() {
@@ -53,12 +52,11 @@ export default {
     },
     addItemToCart() {
       if (this.item) {
-        this.addToCart({ item: this.item, quantity: parseInt(this.quantity) });
+        this.addToCart({ itemId: this.item.itemID, quantity: parseInt(this.quantity) });
         this.$router.push({ path: '/products' });
       }
     }
-  },
-//   plugins: [createPersistedState({ paths: ['items'] })]
+  }
 };
 </script>
 
