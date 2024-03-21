@@ -1,18 +1,20 @@
-import { connection as db } from "../config/index.js";
+import {
+    connection as db
+} from "../config/index.js";
 
 class Carts {
     // Fetch cart items for a user
     async getCartItems(req, res) {
         try {
-            const { userID, itemID } = req.params;
+            const userID = req.params.userID;
             const qry = `
-                SELECT Cart.cartID, Items.itemID, Category, Items.itemName, SUM(Items.itemQuantity) AS itemQuantity, Items.itemAmount, Items.itemUrl, Items.itemDescription
+                SELECT Items.itemID, Items.itemName, SUM(Items.itemQuantity) AS itemQuantity, Items.itemAmount, Items.itemUrl, Items.itemDescription
                 FROM Cart
                 INNER JOIN Items ON Cart.itemID = Items.itemID
-                WHERE Cart.userID = ? AND Items.itemID = ?
+                WHERE Cart.userID = ?
                 GROUP BY Items.itemID
             `;
-            db.query(qry, [userID, itemID], (err, results) => {
+            db.query(qry, userID, (err, results) => {
                 if (err) {
                     console.error('Error fetching cart items:', err);
                     return res.status(500).json({
@@ -33,7 +35,6 @@ class Carts {
             });
         }
     }
-    
 
     // Add item to cart
     async addItem(req, res) {
@@ -148,42 +149,38 @@ class Carts {
             });
         }
     }
-
-    // Remove item from cart by cartID
-    async removeCartItemByCartID(req, res) {
+    // Remove all items from cart
+    async removeAllItemsFromCart(req, res) {
         try {
-            const {
-                userID,
-                cartID
-            } = req.params;
+            const userID = req.params.userID;
             const qry = `
-                DELETE FROM Cart
-                WHERE userID = ? AND cartID = ?
-            `;
-            db.query(qry, [userID, cartID], (err) => {
+            DELETE FROM Cart
+            WHERE userID = ?
+        `;
+            db.query(qry, userID, (err) => {
                 if (err) {
-                    console.error('Error removing item from cart:', err);
+                    console.error('Error removing all items from cart:', err);
                     return res.status(500).json({
                         status: 500,
-                        error: 'Failed to remove item from cart.'
+                        error: 'Failed to remove all items from cart.'
                     });
                 }
                 res.json({
                     status: res.statusCode,
-                    msg: 'Cart removed.'
+                    msg: 'All items removed from cart successfully.'
                 });
             });
         } catch (error) {
-            console.error('Error removing item from cart:', error);
+            console.error('Error removing all items from cart:', error);
             res.status(500).json({
                 status: 500,
-                error: 'Failed to remove item from cart.'
+                error: 'Failed to remove all items from cart.'
             });
         }
     }
 
-    // Remove item from cart by itemID
-    async removeCartItemByItemID(req, res) {
+    // Remove specific item from cart
+    async removeItemFromCart(req, res) {
         try {
             const {
                 userID,
@@ -216,4 +213,6 @@ class Carts {
     }
 }
 
-export { Carts };
+export {
+    Carts
+};

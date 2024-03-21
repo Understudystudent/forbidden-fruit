@@ -5,10 +5,10 @@ import {Carts} from "./Cart.js";
 // Create objects
 let users = new Users()
 let items = new Items()
-let carts = new Carts();
+let cart = new Carts();
 
 export{
     users, 
     items,
-    carts
+    cart
 }
