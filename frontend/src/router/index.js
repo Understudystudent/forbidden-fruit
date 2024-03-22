@@ -35,11 +35,6 @@ const routes = [
     }
   },
   {
-    path: "/adminDashboard",
-    name: "AdminDashboard",
-    component: () => import("../views/AdminDashboard.vue"),
-  },
-  {
     path: "/register",
     name: "register",
     component: () => import("../components/RegisterComponet.vue"),

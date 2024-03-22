@@ -1,13 +1,13 @@
 <template>
-    <div class="banner">
+    <div class="banner bg-black">
       <div class="container">
         <div class="banner-content">
           <div class="main-banner">
             <div class="img-container">
-              <img src="@/assets/images/banner1.jpg" alt="" />
+              <img src="https://i.ibb.co/S7yTX0Y/GEO1ny8a-IAAJCUT-format-jpg-name-large.jpg" alt="" />
               <div class="img-content">
-                <span> Banner </span>
-                <h3>Skin Care</h3>
+                <span> For </span>
+                <h3>Her</h3>
               </div>
             </div>
           </div>
