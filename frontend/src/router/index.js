@@ -50,11 +50,6 @@ const routes = [
     component: () => import("../components/ForgotComponet.vue"),
   },
   {
-    path: "/reset/:token",
-    name: "ResetPassword",
-    component: () => import("../components/ResetPassword.vue"),
-  },
-  {
     path: "/products/:itemID",
     name: "ItemDetailPage",
     component: () => import("../views/SingleProductPage.vue"),

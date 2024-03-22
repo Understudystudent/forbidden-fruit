@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer">
+    <footer class="footer container-fluid">
         <div class="footer-left" @click="redirectToHomePage">
             <h2 class="forbidden-logo" @mouseover="pointEffect" @mouseleave="removePointEffect">Forbidden</h2>
             <p class="tagline">Unveil Your Desires</p>
