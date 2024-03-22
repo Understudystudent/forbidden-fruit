@@ -3,10 +3,12 @@
         <!-- <NavBar/> -->
         <NavBar v-show="loggedUser"/>
         <router-view />
+        <FooterPage v-show="loggedUser"/>
     </div>
 </template>
 
 <script>
+import FooterPage from './components/FooterView.vue';
 import NavBar from './components/NavBar.vue';
 import { useCookies } from 'vue3-cookies';
 // Returns true
@@ -15,6 +17,7 @@ const { cookies } = useCookies()
 export default {
     components: {
         NavBar,
+        FooterPage,
     },
     data() {
         return {
