@@ -1,5 +1,26 @@
 <template>
-    <div class="contact-page">
+    <div class="row container-fluid">
+        <div class="col">
+          <div class="col container">
+            <div class="row text-center">
+                <h1 class="call">Contact Us</h1>
+                <p class="text-black">khvlu</p>
+            </div>
+            
+            <div class="row"> <img src="https://i.ibb.co/NS1K4Pt/Screenshot-2024-03-22-120618.png" class="container img-fluid w-50 h-50" alt="responsive image">
+                <p class="text-black">khvlu</p>
+                <p class="text-black">khvlu</p>
+                
+                <h2 class="call"><i class="bi bi-person-lines-fill"></i> 068 564 2357</h2>
+                <h2 class="call"><i class="bi bi-envelope-at-fill"></i> Forbidden@bliss.com</h2>
+                <h2 class="call"><i class="bi bi-instagram"></i>instagram.com</h2>
+                <h2 class="call"><i class="bi bi-facebook"></i> facebook.com</h2>
+            </div>
+            <div class="row"><h1></h1></div>
+          </div>
+        </div>
+        <div class="col">
+            <div class="contact-page">
       <!-- Contact form -->
       <form @submit.prevent="submitForm" action="https://formspree.io/f/xpzgnpee" method="POST" class="contact-form">
         <label for="name">Name:</label>
@@ -12,6 +33,22 @@
         <!-- Error message -->
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </form>
+    </div></div>
+        <div class="col">
+           
+            <h1 class="not text-black">Mon To Fri</h1>
+            
+            <h1 class="not text-black">Mon To Fri</h1>
+            <h1 class="not">Available Hours:</h1>
+            <h1 class="not text-black">Mond To Friday</h1>
+            
+            <h1 class="not fs-2">Monday To Friday</h1>
+            <h1 class="not fs-2">06:00 to 19:00</h1>
+            <h1 class="not text-black">Mond To Friday</h1>
+            <h1 class="not text-black">Mond To Friday</h1>
+
+            <h1 class="not fs-2 text-white shadow">Special Consultation Available</h1>
+        </div>
     </div>
   </template>
   
@@ -120,6 +157,26 @@
   .error-message {
     color: #ff0000; 
     margin-top: 10px;
+  }
+
+  .call {
+    display: flex;
+    justify-content: center;
+  }
+
+  .not {
+    display: flex;
+    justify-content: center;
+  }
+
+  .bi {
+    color:#ffd700
+  }
+
+
+  .row {
+    display: flex;
+    justify-content: center;
   }
   </style>
   
