@@ -1,12 +1,12 @@
 <template>
     <div class="adminpage bg-black mt-5">
       <!-- User Section -->
-      <div class="col">
+      <div class="col container">
         <h2 class="admin text-white">Add User</h2>
         <router-link to="/adminadduser" class="btn btn-primary">Add User</router-link>
       </div>
       <div>
-        <table class="table table-striped-columns rounded-3 text-center">
+        <table class="table container table-striped-columns rounded-3 text-center">
           <!-- Table header -->
           <thead>
             <tr>

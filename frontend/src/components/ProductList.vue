@@ -28,9 +28,8 @@
   </script>
   
   <style scoped>
-  /* Set font family */
   body {
-    font-family: 'Arial', sans-serif; /* Replace 'Arial' with your desired font */
+    font-family: 'Arial', sans-serif; 
   }
   
   .product {

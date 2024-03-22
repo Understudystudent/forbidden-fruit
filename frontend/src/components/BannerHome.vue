@@ -26,7 +26,7 @@
                 </div>
               </div>
             </div>
-            <div class="bottom">
+            <div class="bottom bg-dark">
               <div class="img-container">
                 <img src="https://i.ibb.co/svYNXJm/GCxw9-C6-X0-AAvf-Bs-format-jpg-name-large.jpg" alt="" />
                 <div class="img-content">
@@ -56,7 +56,7 @@
                 </g>
               </svg>
             </span>
-            <div class="details">
+            <div class="details text-white">
               <h6>FREE SHIPPING</h6>
               <p>On all SA order or order above $100</p>
             </div>
@@ -73,7 +73,7 @@
     height: 100%;
   }
   .banner {
-    border-bottom: 2px solid #f8f8f8;
+    border-bottom: 2px solirgb(0, 0, 0)f8;
     margin-bottom: 100px;
   }
   .banner .container {
