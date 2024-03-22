@@ -6,7 +6,7 @@ import AdminPage from "../views/AdminPage.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/home",
     name: "home",
     component: HomeView,
   },
@@ -40,7 +40,7 @@ const routes = [
     component: () => import("../components/RegisterComponet.vue"),
   },
   {
-    path: "/login",
+    path: "/",
     name: "loginPage",
     component: () => import("../components/LoginComponent.vue"),
   },

@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-midnight-black sticky-top container-fluid">
         <div class="container">
             <!-- Logo on the left -->
-            <router-link to="/" class="navbar-brand">
+            <router-link to="/home" class="navbar-brand">
                 <a href="https://ibb.co/Prbmr2j"><img
                         src="https://i.ibb.co/Prbmr2j/Screenshot-2024-03-09-8-29-56-PM-removebg-preview.png"
                         alt="Screenshot-2024-03-09-8-29-56-PM-removebg-preview" border="0"
