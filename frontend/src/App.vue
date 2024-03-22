@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg-black">
         <!-- <NavBar/> -->
         <NavBar v-show="loggedUser"/>
         <router-view />
